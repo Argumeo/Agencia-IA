@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexFlow AI — Automatización e Inteligencia Artificial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --fg: #1a1a18;
+      --bg: #f5f2ec;
+      --accent: #5E6AD2;
+      --accent-glow: rgba(94,106,210,0.22);
+      --muted: rgba(26,26,24,.45);
+      --border: rgba(26,26,24,.1);
+      --card-bg: rgba(26,26,24,.04);
+      --ease: cubic-bezier(0.16,1,0.3,1);
+      --mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--fg); overflow-x: hidden; }
+
+    /* ── Typography ── */
+    .serif { font-family: 'Playfair Display', serif; }
+
+    /* ── Card ── */
+    .card { background: var(--card-bg); border: 1px solid var(--border); }
+
+    /* ── Grad text ── */
+    .grad { background: linear-gradient(135deg, var(--fg) 0%, #6b6b55 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* ── FULLSCREEN NAV ── */
+    #nav-fullscreen {
+      position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+      background: var(--fg);
+      clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+      transition: clip-path .7s cubic-bezier(.9,0,.1,1);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+    }
+    #nav-fullscreen.open {
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+      pointer-events: auto;
+    }
+    .nav-link-item {
+      overflow: hidden; width: 100%; border-b: 1px solid rgba(245,242,236,.12);
+    }
+    .nav-link-item a {
+      display: flex; align-items: center; justify-between; gap: 16px;
+      padding: 20px 48px; text-decoration: none;
+      transform: translateY(100%);
+      transition: transform .5s cubic-bezier(.7,0,.3,1);
+    }
+    #nav-fullscreen.open .nav-link-item a { transform: translateY(0); }
+    .nav-link-item a span { font-family: 'Playfair Display', serif; font-size: clamp(48px, 8vw, 96px); font-weight: 500; color: var(--bg); line-height: .9; }
+    .nav-link-item a:hover span { margin-left: 16px; transition: margin .3s; }
+    .nav-link-item a svg { color: var(--bg); opacity: .5; height: clamp(40px, 6vw, 80px); width: auto; }
+    .nav-link-item a:hover svg { opacity: 1; transform: rotate(45deg); }
+    svg { transition: transform .3s, opacity .3s; }
+
+    /* ── NAV TOP ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 900;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 5%;
+      pointer-events: auto;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: background .4s var(--ease), border-color .4s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    /* Fondo claro (secciones cream) */
+    #navbar { background: rgba(245,242,236,.82); border-bottom-color: rgba(26,26,24,.07); }
+    #navbar .logo {
+      font-size: 18px; font-weight: 500; color: var(--fg);
+      text-decoration: none; transition: color .4s var(--ease);
+    }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-book {
+      height: 40px; padding: 0 24px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center;
+      background: var(--fg); color: var(--bg);
+      transition: opacity .2s, background .4s var(--ease), color .4s var(--ease);
+    }
+    .btn-book:hover { opacity: .8; }
+    #menu-btn {
+      width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
+      background: var(--fg); border: none; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 5px; position: relative;
+      transition: background .4s var(--ease);
+    }
+    #menu-btn span {
+      display: block; width: 12px; height: 1px; background: var(--bg);
+      transition: transform .3s, opacity .3s;
+    }
+    #menu-btn.open span:first-child { transform: translateY(3px) rotate(45deg); }
+    #menu-btn.open span:last-child { transform: translateY(-3px) rotate(-45deg); }
+    #menu-btn.open span:nth-child(2) { opacity: 0; }
+
+    /* Fondo oscuro (hero, beneficios, contacto) */
+    #navbar.on-hero {
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border-bottom-color: transparent !important;
+    }
+    #navbar.on-dark {
+      background: rgba(20,20,18,.72);
+      border-bottom-color: rgba(245,242,236,.06);
+    }
+    #navbar.on-dark .logo { color: #f5f2ec; }
+    #navbar.on-dark .btn-book { background: rgba(245,242,236,.12); color: #f5f2ec; border: 1px solid rgba(245,242,236,.15); }
+    #navbar.on-dark #menu-btn { background: rgba(245,242,236,.12); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; width: 100%; height: 100svh; overflow: hidden;
+      background: #1a1a18;
+    }
+    /* YouTube background cover */
+    #hero-yt-wrap {
+      position: absolute; inset: 0; z-index: 0;
+      overflow: hidden; pointer-events: none;
+    }
+    #yt-bg-player {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100vh;
+      min-width: 177.78vh;
+      border: none;
+    }
+    #hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(20,20,18,.18);
+    }
+    #hero-grad {
+      position: absolute; inset: 0; z-index: 2;
+      background:
+        linear-gradient(to bottom, rgba(14,14,12,.55) 0%, transparent 22%),
+        linear-gradient(to right,  rgba(14,14,12,.82) 0%, rgba(14,14,12,.5) 45%, transparent 75%),
+        linear-gradient(to top,    rgba(14,14,12,.65) 0%, transparent 35%);
+    }
+    #hero-content {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 0 5%;
+    }
+    .hero-inner {
+      max-width: 780px; width: 100%;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    /* Skill: Kinetic Typography — stagger entrance */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .he { opacity: 0; animation: hero-in .9s var(--ease) forwards; }
+    .he-d1 { animation-delay: .2s; }
+    .he-d2 { animation-delay: .5s; }
+    .he-d3 { animation-delay: .75s; }
+    .he-d4 { animation-delay: 1s; }
+    .he-d5 { animation-delay: 1.25s; }
+
+    .hero-wordmark {
+      font-family: 'Playfair Display', serif; font-weight: 500;
+      font-size: clamp(15px, 1.6vw, 20px); color: rgba(245,242,236,.7);
+      letter-spacing: .12em; text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: var(--accent); letter-spacing: .1em; text-transform: uppercase;
+      text-shadow: 0 1px 8px rgba(0,0,0,.8);
+    }
+    .hero-tag::before {
+      content: ''; display: block; width: 24px; height: 1px; background: var(--accent);
+    }
+    .hero-headline {
+      font-family: 'Playfair Display', serif; font-weight: 600; color: #f5f2ec;
+      font-size: clamp(38px, 6vw, 80px); line-height: 1.05; letter-spacing: -.01em;
+      text-shadow:
+        0 2px 4px  rgba(0,0,0,.5),
+        0 8px 24px rgba(0,0,0,.4),
+        0 20px 60px rgba(0,0,0,.25);
+    }
+    .hero-sub {
+      font-size: clamp(14px, 1.3vw, 17px); color: rgba(245,242,236,.85);
+      line-height: 1.7; max-width: 560px;
+      text-shadow: 0 1px 8px rgba(0,0,0,.7), 0 4px 20px rgba(0,0,0,.4);
+    }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-btn {
+      height: clamp(48px, 5.5vw, 64px); padding: 0 clamp(24px, 3vw, 48px);
+      border-radius: 14px; font-size: clamp(14px, 1.4vw, 18px); font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center; white-space: nowrap;
+      cursor: pointer; transition: opacity .2s, transform .2s;
+    }
+    .hero-btn:hover { opacity: .85; transform: translateY(-2px); }
+    .hero-btn-primary { background: #f5f2ec; color: #1a1a18; }
+    .hero-btn-secondary { background: rgba(245,242,236,.12); color: #f5f2ec; border: 1px solid rgba(245,242,236,.2); }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: inline-block; padding: 4px 12px; border-radius: 6px; font-size: 13px;
+      background: var(--card-bg); border: 1px solid var(--border); margin-bottom: 8px;
+    }
+
+    /* ── ABOUT PARALLAX ── */
+    .parallax-img { overflow: hidden; border-radius: 12px; }
+    .parallax-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .1s linear; }
+
+    /* ── SERVICE CARDS ── */
+    .service-card {
+      position: relative; overflow: hidden; border-radius: 12px; cursor: pointer;
+    }
+    .service-card img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; transition: transform .5s; }
+    .service-card:hover img { transform: scale(1.05); }
+    .service-card-overlay {
+      position: absolute; inset-x: 0; bottom: 0; height: 45%;
+      backdrop-filter: blur(16px);
+      -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+      mask-image: linear-gradient(to top, black 40%, transparent 100%);
+    }
+    .service-card-info {
+      position: absolute; inset-x: 12px; bottom: 12px; z-index: 10;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    @media(min-width:768px){
+      .service-card-info { inset-x: 16px; bottom: 16px; }
+    }
+    .service-card-title {
+      font-size: clamp(18px, 1.8vw, 24px); font-weight: 600; color: var(--fg); line-height: 1.2;
+      transition: color .4s;
+    }
+    .service-card:hover .service-card-title { color: var(--fg); }
+    @media(min-width:768px){ .service-card-title { color: #f5f2ec; } }
+    .service-card-desc {
+      font-size: 14px; color: var(--fg); line-height: 1.4;
+      display: block; opacity: 1;
+      transition: opacity .4s;
+    }
+    @media(min-width:768px){
+      .service-card-desc { opacity: 0; }
+      .service-card:hover .service-card-desc { opacity: 1; }
+    }
+    .service-card-inner { position: relative; display: flex; flex-direction: column; gap: 0; padding: 12px; transition: gap .4s; }
+    @media(min-width:768px){ .service-card:hover .service-card-inner { gap: 4px; } }
+    .service-inner-card {
+      position: absolute; inset: 0; background: var(--card-bg); border-radius: 10px;
+      opacity: 1; transform: translateY(0); transition: all .4s ease;
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    }
+    @media(min-width:768px){
+      .service-inner-card { opacity: 0; transform: translateY(100%); }
+      .service-card:hover .service-inner-card { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── AMENITIES / FEATURES CAROUSEL ── */
+    .carousel-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; }
+    .carousel-track::-webkit-scrollbar { display: none; }
+    .carousel-track.grabbing { cursor: grabbing; }
+    .carousel-item { scroll-snap-align: start; flex-shrink: 0; width: clamp(260px, 30vw, 360px); }
+    .carousel-img { aspect-ratio: 1; overflow: hidden; border-radius: 12px; }
+    .carousel-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ── CASOS MARQUEE ── */
+    .casos-marquee-wrap {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+    .casos-marquee-track {
+      display: flex; gap: 16px; width: max-content;
+      animation: casos-scroll 36s linear infinite;
+    }
+    .casos-marquee-track:hover { animation-play-state: paused; }
+    @keyframes casos-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .casos-card { width: 300px; flex-shrink: 0; }
+    .bento-card { position: relative; overflow: hidden; border-radius: 12px; cursor: pointer; }
+    .bento-card-img { height: 260px; overflow: hidden; }
+    .bento-card-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; transition: transform .5s; }
+    .bento-card:hover .bento-card-img img { transform: scale(1.05); }
+    .bento-card-fog {
+      position: absolute; inset-x: -1px; bottom: -1px; height: 45%;
+      backdrop-filter: blur(16px);
+      -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%);
+      mask-image: linear-gradient(to top, black 40%, transparent 100%);
+    }
+    .bento-card-body {
+      position: absolute; inset-x: 12px; bottom: 12px; z-index: 10; padding: 12px; border-radius: 10px;
+      display: flex; flex-direction: column; gap: 0;
+      transition: gap .4s;
+    }
+    .bento-card:hover .bento-card-body { gap: 4px; }
+    .bento-inner-bg {
+      position: absolute; inset: 0; border-radius: 10px;
+      background: var(--card-bg); backdrop-filter: blur(8px);
+      opacity: 1; transform: translateY(0);
+      transition: all .4s ease;
+    }
+    @media(min-width:768px){
+      .bento-inner-bg { opacity: 0; transform: translateY(100%); }
+      .bento-card:hover .bento-inner-bg { opacity: 1; transform: translateY(0); }
+    }
+    .bento-title {
+      position: relative; z-index: 1; font-size: clamp(18px, 1.6vw, 24px); font-weight: 600; line-height: 1.2;
+      color: var(--fg); transition: color .4s;
+    }
+    @media(min-width:768px){ .bento-title { color: #f5f2ec; } }
+    .bento-card:hover .bento-title { color: var(--fg); }
+    .bento-desc {
+      position: relative; z-index: 1; font-size: 13px; line-height: 1.4; color: var(--fg);
+      display: block; opacity: 1;
+      overflow: hidden; max-height: 0; transition: max-height .4s ease, opacity .4s;
+    }
+    @media(min-width:768px){ .bento-desc { opacity: 0; } }
+    .bento-card:hover .bento-desc { opacity: 1; max-height: 80px; }
+
+    /* ── CONTACT SPLIT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media(min-width:768px){ .contact-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+    /* ── INPUTS ── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 12px; color: var(--muted); }
+    .field input, .field textarea, .field select {
+      background: transparent; border: none; border-bottom: 1px solid var(--border);
+      padding: 10px 0; font-family: inherit; font-size: 14px; color: var(--fg);
+      outline: none; width: 100%; transition: border-color .2s;
+      appearance: none;
+    }
+    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--fg); }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── WORD REVEAL ── */
+    .word-reveal span { display: inline-block; opacity: 0; transform: translateY(50%); transition: opacity .5s ease, transform .5s ease; }
+    .word-reveal.visible span { opacity: 1; transform: none; }
+
+    /* ── AUTOFILL TEXT ── */
+    @keyframes autofill { 0%,100%{opacity:1} 49%{opacity:1} 50%{opacity:0} 51%{opacity:0} }
+    .cursor-blink::after { content:'|'; animation: autofill .8s step-end infinite; }
+
+    /* ── PULSATE ── */
+    @keyframes pulsate { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.5)} }
+    .pulsate { animation: pulsate 2s ease-in-out infinite; }
+
+    /* ── STICKY SERVICES (cream theme) ── */
+    .s2-sticky-wrap { position: relative; height: 400vh; }
+    .s2-sticky {
+      position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden;
+      background: var(--bg);
+    }
+    .s2-slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; opacity: 0; transition: opacity .6s; pointer-events: none;
+    }
+    .s2-slide.active { opacity: 1; pointer-events: auto; }
+    .s2-side-img {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 22%; height: 65vh; border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--border); padding: 4px; background: var(--card-bg);
+    }
+    .s2-side-img-left { left: 3%; }
+    .s2-side-img-right { right: 3%; }
+    .s2-side-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .s2-num {
+      width: 32px; height: 32px; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center; font-size: 13px;
+      margin: 0 auto 16px; background: var(--card-bg); border: 1px solid var(--border);
+      color: var(--fg);
+    }
+    .s2-dots {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; align-items: center;
+    }
+    .s2-dot {
+      height: 8px; border-radius: 4px; background: var(--border);
+      transition: width .3s, background .3s; width: 8px;
+    }
+    .s2-dot.active { width: 24px; background: var(--fg); }
+    .s2-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      height: 40px; padding: 0 20px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      background: var(--fg); color: var(--bg); text-decoration: none;
+      cursor: pointer; transition: opacity .2s, transform .2s; margin-top: 20px;
+    }
+    .s2-btn:hover { opacity: .8; transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════
+       SKILL: UI UX PRO MAX — Premium Layer
+       ══════════════════════════════════════ */
+
+    /* Mono para stats/números */
+    .mono { font-family: var(--mono); }
+
+    /* Accent glow en section-label oscuras */
+    .label-glow {
+      background: rgba(94,106,210,.12);
+      border: 1px solid rgba(94,106,210,.3);
+      color: rgba(94,106,210,1);
+      box-shadow: 0 0 12px rgba(94,106,210,.15);
+    }
+
+    /* Botones primarios con glow */
+    .hero-btn-primary {
+      box-shadow: 0 0 0 0 var(--accent-glow);
+      transition: opacity var(--ease) .3s, transform var(--ease) .3s, box-shadow var(--ease) .3s;
+    }
+    .hero-btn-primary:hover {
+      box-shadow: 0 8px 32px var(--accent-glow);
+      transform: translateY(-3px);
+    }
+
+    /* Ambient blobs (skill: cinematic dark) */
+    .blob {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(80px); animation: blob-drift ease-in-out infinite alternate;
+    }
+    @keyframes blob-drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(40px,-30px) scale(1.08); }
+    }
+
+    /* ── GLASSMORPHISM BENEFICIOS (skill: Opción A) ── */
+    #beneficios-id { position: relative; overflow: hidden; }
+
+    .glass-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media(min-width:640px)  { .glass-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:1024px) { .glass-grid { grid-template-columns: repeat(3,1fr); } }
+
+    .glass-card {
+      position: relative; overflow: hidden;
+      background: rgba(245,242,236,.04);
+      border: 1px solid rgba(245,242,236,.08);
+      border-radius: 16px;
+      padding: 0;
+      transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+      cursor: default;
+    }
+    .glass-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(245,242,236,.18);
+      box-shadow: 0 24px 48px rgba(0,0,0,.45), 0 0 0 1px rgba(94,106,210,.15);
+    }
+    .glass-card-img {
+      width: 100%; height: 200px; overflow: hidden; border-radius: 14px 14px 0 0;
+      position: relative;
+    }
+    .glass-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .6s var(--ease);
+      filter: brightness(.85) saturate(.9);
+    }
+    .glass-card:hover .glass-card-img img {
+      transform: scale(1.06);
+      filter: brightness(.95) saturate(1.1);
+    }
+    .glass-card-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, rgba(14,14,12,.7) 100%);
+    }
+    .glass-card-body {
+      padding: 20px 20px 24px;
+      display: flex; flex-direction: column; gap: 6px;
+      backdrop-filter: blur(4px);
+    }
+    .glass-card-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: var(--accent); letter-spacing: .08em;
+      opacity: .9;
+    }
+    .glass-card-title {
+      font-size: 17px; font-weight: 600;
+      color: rgba(245,242,236,.92); line-height: 1.25;
+    }
+    .glass-card-desc {
+      font-size: 13px; line-height: 1.55;
+      color: rgba(245,242,236,.48);
+    }
+
+    /* Reveal con ease premium */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ══════════════════════════════════════
+       OPCIÓN A — Barra de progreso lateral
+       ══════════════════════════════════════ */
+    #nav-progress {
+      position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+      z-index: 800; display: flex; flex-direction: column; align-items: flex-end;
+      gap: 0; padding: 0;
+    }
+    @media(max-width:767px) { #nav-progress { display: none; } }
+
+    .np-line {
+      position: absolute; right: 3.5px; top: 16px; bottom: 16px;
+      width: 1px; background: rgba(120,120,120,.2);
+    }
+    .np-line-fill {
+      position: absolute; top: 0; width: 1px;
+      background: var(--accent);
+      transition: height .4s var(--ease);
+    }
+    .np-item {
+      position: relative; display: flex; align-items: center;
+      justify-content: flex-end; padding: 10px 0; cursor: pointer;
+    }
+    .np-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      border: 1.5px solid rgba(120,120,120,.4);
+      background: transparent;
+      transition: all .35s var(--ease);
+      position: relative; z-index: 1;
+    }
+    .np-item.active .np-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      width: 10px; height: 10px;
+    }
+    .np-item:last-child .np-dot {
+      border-color: var(--accent);
+      background: rgba(94,106,210,.15);
+    }
+    .np-item:last-child.active .np-dot {
+      background: var(--accent);
+    }
+    .np-label {
+      position: absolute; right: 20px;
+      font-size: 11px; font-weight: 500; letter-spacing: .03em;
+      white-space: nowrap; padding: 4px 10px; border-radius: 6px;
+      background: rgba(20,20,18,.85); color: #f5f2ec;
+      backdrop-filter: blur(8px);
+      opacity: 0; transform: translateX(6px);
+      transition: opacity .25s var(--ease), transform .25s var(--ease);
+      pointer-events: none;
+    }
+    .np-item:hover .np-label { opacity: 1; transform: translateX(0); }
+    .np-item:last-child .np-label {
+      background: var(--accent); color: #fff;
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════
+       OPCIÓN B — WhatsApp flotante
+       ══════════════════════════════════════ */
+    #wa-float {
+      position: fixed; bottom: 28px; right: 24px; z-index: 850;
+      display: flex; flex-direction: row-reverse; align-items: center; gap: 10px;
+      opacity: 0; transform: translateY(16px) scale(.9);
+      transition: opacity .5s var(--ease), transform .5s var(--ease);
+      pointer-events: none;
+    }
+    #wa-float.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+    #wa-btn {
+      width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+      background: #25D366; display: flex; align-items: center; justify-content: center;
+      text-decoration: none; cursor: pointer; position: relative;
+      box-shadow: 0 4px 20px rgba(37,211,102,.38);
+      transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+    }
+    #wa-btn:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,.5); }
+    #wa-btn svg { width: 26px; height: 26px; fill: #fff; }
+
+    /* Anillo pulsante */
+    #wa-btn::before {
+      content: ''; position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px solid rgba(37,211,102,.55);
+      animation: wa-pulse 2.2s ease-out infinite;
+    }
+    #wa-btn::after {
+      content: ''; position: absolute; inset: -8px; border-radius: 50%;
+      border: 1.5px solid rgba(37,211,102,.25);
+      animation: wa-pulse 2.2s ease-out .5s infinite;
+    }
+    @keyframes wa-pulse {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    #wa-tooltip {
+      background: rgba(20,20,18,.88); color: #f5f2ec;
+      font-size: 12px; font-weight: 500; padding: 7px 12px; border-radius: 8px;
+      white-space: nowrap; backdrop-filter: blur(8px);
+      opacity: 0; transform: translateX(6px);
+      transition: opacity .25s var(--ease), transform .25s var(--ease);
+      pointer-events: none;
+      border: 1px solid rgba(245,242,236,.1);
+    }
+    #wa-float:hover #wa-tooltip { opacity: 1; transform: translateX(0); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════ FULLSCREEN NAV ═══════════ -->
+<div id="nav-fullscreen">
+  <div class="nav-link-item" style="transition-delay:.15s">
+    <a href="#servicios" onclick="closeNav()">
+      <span>Servicios</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+  <div class="nav-link-item" style="transition-delay:.1s">
+    <a href="#nosotros" onclick="closeNav()">
+      <span>Nosotros</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+  <div class="nav-link-item" style="transition-delay:.05s">
+    <a href="#casos" onclick="closeNav()">
+      <span>Casos</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+  <div class="nav-link-item" style="transition-delay:0s">
+    <a href="#contacto" onclick="closeNav()">
+      <span>Contacto</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════ NAV TOP ═══════════ -->
+<nav id="navbar" class="on-dark">
+  <a href="#hero" class="logo">NexFlow AI</a>
+  <div class="nav-actions">
+    <a href="#contacto" class="btn-book">Hablar ahora</a>
+    <button id="menu-btn" aria-label="Menú" onclick="toggleNav()">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero">
+  <!-- YouTube background: iframe estático + API de control -->
+  <div id="hero-yt-wrap">
+    <iframe
+      id="yt-bg-player"
+      src="https://www.youtube.com/embed/xVRuojSad7M?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=xVRuojSad7M&controls=0&rel=0&playsinline=1&cc_load_policy=0&disablekb=1&fs=0&modestbranding=1&iv_load_policy=3"
+      allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
+      allowfullscreen
+      frameborder="0">
+    </iframe>
+  </div>
+  <!-- Skill: cinematic ambient blobs -->
+  <div class="blob" style="width:700px;height:700px;top:-200px;left:-150px;background:radial-gradient(circle,rgba(94,106,210,.13) 0%,transparent 70%);animation-duration:9s;"></div>
+  <div class="blob" style="width:500px;height:500px;bottom:-100px;right:-100px;background:radial-gradient(circle,rgba(94,106,210,.10) 0%,transparent 70%);animation-duration:12s;animation-delay:3s;"></div>
+  <div class="blob" style="width:350px;height:350px;top:35%;left:42%;background:radial-gradient(circle,rgba(180,160,220,.07) 0%,transparent 70%);animation-duration:7s;animation-delay:1.5s;"></div>
+  <div id="hero-overlay"></div>
+  <div id="hero-grad"></div>
+  <div id="hero-content">
+    <div class="hero-inner">
+
+      <!-- Wordmark reducido -->
+      <p class="hero-wordmark he he-d1">NexFlow <em>AI</em></p>
+
+      <!-- Tag con línea accent -->
+      <p class="hero-tag he he-d2">Agencia de Inteligencia Artificial · Lima, Perú</p>
+
+      <!-- Headline principal -->
+      <h1 class="hero-headline he he-d3">
+        Tu negocio en<br/>piloto automático.
+      </h1>
+
+      <!-- Subline reescrito -->
+      <p class="hero-sub he he-d4">
+        Diseñamos agentes de IA que atienden clientes, generan ventas y
+        optimizan cada operación — para que tu equipo se enfoque en lo que
+        realmente mueve tu negocio hacia adelante.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero-btns he he-d5">
+        <a href="#servicios" class="hero-btn hero-btn-primary">Ver qué automatizamos</a>
+        <a href="#contacto" class="hero-btn hero-btn-secondary">Hablar con nosotros</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ABOUT / NOSOTROS ═══════════ -->
+<div id="nosotros">
+<section style="padding: 80px 0; position:relative;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;">
+    <div style="display:grid;grid-template-columns:1fr;gap:40px;align-items:center;" class="about-grid">
+      <!-- Text -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <span class="section-label">Sobre nosotros</span>
+        <h2 class="serif grad reveal" style="font-size:clamp(40px,5.5vw,72px);line-height:1.1;font-weight:600;">
+          Automatizamos tu negocio para que crezca sin ti
+        </h2>
+        <p style="font-size:clamp(16px,1.4vw,20px);line-height:1.5;color:var(--muted);max-width:480px;" class="reveal">
+          Somos una agencia de inteligencia artificial con sede en Lima. Construimos sistemas que trabajan solos — agentes de WhatsApp, llamadas automatizadas, SEO y facturación — para que tú te enfoques en lo que importa.
+        </p>
+      </div>
+      <!-- Images parallax -->
+      <div style="position:relative;height:clamp(320px,45vw,560px);" class="reveal">
+        <div class="parallax-img" data-speed="0.04" style="position:absolute;top:0;right:0;width:70%;height:100%;border-radius:14px;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=700&h=900&fit=crop" alt="Equipo NexFlow" style="width:100%;height:115%;object-fit:cover;"/>
+          <span style="position:absolute;top:10px;right:10px;padding:6px 12px;font-size:12px;font-weight:500;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;backdrop-filter:blur(8px);">Lima, Perú · 2024</span>
+        </div>
+        <div class="parallax-img" data-speed="-0.06" style="position:absolute;top:18%;left:0;width:60%;height:65%;z-index:10;border-radius:14px;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=700&fit=crop" alt="Automatización IA" style="width:100%;height:115%;object-fit:cover;"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════ SERVICIOS ═══════════ -->
+<div id="servicios">
+
+  <!-- Section header -->
+  <div style="max-width:1200px;margin:0 auto;padding:80px 5% 40px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+    <span class="section-label">Servicios</span>
+    <h2 class="serif grad reveal" style="font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:600;max-width:640px;">
+      Lo que construimos para tu negocio
+    </h2>
+    <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);max-width:520px;line-height:1.5;" class="reveal">
+      Cada servicio viene con web personalizada incluida — presencia digital desde el primer día.
+    </p>
+  </div>
+
+  <!-- DESKTOP: sticky scroll -->
+  <div class="s2-sticky-wrap" id="s2-sticky-wrap" style="display:none;">
+    <div class="s2-sticky" id="s2-sticky">
+
+      <!-- Slide 1 -->
+      <div class="s2-slide active" id="s2-slide-0">
+        <div class="s2-side-img s2-side-img-left">
+          <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=700&fit=crop" alt="Agente WhatsApp" />
+        </div>
+        <div style="text-align:center;max-width:480px;padding:0 16px;">
+          <div class="s2-num">1</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,60px);font-weight:600;line-height:1.1;color:var(--fg);margin-bottom:16px;">Agente de WhatsApp</h3>
+          <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.6;">Responde consultas, agenda citas, califica leads y cierra ventas automáticamente — las 24 horas, sin que muevas un dedo.</p>
+          <a href="#contacto" class="s2-btn">Lo quiero
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+        </div>
+        <div class="s2-side-img s2-side-img-right">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=700&fit=crop" alt="Automatización" />
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="s2-slide" id="s2-slide-1">
+        <div class="s2-side-img s2-side-img-left">
+          <img src="https://images.unsplash.com/photo-1544396821-4dd40b938ad3?w=400&h=700&fit=crop" alt="Llamadas IA" />
+        </div>
+        <div style="text-align:center;max-width:480px;padding:0 16px;">
+          <div class="s2-num">2</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,60px);font-weight:600;line-height:1.1;color:var(--fg);margin-bottom:16px;">Llamadas Automatizadas</h3>
+          <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.6;">Un agente de voz con IA llama a tus prospectos, recuerda citas, hace seguimiento de cotizaciones y cobra deudas pendientes.</p>
+          <a href="#contacto" class="s2-btn">Lo quiero
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+        </div>
+        <div class="s2-side-img s2-side-img-right">
+          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=700&fit=crop" alt="Voz IA" />
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="s2-slide" id="s2-slide-2">
+        <div class="s2-side-img s2-side-img-left">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=700&fit=crop" alt="SEO" />
+        </div>
+        <div style="text-align:center;max-width:480px;padding:0 16px;">
+          <div class="s2-num">3</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,60px);font-weight:600;line-height:1.1;color:var(--fg);margin-bottom:16px;">Auditoría SEO</h3>
+          <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.6;">Analizamos tu sitio web, encontramos exactamente qué impide que Google te muestre primero, y te entregamos un plan de acción concreto.</p>
+          <a href="#contacto" class="s2-btn">Lo quiero
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+        </div>
+        <div class="s2-side-img s2-side-img-right">
+          <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=400&h=700&fit=crop" alt="Posicionamiento" />
+        </div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="s2-slide" id="s2-slide-3">
+        <div class="s2-side-img s2-side-img-left">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=700&fit=crop" alt="Facturas" />
+        </div>
+        <div style="text-align:center;max-width:480px;padding:0 16px;">
+          <div class="s2-num">4</div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:clamp(36px,4.5vw,60px);font-weight:600;line-height:1.1;color:var(--fg);margin-bottom:16px;">Dashboard de Facturas</h3>
+          <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);line-height:1.6;">Tu facturación automatizada: genera, envía y da seguimiento a facturas sin intervención manual. Con dashboard en tiempo real para el dueño.</p>
+          <a href="#contacto" class="s2-btn">Lo quiero
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+        </div>
+        <div class="s2-side-img s2-side-img-right">
+          <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=700&fit=crop" alt="Dashboard" />
+        </div>
+      </div>
+
+      <!-- Progress dots -->
+      <div class="s2-dots" id="s2-dots">
+        <span class="s2-dot active"></span>
+        <span class="s2-dot"></span>
+        <span class="s2-dot"></span>
+        <span class="s2-dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE: stacked (always visible on mobile, hidden on desktop via JS) -->
+  <div id="s2-mobile" style="padding:0 5% 80px;max-width:600px;margin:0 auto;display:flex;flex-direction:column;gap:56px;">
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <div class="s2-num">1</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:36px;font-weight:600;line-height:1.1;color:var(--fg);">Agente de WhatsApp</h3>
+      <p style="color:var(--muted);line-height:1.6;">Responde consultas, agenda citas, califica leads y cierra ventas automáticamente — las 24 horas.</p>
+      <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      <div style="display:flex;gap:10px;width:100%;margin-top:8px;">
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="WhatsApp" />
+        </div>
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Automatización" />
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <div class="s2-num">2</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:36px;font-weight:600;line-height:1.1;color:var(--fg);">Llamadas Automatizadas</h3>
+      <p style="color:var(--muted);line-height:1.6;">Un agente de voz IA llama, recuerda citas y hace seguimiento de cotizaciones.</p>
+      <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      <div style="display:flex;gap:10px;width:100%;margin-top:8px;">
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1544396821-4dd40b938ad3?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Llamadas IA" />
+        </div>
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Voz IA" />
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <div class="s2-num">3</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:36px;font-weight:600;line-height:1.1;color:var(--fg);">Auditoría SEO</h3>
+      <p style="color:var(--muted);line-height:1.6;">Encontramos qué impide que Google te muestre primero y entregamos un plan de acción.</p>
+      <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      <div style="display:flex;gap:10px;width:100%;margin-top:8px;">
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="SEO" />
+        </div>
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Posicionamiento" />
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <div class="s2-num">4</div>
+      <h3 style="font-family:'Playfair Display',serif;font-size:36px;font-weight:600;line-height:1.1;color:var(--fg);">Dashboard de Facturas</h3>
+      <p style="color:var(--muted);line-height:1.6;">Facturación automatizada con dashboard en tiempo real. Sin intervención manual.</p>
+      <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+      <div style="display:flex;gap:10px;width:100%;margin-top:8px;">
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Facturas" />
+        </div>
+        <div style="width:50%;aspect-ratio:9/16;border-radius:12px;overflow:hidden;border:1px solid var(--border);padding:4px;background:var(--card-bg);">
+          <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=300&h=500&fit=crop" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Dashboard" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ═══════════ BENEFICIOS — Glassmorphism ═══════════ -->
+<section id="beneficios-id" style="padding:100px 0;background:var(--fg);position:relative;overflow:hidden;">
+
+  <!-- Ambient blobs de fondo (skill: cinematic) -->
+  <div class="blob" style="width:600px;height:600px;top:-80px;right:-120px;background:radial-gradient(circle,rgba(94,106,210,.10) 0%,transparent 70%);animation-duration:11s;"></div>
+  <div class="blob" style="width:400px;height:400px;bottom:-60px;left:10%;background:radial-gradient(circle,rgba(94,106,210,.07) 0%,transparent 70%);animation-duration:8s;animation-delay:4s;"></div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;display:flex;flex-direction:column;gap:56px;position:relative;z-index:1;">
+
+    <!-- Header -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+      <span class="section-label label-glow">Beneficios</span>
+      <h2 class="serif reveal" style="font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:600;color:var(--bg);max-width:580px;">
+        Lo que obtienes con cada proyecto
+      </h2>
+      <p style="font-size:clamp(15px,1.2vw,17px);color:rgba(245,242,236,.45);max-width:460px;line-height:1.6;" class="reveal">
+        No son promesas — son los entregables reales de cada automatización.
+      </p>
+    </div>
+
+    <!-- Glass cards grid -->
+    <div class="glass-grid reveal">
+
+      <div class="glass-card">
+        <div class="glass-card-img">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&h=400&fit=crop" alt="Sistema 24/7" />
+        </div>
+        <div class="glass-card-body">
+          <p class="glass-card-num">01 — DISPONIBILIDAD</p>
+          <h3 class="glass-card-title">Sistema 24/7</h3>
+          <p class="glass-card-desc">Funciona sin tu presencia. Clientes atendidos mientras duermes.</p>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="glass-card-img">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop" alt="Dashboard" />
+        </div>
+        <div class="glass-card-body">
+          <p class="glass-card-num">02 — CONTROL</p>
+          <h3 class="glass-card-title">Dashboard en tiempo real</h3>
+          <p class="glass-card-desc">Todo lo que pasa en tu negocio, desde el celular en segundos.</p>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="glass-card-img">
+          <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=600&h=400&fit=crop" alt="SEO" />
+        </div>
+        <div class="glass-card-body">
+          <p class="glass-card-num">03 — PRESENCIA</p>
+          <h3 class="glass-card-title">Presencia en Google</h3>
+          <p class="glass-card-desc">Web profesional + SEO base incluidos en cada servicio.</p>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="glass-card-img">
+          <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600&h=400&fit=crop" alt="Sin personal extra" />
+        </div>
+        <div class="glass-card-body">
+          <p class="glass-card-num">04 — EFICIENCIA</p>
+          <h3 class="glass-card-title">Sin contratar personal</h3>
+          <p class="glass-card-desc">Los agentes hacen el trabajo de 2–3 personas a fracción del costo.</p>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <div class="glass-card-img">
+          <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop" alt="Resultados rápidos" />
+        </div>
+        <div class="glass-card-body">
+          <p class="glass-card-num">05 — VELOCIDAD</p>
+          <h3 class="glass-card-title">Resultados en 7 días</h3>
+          <p class="glass-card-desc">Setup completo en una semana. Sin meses de espera ni contratos largos.</p>
+        </div>
+      </div>
+
+      <!-- Última card: CTA -->
+      <div class="glass-card" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:32px;background:rgba(94,106,210,.1);border-color:rgba(94,106,210,.2);">
+        <p class="glass-card-num" style="margin-bottom:12px;">¿LISTO?</p>
+        <h3 class="glass-card-title" style="font-size:22px;margin-bottom:10px;">Empieza esta semana</h3>
+        <p class="glass-card-desc" style="margin-bottom:24px;">Primera consulta sin costo. Te decimos qué automatizar primero.</p>
+        <a href="#contacto" class="hero-btn hero-btn-primary" style="height:40px;font-size:13px;padding:0 20px;border-radius:8px;box-shadow:0 0 24px var(--accent-glow);">
+          Hablar ahora →
+        </a>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ═══════════ CASOS (bento grid) ═══════════ -->
+<div id="casos">
+<section style="padding:80px 0;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;display:flex;flex-direction:column;gap:40px;">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <span class="section-label">Casos de uso</span>
+      <h2 class="serif grad word-reveal reveal" style="font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:600;">
+        Lo que automatizamos
+      </h2>
+      <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);max-width:520px;line-height:1.5;" class="reveal">
+        Automatizaciones específicas para negocios reales — desde restaurantes hasta clínicas.
+      </p>
+    </div>
+
+    <div class="casos-marquee-wrap reveal">
+      <div class="casos-marquee-track">
+
+        <!-- Set original -->
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=420&fit=crop" alt="Restaurantes" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Restaurantes</p><p class="bento-desc">Reservas por WhatsApp, recordatorios automáticos y reseñas post-visita.</p></div>
+          </div>
+        </div>
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&h=420&fit=crop" alt="Clínicas" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Clínicas & Salud</p><p class="bento-desc">Citas automatizadas, recordatorios de medicamentos y seguimiento por WhatsApp.</p></div>
+          </div>
+        </div>
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&h=420&fit=crop" alt="Inmobiliarias" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Inmobiliarias</p><p class="bento-desc">Calificación de leads, visitas agendadas y seguimiento de cotizaciones automático.</p></div>
+          </div>
+        </div>
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=420&fit=crop" alt="Retail" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Tiendas & Retail</p><p class="bento-desc">Catálogo por WhatsApp, seguimiento de pedidos y reactivación de clientes inactivos.</p></div>
+          </div>
+        </div>
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=500&h=420&fit=crop" alt="Servicios" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Servicios profesionales</p><p class="bento-desc">Cotizaciones automáticas, contratos digitales y cobranza por WhatsApp.</p></div>
+          </div>
+        </div>
+        <div class="casos-card">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&h=420&fit=crop" alt="Spa" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Spa & Bienestar</p><p class="bento-desc">Reservas, recordatorios y fidelización automática de clientes frecuentes.</p></div>
+          </div>
+        </div>
+
+        <!-- Duplicado para loop infinito -->
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=420&fit=crop" alt="Restaurantes" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Restaurantes</p><p class="bento-desc">Reservas por WhatsApp, recordatorios automáticos y reseñas post-visita.</p></div>
+          </div>
+        </div>
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&h=420&fit=crop" alt="Clínicas" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Clínicas & Salud</p><p class="bento-desc">Citas automatizadas, recordatorios de medicamentos y seguimiento por WhatsApp.</p></div>
+          </div>
+        </div>
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&h=420&fit=crop" alt="Inmobiliarias" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Inmobiliarias</p><p class="bento-desc">Calificación de leads, visitas agendadas y seguimiento de cotizaciones automático.</p></div>
+          </div>
+        </div>
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&h=420&fit=crop" alt="Retail" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Tiendas & Retail</p><p class="bento-desc">Catálogo por WhatsApp, seguimiento de pedidos y reactivación de clientes inactivos.</p></div>
+          </div>
+        </div>
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=500&h=420&fit=crop" alt="Servicios" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Servicios profesionales</p><p class="bento-desc">Cotizaciones automáticas, contratos digitales y cobranza por WhatsApp.</p></div>
+          </div>
+        </div>
+        <div class="casos-card" aria-hidden="true">
+          <div class="bento-card">
+            <div class="bento-card-img"><img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=500&h=420&fit=crop" alt="Spa" /></div>
+            <div class="bento-card-fog"></div>
+            <div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Spa & Bienestar</p><p class="bento-desc">Reservas, recordatorios y fidelización automática de clientes frecuentes.</p></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══════════ CONTACTO ═══════════ -->
+<div id="contacto">
+<section style="padding:80px 0;background:var(--fg);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;">
+    <div class="contact-grid">
+      <!-- Left -->
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <span class="section-label label-glow">Contacto</span>
+        <h2 class="serif reveal" style="font-size:clamp(36px,4.5vw,60px);line-height:1.1;font-weight:600;color:var(--bg);">
+          Cuéntanos qué quieres automatizar
+        </h2>
+        <p style="font-size:clamp(15px,1.2vw,17px);color:rgba(245,242,236,.55);line-height:1.6;max-width:420px;" class="reveal">
+          Primera consulta sin costo. Te decimos exactamente qué automatizaciones tienen más impacto para tu negocio y en cuánto tiempo lo implementamos.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(245,242,236,.08);border:1px solid rgba(245,242,236,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(245,242,236,.6)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.14 1.2 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09"/></svg>
+            </div>
+            <div>
+              <p style="font-size:13px;font-weight:500;color:var(--bg);">WhatsApp directo</p>
+              <p style="font-size:13px;color:rgba(245,242,236,.45);">Respuesta en menos de 1 hora</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(245,242,236,.08);border:1px solid rgba(245,242,236,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(245,242,236,.6)" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div>
+              <a href="mailto:alvaroargumedo19@gmail.com" style="font-size:13px;font-weight:500;color:var(--bg);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">alvaroargumedo19@gmail.com</a>
+              <p style="font-size:13px;color:rgba(245,242,236,.45);">Lima, Perú</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://wa.me/51924545648?text=Hola%2C%20quiero%20automatizar%20mi%20negocio" target="_blank" class="hero-btn hero-btn-primary" style="width:fit-content;height:44px;font-size:13px;padding:0 24px;border-radius:8px;margin-top:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L0 24l6.335-1.524A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.163-1.426l-.371-.22-3.762.905.946-3.668-.242-.384A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Escribir por WhatsApp
+        </a>
+      </div>
+
+      <!-- Right: form -->
+      <div class="reveal" style="padding-top:4px;">
+        <form onsubmit="handleForm2(event)" style="display:flex;flex-direction:column;gap:24px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div class="field" style="border-bottom-color:rgba(245,242,236,.15);">
+              <label style="color:rgba(245,242,236,.4);">Nombre</label>
+              <input type="text" placeholder="Tu nombre" required style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
+            </div>
+            <div class="field">
+              <label style="color:rgba(245,242,236,.4);">WhatsApp</label>
+              <input type="tel" placeholder="+51 999 999 999" required style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
+            </div>
+          </div>
+          <div class="field">
+            <label style="color:rgba(245,242,236,.4);">Tipo de negocio</label>
+            <select style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
+              <option value="" disabled selected style="color:#1a1a18;">Selecciona tu rubro</option>
+              <option style="color:#1a1a18;">Restaurante / Cafetería</option>
+              <option style="color:#1a1a18;">Clínica / Salud</option>
+              <option style="color:#1a1a18;">Inmobiliaria</option>
+              <option style="color:#1a1a18;">Tienda / Retail</option>
+              <option style="color:#1a1a18;">Servicios profesionales</option>
+              <option style="color:#1a1a18;">Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label style="color:rgba(245,242,236,.4);">Servicio de interés</label>
+            <select style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
+              <option value="" disabled selected style="color:#1a1a18;">¿Qué quieres automatizar?</option>
+              <option style="color:#1a1a18;">Agente WhatsApp</option>
+              <option style="color:#1a1a18;">Llamadas automatizadas</option>
+              <option style="color:#1a1a18;">Auditoría SEO</option>
+              <option style="color:#1a1a18;">Dashboard de facturas</option>
+              <option style="color:#1a1a18;">Todo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label style="color:rgba(245,242,236,.4);">Cuéntanos más (opcional)</label>
+            <textarea rows="3" placeholder="¿Cuál es el mayor problema en tu operación diaria?" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);resize:none;"></textarea>
+          </div>
+          <button id="form2-btn" type="submit" class="hero-btn hero-btn-primary" style="width:100%;height:48px;font-size:14px;border-radius:8px;justify-content:center;border:none;">
+            Solicitar consulta gratuita
+          </button>
+          <p style="font-size:12px;color:rgba(245,242,236,.3);text-align:center;margin-top:-8px;">Sin compromiso · Respuesta en menos de 1 hora</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer integrado ── -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;">
+    <div style="border-top:1px solid rgba(245,242,236,.08);padding:48px 0 0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:32px;">
+      <!-- Brand + tagline -->
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <p style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(36px,5vw,60px);line-height:.9;color:#f5f2ec;">NexFlow <em style="font-style:italic;">AI</em></p>
+        <p style="font-size:13px;color:rgba(245,242,236,.35);max-width:300px;line-height:1.6;">Automatizaciones con IA para negocios en Lima, Perú.</p>
+      </div>
+      <!-- Links -->
+      <nav style="display:flex;gap:28px;flex-wrap:wrap;padding-bottom:4px;">
+        <a href="#servicios" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Servicios</a>
+        <a href="#nosotros" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Nosotros</a>
+        <a href="#beneficios" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Beneficios</a>
+        <a href="https://wa.me/51924545648" target="_blank" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">WhatsApp</a>
+      </nav>
+    </div>
+    <!-- Copyright -->
+    <div style="padding:20px 0 40px;border-top:1px solid rgba(245,242,236,.05);margin-top:32px;">
+      <p style="font-size:12px;color:rgba(245,242,236,.2);">© 2026 NexFlow AI · Lima, Perú · Todos los derechos reservados</p>
+    </div>
+  </div>
+
+</section>
+</div>
+
+<!-- ═══════════ JS ═══════════ -->
+<script>
+// ── YouTube background — Safari-compatible autoplay ──
+(function(){
+  var tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+var ytPlayer;
+function onYouTubeIframeAPIReady() {
+  // Envuelve el iframe existente (preserva allow="autoplay" del HTML)
+  ytPlayer = new YT.Player('yt-bg-player', {
+    events: {
+      onReady: function(e) {
+        e.target.mute();
+        e.target.setVolume(0);
+        e.target.playVideo();
+      },
+      onStateChange: function(e) {
+        if (e.data === YT.PlayerState.ENDED) {
+          e.target.seekTo(0);
+          e.target.playVideo();
+        }
+        // Safari a veces pausa al cambiar tab — retomar al volver
+        if (e.data === YT.PlayerState.PAUSED) {
+          setTimeout(function(){ e.target.playVideo(); }, 200);
+        }
+      }
+    }
+  });
+}
+
+// Fallback Safari: reproducir al primer gesto del usuario
+function ytForcePlay() {
+  if (ytPlayer && ytPlayer.playVideo) {
+    ytPlayer.mute();
+    ytPlayer.playVideo();
+  }
+}
+['click','touchstart','keydown','scroll'].forEach(function(ev){
+  document.addEventListener(ev, ytForcePlay, { once: true, passive: true });
+});
+
+// Reanudar si el usuario vuelve a la pestaña
+document.addEventListener('visibilitychange', function(){
+  if (!document.hidden) ytForcePlay();
+});
+
+// ── About grid responsive ──
+const style = document.createElement('style');
+style.textContent = '@media(min-width:768px){.about-grid{grid-template-columns:45% 55%!important;}}';
+document.head.appendChild(style);
+
+// ── NAV toggle ──
+let navOpen = false;
+function toggleNav() {
+  navOpen = !navOpen;
+  document.getElementById('nav-fullscreen').classList.toggle('open', navOpen);
+  document.getElementById('menu-btn').classList.toggle('open', navOpen);
+  document.body.style.overflow = navOpen ? 'hidden' : '';
+}
+function closeNav() {
+  navOpen = false;
+  document.getElementById('nav-fullscreen').classList.remove('open');
+  document.getElementById('menu-btn').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── NAV: cambia entre claro/oscuro/transparente según sección ──
+const navbar = document.getElementById('navbar');
+const heroEl = document.getElementById('hero');
+const navSections = [
+  { id: 'hero',          dark: true  },
+  { id: 'nosotros',      dark: false },
+  { id: 'servicios',     dark: false },
+  { id: 'beneficios-id', dark: true  },
+  { id: 'casos',         dark: false },
+  { id: 'contacto',      dark: true  },
+].map(s => ({ el: document.getElementById(s.id), dark: s.dark }))
+ .filter(s => s.el);
+
+function updateNavTheme() {
+  const navMid = 50;
+  let activeDark = true;
+  let activeEl = navSections[0].el;
+  for (let i = navSections.length - 1; i >= 0; i--) {
+    const top = navSections[i].el.getBoundingClientRect().top;
+    if (top <= navMid) { activeDark = navSections[i].dark; activeEl = navSections[i].el; break; }
+  }
+  const onHero = heroEl && activeEl === heroEl;
+  navbar.classList.toggle('on-hero', onHero);
+  navbar.classList.toggle('on-dark', !onHero && activeDark);
+}
+window.addEventListener('scroll', updateNavTheme, { passive: true });
+updateNavTheme();
+
+// ── Scroll reveal ──
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => ro.observe(el));
+
+// ── Parallax images ──
+const parallaxImgs = document.querySelectorAll('.parallax-img');
+window.addEventListener('scroll', () => {
+  parallaxImgs.forEach(el => {
+    const speed = parseFloat(el.dataset.speed || '0.05');
+    const rect = el.getBoundingClientRect();
+    const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+    el.querySelector('img').style.transform = `translateY(${center * speed}px)`;
+  });
+});
+
+// (carousel de beneficios reemplazado por glassmorphism grid)
+
+// ── Sticky services (desktop only) ──
+const stickyWrap = document.getElementById('s2-sticky-wrap');
+const stickyMobile = document.getElementById('s2-mobile');
+const s2Slides = document.querySelectorAll('.s2-slide');
+const s2Dots = document.querySelectorAll('.s2-dot');
+
+function applyLayout() {
+  if (window.innerWidth >= 768) {
+    stickyWrap.style.display = 'block';
+    stickyMobile.style.display = 'none';
+  } else {
+    stickyWrap.style.display = 'none';
+    stickyMobile.style.display = 'flex';
+  }
+}
+applyLayout();
+window.addEventListener('resize', applyLayout);
+
+window.addEventListener('scroll', () => {
+  if (window.innerWidth < 768) return;
+  const rect = stickyWrap.getBoundingClientRect();
+  const totalScroll = stickyWrap.offsetHeight - window.innerHeight;
+  const scrolled = Math.max(0, -rect.top);
+  const progress = Math.min(1, scrolled / totalScroll);
+  const idx = Math.min(s2Slides.length - 1, Math.floor(progress * s2Slides.length));
+  s2Slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+  s2Dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+});
+
+// ── Form ──
+function handleForm2(e) {
+  e.preventDefault();
+  const btn = document.getElementById('form2-btn');
+  btn.textContent = '¡Enviado! Te contactamos pronto';
+  btn.style.background = '#22c55e';
+  btn.style.color = '#fff';
+  btn.disabled = true;
+}
+</script>
+
+<!-- ══ OPCIÓN A: Barra de progreso lateral ══ -->
+<nav id="nav-progress" aria-label="Progreso de página">
+  <div class="np-line"><div class="np-line-fill" id="np-fill"></div></div>
+  <div class="np-item active" data-target="hero">
+    <span class="np-label">Inicio</span>
+    <span class="np-dot"></span>
+  </div>
+  <div class="np-item" data-target="nosotros">
+    <span class="np-label">Nosotros</span>
+    <span class="np-dot"></span>
+  </div>
+  <div class="np-item" data-target="servicios">
+    <span class="np-label">Servicios</span>
+    <span class="np-dot"></span>
+  </div>
+  <div class="np-item" data-target="beneficios-id">
+    <span class="np-label">Beneficios</span>
+    <span class="np-dot"></span>
+  </div>
+  <div class="np-item" data-target="casos">
+    <span class="np-label">Casos de uso</span>
+    <span class="np-dot"></span>
+  </div>
+  <div class="np-item" data-target="contacto">
+    <span class="np-label">Contactar →</span>
+    <span class="np-dot"></span>
+  </div>
+</nav>
+
+<!-- ══ OPCIÓN B: WhatsApp flotante ══ -->
+<div id="wa-float">
+  <span id="wa-tooltip">¿Hablamos?</span>
+  <a id="wa-btn" href="https://wa.me/51924545648?text=Hola%2C%20quiero%20automatizar%20mi%20negocio" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L0 24l6.335-1.524A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.163-1.426l-.371-.22-3.762.905.946-3.668-.242-.384A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  </a>
+</div>
+
+<script>
+// ── Barra de progreso lateral ──
+const npItems = document.querySelectorAll('.np-item');
+const npFill  = document.getElementById('np-fill');
+const npSectionIds = ['hero','nosotros','servicios','beneficios-id','casos','contacto'];
+const npSections = npSectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+npItems.forEach(item => {
+  item.addEventListener('click', () => {
+    const target = document.getElementById(item.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+function updateNpProgress() {
+  const mid = window.innerHeight * 0.45;
+  let activeIdx = 0;
+  npSections.forEach((sec, i) => {
+    if (sec.getBoundingClientRect().top <= mid) activeIdx = i;
+  });
+  npItems.forEach((item, i) => item.classList.toggle('active', i === activeIdx));
+  // Línea de progreso: altura entre primer y último dot
+  const pct = npItems.length > 1 ? (activeIdx / (npItems.length - 1)) * 100 : 0;
+  npFill.style.height = pct + '%';
+}
+
+window.addEventListener('scroll', updateNpProgress, { passive: true });
+updateNpProgress();
+
+// ── WhatsApp flotante: aparece al salir del hero ──
+const waFloat  = document.getElementById('wa-float');
+const heroEl   = document.getElementById('hero');
+
+function updateWaVisibility() {
+  const heroBottom = heroEl.getBoundingClientRect().bottom;
+  waFloat.classList.toggle('visible', heroBottom < window.innerHeight * 0.6);
+}
+window.addEventListener('scroll', updateWaVisibility, { passive: true });
+setTimeout(updateWaVisibility, 3000); // también después de 3s aunque no haya scroll
+updateWaVisibility();
+</script>
+
+</body>
+</html>
