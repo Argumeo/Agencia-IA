@@ -512,6 +512,48 @@
     }
     @media(max-width:767px) { #nav-progress { display: none; } }
 
+    /* ═══════════════════════════════
+       MOBILE — max-width: 767px
+       ═══════════════════════════════ */
+    @media(max-width:767px) {
+
+      /* Navbar: ocultar botón CTA, solo hamburguesa */
+      .btn-book { display: none; }
+      #navbar { padding: 16px 5%; }
+      #navbar .logo { font-size: 16px; }
+
+      /* Hero: contenido al fondo con buen respiro */
+      #hero-content { justify-content: flex-end; padding-bottom: clamp(48px, 10vh, 80px); }
+      .hero-inner { gap: 14px; }
+      .hero-headline { font-size: clamp(36px, 10vw, 52px); }
+      .hero-sub { font-size: 14px; max-width: 100%; }
+      .hero-btns { flex-direction: column; gap: 10px; }
+      .hero-btn { width: 100%; justify-content: center; height: 52px; font-size: 15px; border-radius: 10px; }
+
+      /* Servicios mobile: ajustar tipografía del bloque s2-mobile */
+      #s2-mobile h3 { font-size: clamp(26px, 7vw, 36px) !important; }
+      #s2-mobile { padding: 0 5% 64px !important; gap: 48px !important; }
+
+      /* Casos marquee */
+      .casos-card { width: clamp(240px, 78vw, 300px); }
+
+      /* Beneficios glass: 1 columna en móvil */
+      .glass-grid { grid-template-columns: 1fr !important; }
+
+      /* Contacto */
+      .contact-grid { gap: 24px; }
+
+      /* Secciones: reducir padding vertical */
+      section { padding-top: 64px !important; padding-bottom: 64px !important; }
+    }
+
+    /* Pantallas muy pequeñas (< 375px) */
+    @media(max-width:374px) {
+      .hero-headline { font-size: 32px; }
+      .casos-card { width: 88vw; }
+      .hero-btn { font-size: 14px; }
+    }
+
     .np-line {
       position: absolute; right: 3.5px; top: 16px; bottom: 16px;
       width: 1px; background: rgba(120,120,120,.2);
