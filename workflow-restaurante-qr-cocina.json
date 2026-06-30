@@ -1,0 +1,203 @@
+{
+  "name": "Restaurante - QR Mesa a Cocina",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "menu",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-menu",
+      "name": "Webhook Menú (GET /menu)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 0],
+      "webhookId": "menu-restaurante"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ===== CONFIGURACIÓN DEL MENÚ =====\n// Edita aquí tus platos: nombre, precio y categoría\nconst MENU = [\n  { cat: 'Entrantes',  nombre: 'Croquetas de jamón',     precio: 6.50 },\n  { cat: 'Entrantes',  nombre: 'Ensalada de la casa',     precio: 7.00 },\n  { cat: 'Entrantes',  nombre: 'Patatas bravas',          precio: 5.50 },\n  { cat: 'Principales', nombre: 'Hamburguesa completa',   precio: 11.50 },\n  { cat: 'Principales', nombre: 'Pizza margarita',        precio: 9.50 },\n  { cat: 'Principales', nombre: 'Pasta carbonara',        precio: 10.00 },\n  { cat: 'Principales', nombre: 'Pollo al curry',         precio: 12.00 },\n  { cat: 'Bebidas',    nombre: 'Agua mineral',            precio: 2.00 },\n  { cat: 'Bebidas',    nombre: 'Refresco',                precio: 2.50 },\n  { cat: 'Bebidas',    nombre: 'Cerveza',                 precio: 3.00 },\n  { cat: 'Postres',    nombre: 'Tarta de queso',          precio: 4.50 },\n  { cat: 'Postres',    nombre: 'Helado',                  precio: 3.50 }\n];\n\n// Número de mesa desde la URL (?mesa=5)\nconst mesa = $input.first().json.query?.mesa || '';\n\n// Agrupar por categoría\nconst categorias = {};\nMENU.forEach((p, i) => {\n  if (!categorias[p.cat]) categorias[p.cat] = [];\n  categorias[p.cat].push({ ...p, id: i });\n});\n\nlet itemsHtml = '';\nfor (const cat in categorias) {\n  itemsHtml += `<h2>${cat}</h2>`;\n  categorias[cat].forEach(p => {\n    itemsHtml += `\n    <div class=\"plato\">\n      <div class=\"info\">\n        <span class=\"nombre\">${p.nombre}</span>\n        <span class=\"precio\">${p.precio.toFixed(2)} €</span>\n      </div>\n      <div class=\"ctrl\">\n        <button onclick=\"cambiar(${p.id},-1)\">−</button>\n        <span id=\"cant-${p.id}\" class=\"cant\">0</span>\n        <button onclick=\"cambiar(${p.id},1)\">+</button>\n      </div>\n    </div>`;\n  });\n}\n\nconst PLATOS_JSON = JSON.stringify(MENU);\n\nconst html = `<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Carta - Mesa ${mesa || '?'}</title>\n<style>\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n  body { font-family: -apple-system, system-ui, sans-serif; background: #f5f5f5; color: #222; padding: 16px; padding-bottom: 90px; }\n  header { text-align: center; margin-bottom: 20px; }\n  header h1 { font-size: 24px; }\n  .mesa { background: #e63946; color: #fff; display: inline-block; padding: 4px 14px; border-radius: 20px; margin-top: 8px; font-weight: bold; }\n  h2 { margin: 22px 0 10px; font-size: 18px; color: #e63946; border-bottom: 2px solid #eee; padding-bottom: 6px; }\n  .plato { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.08); }\n  .info { display: flex; flex-direction: column; }\n  .nombre { font-weight: 600; font-size: 16px; }\n  .precio { color: #888; font-size: 14px; margin-top: 2px; }\n  .ctrl { display: flex; align-items: center; gap: 12px; }\n  .ctrl button { width: 34px; height: 34px; border-radius: 50%; border: none; background: #e63946; color: #fff; font-size: 20px; font-weight: bold; cursor: pointer; }\n  .cant { font-size: 17px; font-weight: bold; min-width: 20px; text-align: center; }\n  .barra { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; padding: 14px 16px; box-shadow: 0 -2px 10px rgba(0,0,0,.1); display: flex; justify-content: space-between; align-items: center; }\n  .total { font-size: 18px; font-weight: bold; }\n  .enviar { background: #2a9d8f; color: #fff; border: none; padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; }\n  .enviar:disabled { background: #ccc; }\n  #okmsg { position: fixed; inset: 0; background: rgba(0,0,0,.85); color: #fff; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; z-index: 99; }\n  #okmsg h2 { color: #fff; border: none; font-size: 28px; }\n</style>\n</head>\n<body>\n<header>\n  <h1>🍽️ Nuestra Carta</h1>\n  <div class=\"mesa\">Mesa ${mesa || '—'}</div>\n</header>\n${itemsHtml}\n<div class=\"barra\">\n  <span class=\"total\">Total: <span id=\"total\">0.00</span> €</span>\n  <button class=\"enviar\" id=\"btn\" onclick=\"enviar()\" disabled>Pedir</button>\n</div>\n<div id=\"okmsg\">\n  <h2>✅ ¡Pedido enviado!</h2>\n  <p style=\"margin-top:12px;font-size:18px\">Cocina ya lo está preparando.</p>\n</div>\n<script>\n  const MENU = ${PLATOS_JSON};\n  const MESA = '${mesa}';\n  const cant = {};\n  function cambiar(id, d) {\n    cant[id] = Math.max(0, (cant[id]||0) + d);\n    document.getElementById('cant-'+id).textContent = cant[id];\n    actualizar();\n  }\n  function actualizar() {\n    let total = 0, hay = false;\n    for (const id in cant) { if (cant[id] > 0) { total += MENU[id].precio * cant[id]; hay = true; } }\n    document.getElementById('total').textContent = total.toFixed(2);\n    document.getElementById('btn').disabled = !hay;\n  }\n  async function enviar() {\n    const items = [];\n    for (const id in cant) { if (cant[id] > 0) items.push({ nombre: MENU[id].nombre, cantidad: cant[id], precio: MENU[id].precio }); }\n    document.getElementById('btn').disabled = true;\n    try {\n      const pedidoUrl = window.location.href.replace(/\\\\/menu.*/, '/pedido');\n      await fetch(pedidoUrl, {\n        method: 'POST',\n        headers: { 'Content-Type': 'application/json' },\n        body: JSON.stringify({ mesa: MESA, items: items })\n      });\n      document.getElementById('okmsg').style.display = 'flex';\n    } catch(e) { alert('Error al enviar. Inténtalo otra vez.'); document.getElementById('btn').disabled = false; }\n  }\n</script>\n</body>\n</html>`;\n\nreturn [{ json: { html } }];"
+      },
+      "id": "code-menu-html",
+      "name": "Generar HTML Menú",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-menu",
+      "name": "Responder Menú HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [680, 0]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pedido",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-pedido",
+      "name": "Webhook Pedido (POST /pedido)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 240],
+      "webhookId": "pedido-restaurante"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Guardar el pedido en el almacenamiento estático del workflow\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.pedidos) staticData.pedidos = [];\n\nconst body = $input.first().json.body || {};\nconst mesa = body.mesa || '?';\nconst items = body.items || [];\n\nconst total = items.reduce((s, i) => s + (i.precio * i.cantidad), 0);\n\nconst pedido = {\n  id: Date.now(),\n  mesa: mesa,\n  items: items,\n  total: total,\n  hora: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),\n  estado: 'nuevo'\n};\n\nstaticData.pedidos.push(pedido);\n\n// Mantener solo los últimos 50 pedidos\nif (staticData.pedidos.length > 50) {\n  staticData.pedidos = staticData.pedidos.slice(-50);\n}\n\nreturn [{ json: { ok: true, pedido } }];"
+      },
+      "id": "code-guardar",
+      "name": "Guardar Pedido",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 240]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "respond-pedido",
+      "name": "Responder OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [680, 240]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "cocina",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-cocina",
+      "name": "Webhook Cocina (GET /cocina)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 480],
+      "webhookId": "cocina-restaurante"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Leer pedidos guardados\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.pedidos) staticData.pedidos = [];\nconst pedidos = staticData.pedidos;\n\nconst query = $input.first().json.query || {};\n\n// Marcar un pedido como entregado (?entregado=ID)\nif (query.entregado) {\n  const id = Number(query.entregado);\n  const p = pedidos.find(x => x.id === id);\n  if (p) p.estado = 'entregado';\n  return [{ json: { _json: true, pedidos: pedidos.filter(x => x.estado !== 'entregado').reverse() } }];\n}\n\n// Endpoint para datos JSON (la pantalla lo consulta cada pocos segundos)\nconst esJson = query.data === '1';\n\nif (esJson) {\n  // Devolver pedidos no entregados, más recientes primero\n  const activos = pedidos.filter(p => p.estado !== 'entregado').reverse();\n  return [{ json: { _json: true, pedidos: activos } }];\n}\n\n// Si no, devolver la pantalla HTML\nconst html = `<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Cocina - Pedidos</title>\n<style>\n  * { box-sizing: border-box; margin: 0; padding: 0; }\n  body { font-family: -apple-system, system-ui, sans-serif; background: #1a1a1a; color: #fff; padding: 16px; }\n  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }\n  header h1 { font-size: 26px; }\n  .estado { font-size: 14px; color: #2a9d8f; }\n  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }\n  .ticket { background: #2b2b2b; border-radius: 12px; padding: 16px; border-left: 5px solid #e63946; animation: aparece .3s; }\n  @keyframes aparece { from { opacity: 0; transform: scale(.95); } }\n  .ticket.nuevo { border-left-color: #e63946; }\n  .tk-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }\n  .mesa { background: #e63946; padding: 6px 14px; border-radius: 8px; font-weight: bold; font-size: 18px; }\n  .hora { color: #999; font-size: 14px; }\n  .item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #3a3a3a; font-size: 16px; }\n  .item .cant { background: #2a9d8f; color: #fff; border-radius: 6px; padding: 2px 8px; font-weight: bold; margin-right: 8px; }\n  .item-nombre { flex: 1; }\n  .listo { width: 100%; margin-top: 12px; background: #2a9d8f; color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; }\n  .vacio { text-align: center; color: #666; margin-top: 80px; font-size: 20px; }\n</style>\n</head>\n<body>\n<header>\n  <h1>👨‍🍳 Pedidos en cocina</h1>\n  <span class=\"estado\" id=\"estado\">● Conectado</span>\n</header>\n<div class=\"grid\" id=\"grid\"></div>\n<div class=\"vacio\" id=\"vacio\">Sin pedidos pendientes</div>\n<audio id=\"ding\" src=\"data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU\"></audio>\n<script>\n  let vistos = new Set();\n  let primera = true;\n  async function cargar() {\n    try {\n      const r = await fetch('?data=1');\n      const d = await r.json();\n      const grid = document.getElementById('grid');\n      const vacio = document.getElementById('vacio');\n      document.getElementById('estado').textContent = '● Conectado';\n      const pedidos = d.pedidos || [];\n      // Detectar pedidos nuevos para sonar\n      let nuevo = false;\n      pedidos.forEach(p => { if (!vistos.has(p.id)) { vistos.add(p.id); if (!primera) nuevo = true; } });\n      primera = false;\n      if (nuevo) { try { document.getElementById('ding').play(); } catch(e){} }\n      vacio.style.display = pedidos.length ? 'none' : 'block';\n      grid.innerHTML = pedidos.map(p => {\n        const items = p.items.map(i => '<div class=\"item\"><span><span class=\"cant\">'+i.cantidad+'</span><span class=\"item-nombre\">'+i.nombre+'</span></span></div>').join('');\n        return '<div class=\"ticket nuevo\"><div class=\"tk-head\"><span class=\"mesa\">Mesa '+p.mesa+'</span><span class=\"hora\">'+p.hora+'</span></div>'+items+'<button class=\"listo\" onclick=\"marcar('+p.id+')\">✓ Listo / Entregado</button></div>';\n      }).join('');\n    } catch(e) {\n      document.getElementById('estado').textContent = '● Sin conexión';\n    }\n  }\n  async function marcar(id) {\n    try { await fetch('?entregado='+id); cargar(); } catch(e){}\n  }\n  cargar();\n  setInterval(cargar, 4000);\n</script>\n</body>\n</html>`;\n\nreturn [{ json: { _json: false, html } }];"
+      },
+      "id": "code-cocina",
+      "name": "Procesar Cocina",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 480]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-json",
+              "leftValue": "={{ $json._json }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-cocina",
+      "name": "¿Es petición de datos?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 480]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ pedidos: $json.pedidos }) }}",
+        "options": {}
+      },
+      "id": "respond-cocina-json",
+      "name": "Responder Datos JSON",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [900, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-cocina-html",
+      "name": "Responder Pantalla HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [900, 560]
+    }
+  ],
+  "connections": {
+    "Webhook Menú (GET /menu)": {
+      "main": [[{ "node": "Generar HTML Menú", "type": "main", "index": 0 }]]
+    },
+    "Generar HTML Menú": {
+      "main": [[{ "node": "Responder Menú HTML", "type": "main", "index": 0 }]]
+    },
+    "Webhook Pedido (POST /pedido)": {
+      "main": [[{ "node": "Guardar Pedido", "type": "main", "index": 0 }]]
+    },
+    "Guardar Pedido": {
+      "main": [[{ "node": "Responder OK", "type": "main", "index": 0 }]]
+    },
+    "Webhook Cocina (GET /cocina)": {
+      "main": [[{ "node": "Procesar Cocina", "type": "main", "index": 0 }]]
+    },
+    "Procesar Cocina": {
+      "main": [[{ "node": "¿Es petición de datos?", "type": "main", "index": 0 }]]
+    },
+    "¿Es petición de datos?": {
+      "main": [
+        [{ "node": "Responder Datos JSON", "type": "main", "index": 0 }],
+        [{ "node": "Responder Pantalla HTML", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

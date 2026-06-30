@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatiza tu restaurante en 1 semana</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#22c55e',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="dark bg-zinc-950 text-zinc-100 antialiased">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-sm">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <span class="text-sm font-semibold tracking-widest text-zinc-400 uppercase">RestaurantBot</span>
+      <a href="#cta"
+         class="text-sm font-medium bg-brand text-zinc-950 px-4 py-2 rounded-lg hover:bg-green-400 transition-colors">
+        Hablar ahora
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-20">
+    <span class="inline-block mb-6 text-xs font-semibold tracking-widest uppercase text-brand border border-brand/30 bg-brand/10 px-4 py-1.5 rounded-full">
+      Para restaurantes y cafeterías
+    </span>
+    <h1 class="text-5xl sm:text-7xl font-black leading-[1.05] tracking-tight max-w-3xl mb-6">
+      Automatiza tu<br/>
+      <span class="text-brand">restaurante</span><br/>
+      en 1 semana.
+    </h1>
+    <p class="text-zinc-400 text-lg sm:text-xl max-w-xl mb-10 leading-relaxed">
+      Sin contratar más personal. Sin cambiar tus sistemas. Solo menos trabajo manual y más mesas atendidas.
+    </p>
+    <a href="#cta"
+       class="inline-flex items-center gap-3 bg-brand text-zinc-950 font-bold text-base px-8 py-4 rounded-xl hover:bg-green-400 transition-all hover:scale-105 shadow-lg shadow-green-900/30">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L0 24l6.335-1.524A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.163-1.426l-.371-.22-3.762.905.946-3.668-.242-.384A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Quiero automatizar mi restaurante
+    </a>
+    <p class="mt-4 text-zinc-600 text-sm">Respuesta en menos de 1 hora · Sin compromiso</p>
+  </section>
+
+  <!-- PROBLEMA -->
+  <section class="py-20 px-6 border-t border-zinc-800">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4 text-center">El problema</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-14 leading-snug">
+        Tu restaurante pierde dinero<br/>en tareas que <span class="text-red-400">nadie debería hacer a mano</span>
+      </h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <!-- card -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <div class="text-3xl mb-4">😤</div>
+          <h3 class="font-semibold text-zinc-100 mb-2">Reservas por WhatsApp caóticas</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">Olvidas confirmar mesas, doble-reservas, clientes que nunca aparecen.</p>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <div class="text-3xl mb-4">📋</div>
+          <h3 class="font-semibold text-zinc-100 mb-2">Pedidos mal anotados</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">El mesero escribe a mano, cocina no entiende, cliente molesto, mala reseña.</p>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <div class="text-3xl mb-4">🔁</div>
+          <h3 class="font-semibold text-zinc-100 mb-2">Sin fidelización real</h3>
+          <p class="text-zinc-500 text-sm leading-relaxed">No sabes quién vuelve, no tienes forma de recordarle que existes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUCIÓN -->
+  <section class="py-20 px-6 border-t border-zinc-800">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4 text-center">La solución</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4 leading-snug">
+        Automatizaciones a medida<br/>conectadas en <span class="text-brand">7 días</span>
+      </h2>
+      <p class="text-zinc-400 text-center max-w-xl mx-auto mb-14">
+        Usamos n8n para conectar tus herramientas actuales — WhatsApp, Google Sheets, tu POS — y hacer que todo fluya solo.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <!-- step -->
+        <div class="flex gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <span class="text-brand font-black text-2xl leading-none">01</span>
+          <div>
+            <h3 class="font-semibold mb-1">Bot de reservas 24/7</h3>
+            <p class="text-zinc-500 text-sm">El cliente escribe por WhatsApp, el bot confirma, agenda en tu calendario y manda recordatorio automático.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <span class="text-brand font-black text-2xl leading-none">02</span>
+          <div>
+            <h3 class="font-semibold mb-1">Pedidos digitales sin fricción</h3>
+            <p class="text-zinc-500 text-sm">QR en la mesa → menú digital → pedido llega directo a cocina → ticket generado automáticamente.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <span class="text-brand font-black text-2xl leading-none">03</span>
+          <div>
+            <h3 class="font-semibold mb-1">Seguimiento post-visita</h3>
+            <p class="text-zinc-500 text-sm">Al día siguiente, el cliente recibe un mensaje pidiendo reseña + cupón de regreso. Automático.</p>
+          </div>
+        </div>
+        <div class="flex gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+          <span class="text-brand font-black text-2xl leading-none">04</span>
+          <div>
+            <h3 class="font-semibold mb-1">Dashboard en tiempo real</h3>
+            <p class="text-zinc-500 text-sm">Ves reservas, ventas del día y clientes frecuentes desde tu teléfono, sin abrir 5 apps distintas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS -->
+  <section class="py-20 px-6 border-t border-zinc-800 bg-zinc-900/40">
+    <div class="max-w-4xl mx-auto">
+      <p class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-4 text-center">Casos reales</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-14">Lo que logran nuestros clientes</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+
+        <!-- caso 1 -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center text-lg">🍕</div>
+            <div>
+              <p class="font-semibold text-sm">Pizzería Don Marco</p>
+              <p class="text-zinc-500 text-xs">Buenos Aires · 2 locales</p>
+            </div>
+          </div>
+          <blockquote class="text-zinc-300 text-sm leading-relaxed mb-6">
+            "Antes perdíamos 3-4 reservas por semana por mensajes sin responder. Ahora el bot las gestiona solo y los viernes están llenos siempre."
+          </blockquote>
+          <div class="grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
+            <div>
+              <p class="text-2xl font-black text-brand">+38%</p>
+              <p class="text-zinc-500 text-xs mt-1">reservas completadas</p>
+            </div>
+            <div>
+              <p class="text-2xl font-black text-brand">−4 hs</p>
+              <p class="text-zinc-500 text-xs mt-1">trabajo manual por semana</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- caso 2 -->
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center text-lg">☕</div>
+            <div>
+              <p class="font-semibold text-sm">Café Botánico</p>
+              <p class="text-zinc-500 text-xs">Madrid · 1 local</p>
+            </div>
+          </div>
+          <blockquote class="text-zinc-300 text-sm leading-relaxed mb-6">
+            "El flujo de seguimiento post-visita nos trajo 60 reseñas nuevas en Google en el primer mes. Subimos de 4.1 a 4.7 estrellas."
+          </blockquote>
+          <div class="grid grid-cols-2 gap-4 border-t border-zinc-800 pt-6">
+            <div>
+              <p class="text-2xl font-black text-brand">60+</p>
+              <p class="text-zinc-500 text-xs mt-1">reseñas Google en 30 días</p>
+            </div>
+            <div>
+              <p class="text-2xl font-black text-brand">4.1→4.7</p>
+              <p class="text-zinc-500 text-xs mt-1">puntuación media</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="py-24 px-6 border-t border-zinc-800">
+    <div class="max-w-2xl mx-auto text-center">
+      <span class="inline-block mb-6 text-xs font-semibold tracking-widest uppercase text-brand border border-brand/30 bg-brand/10 px-4 py-1.5 rounded-full">
+        Empezamos esta semana
+      </span>
+      <h2 class="text-4xl sm:text-5xl font-black mb-6 leading-tight">
+        ¿Listo para dejar de<br/>hacerlo todo a mano?
+      </h2>
+      <p class="text-zinc-400 text-lg mb-10">
+        Cuéntame cómo funciona tu restaurante y te digo qué automatizaciones tienen más impacto para ti. Primera consulta gratis.
+      </p>
+      <a href="https://wa.me/TUNUMERO?text=Hola%2C%20quiero%20automatizar%20mi%20restaurante"
+         target="_blank"
+         class="inline-flex items-center gap-3 bg-brand text-zinc-950 font-bold text-lg px-10 py-5 rounded-xl hover:bg-green-400 transition-all hover:scale-105 shadow-xl shadow-green-900/40">
+        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L0 24l6.335-1.524A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.163-1.426l-.371-.22-3.762.905.946-3.668-.242-.384A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Hablar por WhatsApp
+      </a>
+      <p class="mt-5 text-zinc-600 text-sm">Sin contratos largos · Setup en 7 días o te devolvemos el dinero</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-zinc-800 py-8 px-6 text-center">
+    <p class="text-zinc-600 text-sm">© 2026 RestaurantBot · Automatizaciones para hostelería</p>
+  </footer>
+
+</body>
+</html>
