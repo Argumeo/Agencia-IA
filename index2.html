@@ -3,7 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NexFlow AI — Automatización e Inteligencia Artificial</title>
+  <title>Ardesku — Automatización e Inteligencia Artificial</title>
+  <meta name="description" content="Ardesku diseña agentes de IA para empresas: agentes de voz, atención por WhatsApp y panel de control propio. Telefonía saliente auditable y con cumplimiento normativo." />
+  <link rel="canonical" href="https://ardesku.com/" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ardesku" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:title" content="Ardesku — Automatización e Inteligencia Artificial" />
+  <meta property="og:description" content="Agentes de IA que atienden, llaman y cualifican. Con infraestructura propia y trazabilidad de cada llamada." />
+  <meta property="og:url" content="https://ardesku.com/" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a1a18'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23f5f2ec' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Ardesku",
+    "url": "https://ardesku.com",
+    "email": "admin@ardesku.com",
+    "description": "Agentes de inteligencia artificial y automatización para empresas: agentes de voz, WhatsApp y panel de control propio.",
+    "founder": { "@type": "Person", "name": "Alvaro Alexander Argumedo Quispe" },
+    "taxID": "10728046380",
+    "address": { "@type": "PostalAddress", "addressLocality": "Lima", "addressCountry": "PE" },
+    "areaServed": ["ES", "IT", "PE"],
+    "sameAs": ["https://crm.ardesku.com"]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -79,6 +105,15 @@
       text-decoration: none; transition: color .4s var(--ease);
     }
     .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-clientes {
+      height: 40px; padding: 0 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center;
+      color: var(--fg); border: 1px solid rgba(26,26,24,.18); background: transparent;
+      transition: opacity .2s, color .4s var(--ease), border-color .4s var(--ease);
+    }
+    .btn-clientes:hover { opacity: .7; }
+    #navbar.on-dark .btn-clientes, #navbar.on-hero .btn-clientes { color: #f5f2ec; border-color: rgba(245,242,236,.22); }
+    @media (max-width: 640px) { .btn-clientes { display: none; } }
     .btn-book {
       height: 40px; padding: 0 24px; border-radius: 8px; font-size: 13px; font-weight: 500;
       cursor: pointer; text-decoration: none; display: inline-flex; align-items: center;
@@ -708,6 +743,12 @@
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
     </a>
   </div>
+  <div class="nav-link-item" style="transition-delay:.075s">
+    <a href="#cumplimiento" onclick="closeNav()">
+      <span>Cumplimiento</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+    </a>
+  </div>
   <div class="nav-link-item" style="transition-delay:.05s">
     <a href="#casos" onclick="closeNav()">
       <span>Casos</span>
@@ -724,8 +765,9 @@
 
 <!-- ═══════════ NAV TOP ═══════════ -->
 <nav id="navbar" class="on-dark">
-  <a href="#hero" class="logo">NexFlow AI</a>
+  <a href="#hero" class="logo">Ardesku</a>
   <div class="nav-actions">
+    <a href="https://crm.ardesku.com" target="_blank" rel="noopener" class="btn-clientes">Acceso clientes</a>
     <a href="#contacto" class="btn-book">Hablar ahora</a>
     <button id="menu-btn" aria-label="Menú" onclick="toggleNav()">
       <span></span><span></span>
@@ -755,7 +797,7 @@
     <div class="hero-inner">
 
       <!-- Wordmark reducido -->
-      <p class="hero-wordmark he he-d1">NexFlow <em>AI</em></p>
+      <p class="hero-wordmark he he-d1">Ardes<em>ku</em></p>
 
       <!-- Tag con línea accent -->
       <p class="hero-tag he he-d2">Agencia de Inteligencia Artificial · Lima, Perú</p>
@@ -794,14 +836,14 @@
           Automatizamos tu negocio para que crezca sin ti
         </h2>
         <p style="font-size:clamp(16px,1.4vw,20px);line-height:1.5;color:var(--muted);max-width:480px;" class="reveal">
-          Somos una agencia de inteligencia artificial con sede en Lima. Construimos sistemas que trabajan solos — agentes de WhatsApp, llamadas automatizadas, SEO y facturación — para que tú te enfoques en lo que importa.
+          Somos una agencia de inteligencia artificial con sede en Lima, Perú, y operación de telefonía en España e Italia. Construimos sistemas que trabajan solos — agentes de WhatsApp, llamadas automatizadas, SEO y facturación — sobre infraestructura propia, con cada llamada registrada y auditable.
         </p>
       </div>
       <!-- Images parallax -->
       <div style="position:relative;height:clamp(320px,45vw,560px);" class="reveal">
         <div class="parallax-img" data-speed="0.04" style="position:absolute;top:0;right:0;width:70%;height:100%;border-radius:14px;overflow:hidden;">
-          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=700&h=900&fit=crop" alt="Equipo NexFlow" style="width:100%;height:115%;object-fit:cover;"/>
-          <span style="position:absolute;top:10px;right:10px;padding:6px 12px;font-size:12px;font-weight:500;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;backdrop-filter:blur(8px);">Lima, Perú · 2024</span>
+          <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=700&h=900&fit=crop" alt="Equipo Ardesku" style="width:100%;height:115%;object-fit:cover;"/>
+          <span style="position:absolute;top:10px;right:10px;padding:6px 12px;font-size:12px;font-weight:500;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;backdrop-filter:blur(8px);">Lima, Perú · Opera en la UE</span>
         </div>
         <div class="parallax-img" data-speed="-0.06" style="position:absolute;top:18%;left:0;width:60%;height:65%;z-index:10;border-radius:14px;overflow:hidden;">
           <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=700&fit=crop" alt="Automatización IA" style="width:100%;height:115%;object-fit:cover;"/>
@@ -1128,6 +1170,100 @@
   </div>
 </section>
 
+<!-- ═══════════ INFRAESTRUCTURA Y CUMPLIMIENTO ═══════════ -->
+<div id="cumplimiento">
+<section style="padding:100px 0;border-top:1px solid var(--border);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 5%;display:flex;flex-direction:column;gap:48px;">
+
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;">
+      <span class="section-label">Infraestructura y cumplimiento</span>
+      <h2 class="serif grad reveal" style="font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:600;max-width:760px;">
+        Cómo llamamos, y por qué se puede auditar
+      </h2>
+      <p style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);max-width:620px;line-height:1.6;" class="reveal">
+        Operamos telefonía saliente con infraestructura propia sobre operadores mayoristas licenciados en la
+        Unión Europea. Estas son las reglas con las que trabajamos — y las cifras reales de nuestro tráfico.
+      </p>
+    </div>
+
+    <!-- Métricas reales de tráfico -->
+    <div class="reveal" style="border:1px solid var(--border);border-radius:16px;padding:32px 28px;background:var(--card-bg);">
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:22px;">
+        Perfil de tráfico · 2.542 llamadas auditadas · junio–agosto 2026
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px;">
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <p class="serif" style="font-size:clamp(30px,4vw,44px);line-height:1;font-weight:600;">1</p>
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);">CAPS pico</p>
+          <p style="font-size:13px;line-height:1.5;color:var(--muted);">Una sola llamada por segundo en el momento más cargado. Muy lejos del patrón de un marcador agresivo.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <p class="serif" style="font-size:clamp(30px,4vw,44px);line-height:1;font-weight:600;">35,8 %</p>
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);">ASR</p>
+          <p style="font-size:13px;line-height:1.5;color:var(--muted);">Tasa de respuesta dentro de lo normal para saliente en frío, medida sobre el total de intentos.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <p class="serif" style="font-size:clamp(30px,4vw,44px);line-height:1;font-weight:600;">2.542</p>
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);">Intentos medidos</p>
+          <p style="font-size:13px;line-height:1.5;color:var(--muted);">Muestra completa del periodo, sin recortar. Cada llamada con su registro y su resultado.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;">
+          <p class="serif" style="font-size:clamp(30px,4vw,44px);line-height:1;font-weight:600;">24 s</p>
+          <p style="font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);">Duración media</p>
+          <p style="font-size:13px;line-height:1.5;color:var(--muted);">Corta por diseño del guion. Las llamadas que sí interesan superan el minuto.</p>
+        </div>
+      </div>
+      <p style="font-size:13px;line-height:1.6;color:var(--muted);margin-top:24px;border-top:1px solid var(--border);padding-top:18px;">
+        La duración media es corta a propósito: el agente se presenta, pregunta y cuelga en cuanto no hay
+        interés. No son llamadas cortadas por la red. Publicamos la cifra conservadora, no la favorable.
+      </p>
+    </div>
+
+    <!-- Reglas -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;" class="reveal">
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">01</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Identificación de llamada propia</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Solo presentamos numeración asignada a nosotros o a nuestro cliente, con autorización por escrito. Nunca usamos el número de un tercero ni falseamos el identificador.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">02</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Base legal antes de marcar</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Solo contactamos cuando existe una base legal válida bajo el RGPD. El cliente acredita por escrito el origen de cada lista antes de la primera llamada.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">03</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Baja inmediata y permanente</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Basta con pedirlo durante la llamada. El número entra en la lista de exclusión al momento y no se vuelve a marcar. Respetamos las listas de exclusión publicitaria de cada país.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">04</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Horarios legales por país</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Marcamos solo dentro de las franjas horarias permitidas en el país de destino, respetando festivos. La configuración es por campaña, no manual.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">05</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Grabaciones con aviso y caducidad</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Se avisa al inicio de la llamada. Las grabaciones se guardan cifradas, con plazo de conservación limitado, y se suprimen a petición del interesado.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:14px;padding:26px 24px;background:var(--card-bg);display:flex;flex-direction:column;gap:10px;">
+          <span style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);">06</span>
+          <p style="font-size:17px;font-weight:600;line-height:1.3;">Trazabilidad de cada llamada</p>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);">Cada intento deja registro, resultado y grabación asociada, que el cliente consulta en su propio panel. Cualquier llamada es reconstruible.</p>
+        </div>
+    </div>
+
+    <div class="reveal" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;text-align:center;">
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;max-width:640px;">
+        Reglas completas en nuestra <a href="/uso-aceptable" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px;">Política de Uso Aceptable</a>.
+        ¿Detectas un uso indebido de nuestra red? Escribe a <a href="mailto:abuse@ardesku.com" style="color:var(--fg);text-decoration:underline;text-underline-offset:3px;">abuse@ardesku.com</a> — respondemos en menos de 24 h laborables.
+      </p>
+    </div>
+
+  </div>
+</section>
+</div>
+
 <!-- ═══════════ CASOS (bento grid) ═══════════ -->
 <div id="casos">
 <section style="padding:80px 0;">
@@ -1268,8 +1404,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(245,242,236,.6)" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
             </div>
             <div>
-              <a href="mailto:alvaroargumedo19@gmail.com" style="font-size:13px;font-weight:500;color:var(--bg);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">alvaroargumedo19@gmail.com</a>
-              <p style="font-size:13px;color:rgba(245,242,236,.45);">Lima, Perú</p>
+              <a href="mailto:admin@ardesku.com" style="font-size:13px;font-weight:500;color:var(--bg);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">admin@ardesku.com</a>
+              <p style="font-size:13px;color:rgba(245,242,236,.45);">Lima, Perú · Operación en España e Italia</p>
             </div>
           </div>
         </div>
@@ -1282,20 +1418,24 @@
 
       <!-- Right: form -->
       <div class="reveal" style="padding-top:4px;">
-        <form onsubmit="handleForm2(event)" style="display:flex;flex-direction:column;gap:24px;">
+        <form onsubmit="handleForm2(event)" novalidate="false" style="display:flex;flex-direction:column;gap:24px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
             <div class="field" style="border-bottom-color:rgba(245,242,236,.15);">
               <label style="color:rgba(245,242,236,.4);">Nombre</label>
-              <input type="text" placeholder="Tu nombre" required style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
+              <input type="text" name="nombre" placeholder="Tu nombre" required autocomplete="name" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
             </div>
             <div class="field">
-              <label style="color:rgba(245,242,236,.4);">WhatsApp</label>
-              <input type="tel" placeholder="+51 999 999 999" required style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
+              <label style="color:rgba(245,242,236,.4);">Email</label>
+              <input type="email" name="email" placeholder="tu@empresa.com" required autocomplete="email" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
             </div>
           </div>
           <div class="field">
+            <label style="color:rgba(245,242,236,.4);">Teléfono / WhatsApp</label>
+            <input type="tel" name="telefono" placeholder="+51 999 999 999" autocomplete="tel" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);" />
+          </div>
+          <div class="field">
             <label style="color:rgba(245,242,236,.4);">Tipo de negocio</label>
-            <select style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
+            <select name="negocio" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
               <option value="" disabled selected style="color:#1a1a18;">Selecciona tu rubro</option>
               <option style="color:#1a1a18;">Restaurante / Cafetería</option>
               <option style="color:#1a1a18;">Clínica / Salud</option>
@@ -1307,7 +1447,7 @@
           </div>
           <div class="field">
             <label style="color:rgba(245,242,236,.4);">Servicio de interés</label>
-            <select style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
+            <select name="servicio" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);background:transparent;">
               <option value="" disabled selected style="color:#1a1a18;">¿Qué quieres automatizar?</option>
               <option style="color:#1a1a18;">Agente WhatsApp</option>
               <option style="color:#1a1a18;">Llamadas automatizadas</option>
@@ -1318,8 +1458,21 @@
           </div>
           <div class="field">
             <label style="color:rgba(245,242,236,.4);">Cuéntanos más (opcional)</label>
-            <textarea rows="3" placeholder="¿Cuál es el mayor problema en tu operación diaria?" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);resize:none;"></textarea>
+            <textarea name="mensaje" rows="3" placeholder="¿Cuál es el mayor problema en tu operación diaria?" style="color:var(--bg);border-bottom-color:rgba(245,242,236,.15);resize:none;"></textarea>
           </div>
+
+          <!-- Trampa antibot: invisible para personas, la rellenan los robots -->
+          <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+            <label>No rellenar este campo
+              <input type="text" name="sitio_web" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
+
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;color:rgba(245,242,236,.5);cursor:pointer;">
+            <input type="checkbox" name="consentimiento" required style="margin-top:3px;flex-shrink:0;accent-color:#f5f2ec;width:15px;height:15px;" />
+            <span>He leído y acepto la <a href="/privacidad" target="_blank" style="color:rgba(245,242,236,.85);text-decoration:underline;text-underline-offset:2px;">Política de Privacidad</a>. Usaremos estos datos únicamente para responder a tu solicitud.</span>
+          </label>
+
           <button id="form2-btn" type="submit" class="hero-btn hero-btn-primary" style="width:100%;height:48px;font-size:14px;border-radius:8px;justify-content:center;border:none;">
             Solicitar consulta gratuita
           </button>
@@ -1334,20 +1487,34 @@
     <div style="border-top:1px solid rgba(245,242,236,.08);padding:48px 0 0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:32px;">
       <!-- Brand + tagline -->
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <p style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(36px,5vw,60px);line-height:.9;color:#f5f2ec;">NexFlow <em style="font-style:italic;">AI</em></p>
-        <p style="font-size:13px;color:rgba(245,242,236,.35);max-width:300px;line-height:1.6;">Automatizaciones con IA para negocios en Lima, Perú.</p>
+        <p style="font-family:'Playfair Display',serif;font-weight:500;font-size:clamp(36px,5vw,60px);line-height:.9;color:#f5f2ec;">Ardes<em style="font-style:italic;">ku</em></p>
+        <p style="font-size:13px;color:rgba(245,242,236,.35);max-width:320px;line-height:1.6;">Agentes de IA y automatización para empresas. Sede en Lima, Perú; operación de telefonía en España e Italia.</p>
       </div>
       <!-- Links -->
       <nav style="display:flex;gap:28px;flex-wrap:wrap;padding-bottom:4px;">
         <a href="#servicios" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Servicios</a>
         <a href="#nosotros" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Nosotros</a>
         <a href="#beneficios" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Beneficios</a>
+        <a href="#cumplimiento" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Cumplimiento</a>
+        <a href="https://crm.ardesku.com" target="_blank" rel="noopener" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Acceso clientes</a>
         <a href="https://wa.me/51924545648" target="_blank" style="font-size:13px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">WhatsApp</a>
       </nav>
     </div>
-    <!-- Copyright -->
-    <div style="padding:20px 0 40px;border-top:1px solid rgba(245,242,236,.05);margin-top:32px;">
-      <p style="font-size:12px;color:rgba(245,242,236,.2);">© 2026 NexFlow AI · Lima, Perú · Todos los derechos reservados</p>
+    <!-- Identidad legal y avisos -->
+    <div style="padding:24px 0 40px;border-top:1px solid rgba(245,242,236,.05);margin-top:32px;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;flex-wrap:wrap;gap:8px 20px;font-size:12px;line-height:1.7;color:rgba(245,242,236,.34);">
+        <span><strong style="font-weight:500;color:rgba(245,242,236,.5);">Ardesku</strong> — nombre comercial de Alvaro Alexander Argumedo Quispe</span>
+        <span>RUC 10728046380</span>
+        <span>Lima, Perú</span>
+        <span><a href="mailto:admin@ardesku.com" style="color:rgba(245,242,236,.5);text-decoration:none;">admin@ardesku.com</a></span>
+        <span>Abusos: <a href="mailto:abuse@ardesku.com" style="color:rgba(245,242,236,.5);text-decoration:none;">abuse@ardesku.com</a></span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 20px;">
+        <a href="/privacidad" style="font-size:12px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Política de Privacidad</a>
+        <a href="/terminos" style="font-size:12px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Términos del servicio</a>
+        <a href="/uso-aceptable" style="font-size:12px;color:rgba(245,242,236,.4);text-decoration:none;" onmouseover="this.style.color='#f5f2ec'" onmouseout="this.style.color='rgba(245,242,236,.4)'">Política de Uso Aceptable</a>
+      </div>
+      <p style="font-size:12px;color:rgba(245,242,236,.2);">© 2026 Ardesku · Todos los derechos reservados</p>
     </div>
   </div>
 
@@ -1551,13 +1718,40 @@ window.addEventListener('scroll', () => {
 });
 
 // ── Form ──
-function handleForm2(e) {
+const ENDPOINT_CONTACTO = 'https://agende-llamadas-callcenter-n8n.ztbayf.easypanel.host/webhook/web-contacto-ardesku';
+
+async function handleForm2(e) {
   e.preventDefault();
-  const btn = document.getElementById('form2-btn');
-  btn.textContent = '¡Enviado! Te contactamos pronto';
-  btn.style.background = '#22c55e';
-  btn.style.color = '#fff';
+  const form = e.target;
+  const btn  = document.getElementById('form2-btn');
+  const original = btn.textContent;
+
+  const datos = Object.fromEntries(new FormData(form).entries());
+  datos.consentimiento = form.consentimiento.checked;
+
   btn.disabled = true;
+  btn.textContent = 'Enviando…';
+  btn.style.background = '';
+  btn.style.color = '';
+
+  try {
+    const r = await fetch(ENDPOINT_CONTACTO, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    });
+    if (!r.ok) throw new Error('rechazado');
+    btn.textContent = '¡Enviado! Te contactamos pronto';
+    btn.style.background = '#22c55e';
+    btn.style.color = '#fff';
+    form.reset();
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'No se pudo enviar — escríbenos por WhatsApp';
+    btn.style.background = '#ef4444';
+    btn.style.color = '#fff';
+    setTimeout(() => { btn.textContent = original; btn.style.background = ''; btn.style.color = ''; }, 6000);
+  }
 }
 </script>
 
