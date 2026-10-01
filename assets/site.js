@@ -12,46 +12,55 @@
   const deskMQ = matchMedia('(min-width: 900px)');
   const reduce = () => reduceMQ.matches;
   const safe = (name, fn) => { try { return fn(); } catch (err) { console.error('[ardesku] ' + name, err); } };
-  /* Vídeos: arrancan solos al verse. Si el navegador no lo permite (ahorro de batería, movimiento reducido…)
-     se muestra un botón «Reproducir» sobre el vídeo, para que nunca quede una imagen muerta. */
+  /* Escenas de «Servicios» y del panel del cliente: NO son vídeos. Las dibuja en vivo assets/escenas.js encima de la imagen fija
+     de cada marco (misma escena, pero nítida y al ritmo de la pantalla, también con el iPhone en ahorro de batería).
+     El script se pide solo cuando hace falta; si no llega, se queda la imagen fija. */
+  const ASSET_VER = (() => { const s = document.currentScript; const q = s && s.src ? s.src.split('?')[1] : ''; return q ? '?' + q : ''; })();
   const PLAY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
-  function tapToPlay(v, show) {
-    const box = v.parentElement;
-    if (!box) return;
+  let scenesP = null;
+  const loadScenes = () => scenesP || (scenesP = new Promise((res, rej) => {
+    const sc = document.createElement('script');
+    sc.src = '/assets/escenas.js' + ASSET_VER;
+    sc.onload = () => (window.ArdeskuEscenas ? res(window.ArdeskuEscenas) : rej(new Error('escenas')));
+    sc.onerror = () => { scenesP = null; rej(new Error('escenas')); };
+    document.head.appendChild(sc);
+  }));
+  const liveScenes = new Map();   // marco → escena montada
+  /* Con «reducir movimiento» la escena no arranca sola: botón «Reproducir» sobre la imagen fija */
+  function tapToPlay(box, show) {
     if (!box.querySelector('.vplay')) {
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'vplay';
       b.setAttribute('aria-label', 'Reproducir la animación');
       b.innerHTML = '<span>' + PLAY_ICON + 'Reproducir</span>';
-      b.addEventListener('click', () => { v.dataset.manual = '1'; v.dataset.want = '1'; const p = v.play(); if (p && p.catch) p.catch(() => {}); });
-      v.addEventListener('playing', () => box.classList.remove('needs-tap'));
+      b.addEventListener('click', () => { box.dataset.manual = '1'; playScene(box, true); });
       box.appendChild(b);
     }
     box.classList.toggle('needs-tap', show);
   }
-  /* El navegador no deja arrancar el vídeo solo (iPhone en ahorro de batería): se pone encima la misma escena como
-     imagen animada (media/escena-*-anim.webp), que sí se mueve sin tocar nada. Si esa imagen falla, queda el botón «Reproducir». */
-  function animFallback(v) {
-    const box = v.parentElement;
-    if (!box || box.querySelector('.vanim') || !v.poster) return;
-    const img = new Image();
-    img.className = 'vanim';
-    img.alt = '';
-    img.onerror = () => { img.remove(); tapToPlay(v, true); };
-    v.addEventListener('playing', () => img.remove(), { once: true });
-    img.src = v.poster.replace(/\.webp$/, '-anim.webp');
-    box.appendChild(img);
+  function playScene(box, restart) {
+    if (!box) return;
+    box.dataset.want = '1';
+    if (reduce() && box.dataset.manual !== '1') { tapToPlay(box, true); return; }
+    loadScenes().then((api) => {
+      if (box.dataset.want !== '1') return;
+      let sc = liveScenes.get(box);
+      if (!sc) { sc = api.mount(box, box.dataset.scene); if (!sc) return; liveScenes.set(box, sc); }
+      box.classList.remove('needs-tap');
+      box.dataset.live = '1';
+      sc.play(restart);
+    }).catch(() => {});
   }
-  const playVideo = (v) => {
-    if (!v) return;
-    v.dataset.want = '1';
-    if (reduce() && v.dataset.manual !== '1') { tapToPlay(v, true); return; }   // movimiento reducido: no arranca solo, pero se puede ver con un toque
-    const p = v.play();
-    if (p && p.catch) p.catch((err) => { if (err && err.name === 'NotAllowedError') animFallback(v); });
-    setTimeout(() => { if (v.dataset.want === '1' && v.paused) animFallback(v); }, 1000);   // algunos móviles no rechazan la promesa: simplemente no arrancan
-  };
-  const stopVideo = (v) => { if (!v) return; v.dataset.want = '0'; v.pause(); };
+  function stopScene(box, unmount) {
+    if (!box) return;
+    box.dataset.want = '0';
+    box.dataset.live = '0';
+    const sc = liveScenes.get(box);
+    if (!sc) return;
+    sc.pause();
+    if (unmount) { sc.destroy(); liveScenes.delete(box); }   // desmontar libera sus capas; al volver empieza de cero
+  }
 
   /* ── Menú a pantalla completa ── */
   const overlay = $('#nav-fullscreen');
@@ -114,16 +123,20 @@
   const svcWrap = $('#svc-wrap');
   const svcs = $$('.svc');
   const dots = $$('.svc-dot');
-  const svcVideos = svcs.map((s) => $('video', s));
+  const svcFrames = svcs.map((s) => $('.svc-frame', s));
   let svcActive = -1;
   let svcVisible = false;
+  let svcGc = 0;
 
   function setSvc(i) {
     if (i === svcActive) return;
     svcActive = i;
     svcs.forEach((s, k) => s.classList.toggle('is-active', k === i));
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
-    svcVideos.forEach((v, k) => { if (!v) return; if (k === i && svcVisible) playVideo(v); else stopVideo(v); });
+    svcFrames.forEach((b, k) => { if (k === i && svcVisible) playScene(b, true); else stopScene(b); });
+    // las que ya no se ven se desmontan cuando acaba el fundido
+    clearTimeout(svcGc);
+    svcGc = setTimeout(() => { if (deskMQ.matches) svcFrames.forEach((b, k) => { if (k !== svcActive) stopScene(b, true); }); }, 900);
   }
   function updateSvc() {
     if (!deskMQ.matches) return;
@@ -132,25 +145,39 @@
     setSvc(Math.floor(clamp(-r.top / total, 0, 0.9999) * svcs.length));
   }
   safe('servicios', () => {
+    // el script de las escenas se pide un poco antes de llegar a la sección
+    const pre = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return;
+      pre.disconnect();
+      if (!reduce()) loadScenes().catch(() => {});
+    }, { rootMargin: '700px 0px' });
+    pre.observe(svcWrap);
+
     new IntersectionObserver((es) => es.forEach((e) => {
       svcVisible = e.isIntersecting;
-      if (deskMQ.matches) svcVideos.forEach((v, k) => { if (!v) return; if (svcVisible && k === svcActive) playVideo(v); else stopVideo(v); });
+      if (deskMQ.matches) svcFrames.forEach((b, k) => { if (svcVisible && k === svcActive) playScene(b); else stopScene(b, !svcVisible); });
     })).observe(svcWrap);
 
-    // móvil: cada vídeo se reproduce solo mientras se ve
+    // móvil: cada escena corre solo mientras se ve, y se desmonta cuando queda lejos
     const mobileIO = new IntersectionObserver((es) => es.forEach((e) => {
       if (deskMQ.matches) return;
-      const v = $('video', e.target);
-      if (e.isIntersecting) playVideo(v); else stopVideo(v);
+      if (e.isIntersecting) playScene(e.target); else stopScene(e.target);
     }), { threshold: 0.35 });
-    $$('.svc-frame').forEach((f) => mobileIO.observe(f));
+    const farIO = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!deskMQ.matches && !e.isIntersecting) stopScene(e.target, true);
+    }), { rootMargin: '120% 0px' });
+    svcFrames.forEach((f) => { mobileIO.observe(f); farIO.observe(f); });
 
     dots.forEach((d, i) => d.addEventListener('click', () => {
       const total = svcWrap.offsetHeight - innerHeight;
       const top = svcWrap.getBoundingClientRect().top + scrollY + ((i + 0.5) / svcs.length) * total;
       scrollTo({ top, behavior: reduce() ? 'auto' : 'smooth' });
     }));
-    deskMQ.addEventListener('change', () => { svcActive = -1; svcVideos.forEach((v) => stopVideo(v)); updateSvc(); });
+    deskMQ.addEventListener('change', () => {
+      svcActive = -1;
+      svcFrames.forEach((b) => { stopScene(b, true); mobileIO.unobserve(b); mobileIO.observe(b); });
+      updateSvc();
+    });
   });
 
   /* ── Cumplimiento: el recorrido de una llamada (vive en la página adicional «Infraestructura y cumplimiento») ── */
@@ -179,9 +206,8 @@
     jrPhases.forEach((p) => p.classList.toggle('on', p.offsetTop + 12 <= y));
     jrPanel.classList.toggle('on', jrEnd.offsetTop + 70 <= yRaw);
   }
-  safe('panel-video', () => {
-    const v = $('video', jrPanel);
-    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playVideo(v); else stopVideo(v); }), { threshold: 0.3 }).observe(jrPanel);
+  safe('panel-escena', () => {
+    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playScene(jrPanel); else stopScene(jrPanel); }), { threshold: 0.3 }).observe(jrPanel);
   });
 
   /* ── Un único manejador de scroll (con rAF) ── */
@@ -211,6 +237,7 @@
     if (!cmpIsOpen()) return;
     if (typeof cmp.close === 'function') cmp.close(); else cmp.removeAttribute('open');
     document.body.classList.remove('cmp-open');
+    stopScene(jrPanel, true);
     if (location.hash === '#cumplimiento') history.replaceState(null, '', location.pathname + location.search);
   }
   function cmpClose() {
@@ -263,29 +290,33 @@
     });
   });
 
-  /* ── Llamada de demostración del hero ── */
+  /* ── Llamada de demostración del hero: María (español) o Anna (italiano). Se ve una cada vez; el selector cambia entre ellas ── */
   safe('llamada', () => {
     const lc = $('#lc');
-    const data = JSON.parse($('#demo-data').textContent);
+    const agents = JSON.parse($('#demo-data').textContent).agents;
     const chat = $('#lc-chat'), wave = $('#lc-wave'), pill = $('#lc-pill'), pillT = $('#lc-pill-t'), res = $('#lc-res');
     const btn = $('#lc-play'), btnT = $('#lc-btn-t'), btnS = $('#lc-btn-s'), ring = $('#lc-ring'), icPlay = $('#lc-ic-play'), icStop = $('#lc-ic-stop'), audio = $('#lc-audio');
+    const sw = $('#lc-sw'), swBtns = $$('.lc-sw-b', sw);
 
     const N = 36;
     const bars = [];
     for (let i = 0; i < N; i++) { const b = document.createElement('i'); wave.appendChild(b); bars.push(b); }
 
-    // Línea de tiempo: cada palabra con su instante exacto
-    const ev = [];
-    data.maria.forEach((m) => ev.push({ who: 'maria', t: m.t, d: m.d, words: m.words.map((w) => ({ w: w.w, at: m.t + w.s })) }));
-    data.cliente.forEach((c) => {
-      const ws = c.text.split(' ');
-      const per = c.d / ws.length;
-      ev.push({ who: 'cli', t: c.t, d: c.d, words: ws.map((w, i) => ({ w, at: c.t + i * per })) });
+    // Línea de tiempo de cada agente: cada palabra con su instante exacto
+    agents.forEach((ag) => {
+      const ev = [];
+      ag.lines.forEach((m) => ev.push({ who: 'ag', t: m.t, d: m.d, words: m.words.map((w) => ({ w: w.w, at: m.t + w.s })) }));
+      ag.cliente.forEach((c) => {
+        const ws = c.text.split(' ');
+        const per = c.d / ws.length;
+        ev.push({ who: 'cli', t: c.t, d: c.d, words: ws.map((w, i) => ({ w, at: c.t + i * per })) });
+      });
+      ag.ev = ev.sort((x, y) => x.t - y.t);
+      ag.connect = ag.lines[0].t - 0.05;
+      ag.loopEnd = ag.total + 4;
     });
-    ev.sort((a, b) => a.t - b.t);
 
-    const CONNECT = data.maria[0].t - 0.05;
-    const LOOP_END = data.total + 4;
+    let A = agents[0];                // agente que se está mostrando
     let mode = 'silent';              // 'silent' = bucle ambiental · 'audio' = sincronizado con la voz
     let base = performance.now();
     let pausedAt = performance.now();
@@ -305,9 +336,9 @@
       chat.textContent = '';
       chat.classList.remove('scrolled');
       res.classList.remove('on');
-      ev.forEach((e) => { e.el = null; e.n = 0; e.spans = null; });
+      A.ev.forEach((e) => { e.el = null; e.n = 0; e.spans = null; });
       wave.dataset.who = '';
-      lc.classList.remove('speak-maria');
+      lc.classList.remove('speak-ag');
       shownPill = '';
       setState('dial');
       bars.forEach((b) => { b.style.transform = 'scaleY(.08)'; });
@@ -320,14 +351,14 @@
       b.className = 'b';
       const who = document.createElement('span');
       who.className = 'who';
-      who.textContent = e.who === 'maria' ? 'María' : 'Cliente';
+      who.textContent = e.who === 'ag' ? A.name : 'Cliente';
       const t = document.createElement('div');
       t.className = 't';
       e.spans = e.words.map((x, i) => {
-        const s = document.createElement('span');
-        s.textContent = x.w + (i < e.words.length - 1 ? ' ' : '');
-        t.appendChild(s);
-        return s;
+        const sp = document.createElement('span');
+        sp.textContent = x.w + (i < e.words.length - 1 ? ' ' : '');
+        t.appendChild(sp);
+        return sp;
       });
       b.append(who, t);
       wrap.appendChild(b);
@@ -347,7 +378,7 @@
     }
     function staticFinal() {
       reset();
-      ev.forEach((e) => { mkMsg(e); e.spans.forEach((s) => s.classList.add('on')); e.n = e.words.length; });
+      A.ev.forEach((e) => { mkMsg(e); e.spans.forEach((sp) => sp.classList.add('on')); e.n = e.words.length; });
       res.classList.add('on');
       setState('done');
       bars.forEach((b) => { b.style.transform = 'scaleY(.1)'; });
@@ -357,33 +388,33 @@
 
     function frame() {
       raf = 0;
-      if (mode === 'silent' && clock() >= LOOP_END) { reset(); base = performance.now(); }
+      if (mode === 'silent' && clock() >= A.loopEnd) { reset(); base = performance.now(); }
       const t = clock();
       if (mode === 'audio') {      // anillo de progreso y tiempo en el botón
-        const dur = audio.duration > 0 ? audio.duration : data.total;
+        const dur = audio.duration > 0 ? audio.duration : A.total;
         ring.style.strokeDashoffset = String(100 - 100 * Math.min(1, t / dur));
         setSub('Reproduciendo · ' + fmt(t) + ' / ' + fmt(dur));
       }
       let speaker = null;
-      for (const e of ev) {
+      for (const e of A.ev) {
         if (t >= e.t - 0.04 && !e.el) mkMsg(e);
         if (e.el) { while (e.n < e.words.length && t >= e.words[e.n].at) { e.spans[e.n].classList.add('on'); e.n++; } }
         if (t >= e.t && t < e.t + e.d + 0.08) speaker = e.who;
       }
-      if (t >= data.result) res.classList.add('on');
-      if (t < CONNECT) setState('dial');
-      else if (t >= data.result) setState('done');
-      else setState('live', '<span class="pl">En llamada · </span>00:' + String(Math.floor(t - CONNECT)).padStart(2, '0'));
+      if (t >= A.result) res.classList.add('on');
+      if (t < A.connect) setState('dial');
+      else if (t >= A.result) setState('done');
+      else setState('live', '<span class="pl">En llamada · </span>00:' + String(Math.floor(t - A.connect)).padStart(2, '0'));
 
       wave.dataset.who = speaker || '';
-      lc.classList.toggle('speak-maria', speaker === 'maria');
+      lc.classList.toggle('speak-ag', speaker === 'ag');
       for (let i = 0; i < N; i++) {
         const edge = Math.sin((Math.PI * (i + 0.5)) / N);
         let v;
         if (speaker) {
           const wob = Math.abs(Math.sin(t * 9.2 + i * 0.7) * Math.sin(t * 5.1 + i * 1.31));
-          v = (0.18 + 0.82 * wob) * (0.35 + 0.65 * edge) * (speaker === 'maria' ? 1 : 0.55);
-        } else v = t < CONNECT ? 0.07 + 0.05 * Math.sin(t * 3 + i) : 0.07;
+          v = (0.18 + 0.82 * wob) * (0.35 + 0.65 * edge) * (speaker === 'ag' ? 1 : 0.55);
+        } else v = t < A.connect ? 0.07 + 0.05 * Math.sin(t * 3 + i) : 0.07;
         bars[i].style.transform = 'scaleY(' + Math.max(0.08, v).toFixed(3) + ')';
       }
       raf = requestAnimationFrame(frame);
@@ -392,38 +423,62 @@
     const stopLoop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
 
     // Botón de audio: solo existe si el navegador puede reproducir el mp3
-    const SUB = 'Llamada de demostración · 0:31';
-    const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    const canPlay = !!(audio.canPlayType && audio.canPlayType('audio/mpeg'));
+    const fmt = (sec) => Math.floor(sec / 60) + ':' + String(Math.floor(sec % 60)).padStart(2, '0');
     let shownSub = '';
     const setSub = (txt) => { if (txt !== shownSub) { shownSub = txt; btnS.textContent = txt; } };
     const setBtn = (on) => {
       btn.setAttribute('aria-pressed', String(on));
-      btnT.textContent = on ? 'Detener' : 'Escuchar a María';
+      btnT.textContent = on ? 'Detener' : 'Escuchar a ' + A.name;
       icPlay.toggleAttribute('hidden', on); icStop.toggleAttribute('hidden', !on);   // son SVG: no tienen la propiedad .hidden
-      if (!on) { setSub(SUB); ring.style.strokeDashoffset = '100'; }
+      if (!on) { setSub(A.sub); ring.style.strokeDashoffset = '100'; }
     };
-    function stopAudio() { audio.pause(); audio.currentTime = 0; mode = 'silent'; setBtn(false); reset(); base = performance.now(); if (reduce()) staticFinal(); }
-    if (audio.canPlayType && audio.canPlayType('audio/mpeg')) btn.hidden = false;
+    const rewind = () => { try { audio.currentTime = 0; } catch (err) { /* Safari antiguo: aún no hay metadatos, ya está en 0 */ } };
+    function stopAudio() { audio.pause(); rewind(); mode = 'silent'; setBtn(false); reset(); base = performance.now(); if (reduce()) staticFinal(); }
+    async function startAudio() {
+      reset();
+      mode = 'audio';
+      rewind();
+      try { await audio.play(); } catch (err) { mode = 'silent'; base = performance.now(); if (audio.error) btn.hidden = true; if (reduce()) staticFinal(); return; }
+      setBtn(true);
+      startLoop();
+    }
+    if (canPlay) btn.hidden = false;
     // Empieza a descargar el audio (300 KB) solo cuando el usuario se acerca al botón: el clic responde al instante
     const warm = () => { if (audio.preload !== 'auto') { audio.preload = 'auto'; audio.load(); } };
     btn.addEventListener('pointerenter', warm, { once: true });
     btn.addEventListener('focus', warm, { once: true });
     btn.addEventListener('touchstart', warm, { once: true, passive: true });
-    btn.addEventListener('click', async () => {
-      if (mode === 'audio' && !audio.paused) { stopAudio(); return; }
-      reset();
-      mode = 'audio';
-      audio.currentTime = 0;
-      try { await audio.play(); } catch (err) { mode = 'silent'; base = performance.now(); if (audio.error) btn.hidden = true; if (reduce()) staticFinal(); return; }
-      setBtn(true);
-      startLoop();
-    });
+    btn.addEventListener('click', () => { if (mode === 'audio' && !audio.paused) stopAudio(); else startAudio(); });
     audio.addEventListener('ended', () => {
       setBtn(false);
       if (reduce()) { mode = 'silent'; stopLoop(); staticFinal(); return; }
       mode = 'silent';
-      base = performance.now() - data.total * 1000;   // se queda en el resultado y vuelve a empezar
+      base = performance.now() - A.total * 1000;   // se queda en el resultado y vuelve a empezar
     });
+
+    // Selector: cambia de agente. Si se estaba escuchando a una, pasa a sonar la otra
+    function setAgent(id) {
+      const next = agents.find((x) => x.id === id);
+      if (!next || next === A) return;
+      const wasPlaying = mode === 'audio' && !audio.paused;
+      audio.pause();
+      mode = 'silent';
+      A = next;
+      sw.dataset.on = A.id;
+      swBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.agent === A.id)));
+      lc.dataset.agent = A.id;
+      $('#lc-ini').textContent = A.ini; $('#lc-name').textContent = A.name; $('#lc-role').textContent = A.role;
+      $('#lc-res-t').textContent = A.resT; $('#lc-res-s').textContent = A.resS;
+      audio.src = A.audio;
+      if (canPlay) btn.hidden = false;
+      setBtn(false);
+      reset();
+      base = performance.now();
+      lc.classList.remove('swap'); void lc.offsetWidth; lc.classList.add('swap');
+      if (wasPlaying) startAudio(); else if (reduce()) staticFinal();
+    }
+    swBtns.forEach((b) => b.addEventListener('click', () => setAgent(b.dataset.agent)));
 
     // Solo anima mientras el hero se ve
     new IntersectionObserver((es) => {
