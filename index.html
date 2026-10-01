@@ -47,7 +47,8 @@
   <!-- Fuentes sin bloquear el renderizado (si Google Fonts tarda, el texto ya se ve con la fuente de reserva) -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
-  <link rel="stylesheet" href="/assets/site.css" />
+  <!-- ?v= : subirlo al cambiar site.css o site.js; sin él, el móvil mezcla el HTML nuevo con los estilos viejos que tiene en caché -->
+  <link rel="stylesheet" href="/assets/site.css?v=20261001" />
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -369,17 +370,25 @@
       <div class="focus-media">
         <img src="/media/callcenter.jpg" width="1200" height="800" loading="lazy" decoding="async" alt="Agente de call center con auricular sonriendo a cámara, con otros agentes trabajando detrás" />
         <span class="focus-badge">Nuestro foco</span>
-        <ul class="focus-tags" aria-label="Sectores en los que operamos"><li>Energía</li><li>Seguros</li><li>Telefonía</li><li>Tarjetas de crédito</li><li>y más sectores</li></ul>
       </div>
       <div class="focus-body">
         <span class="section-label label-glow">Call center con IA</span>
         <h3 id="focus-t" class="serif">Campañas de llamadas a gran escala</h3>
         <p>Agentes de voz con IA que llaman, cualifican y agendan. Con tu CRM propio y cada llamada registrada y auditable.</p>
-        <dl class="focus-rows">
-          <div><dt>Mercados</dt><dd>España e Italia, con números locales fijos y móviles de cada país.</dd></div>
-          <div><dt>Italia</dt><dd>Outsourcing de personal: captación de empresas que quieren externalizar su gestión laboral.</dd></div>
-          <div><dt>Clientes</dt><dd><b class="focus-client">KINETICA</b> <span>Italia · outsourcing de personal</span></dd></div>
-        </dl>
+        <div class="focus-mk">
+          <p class="focus-mk-t">Mercados</p>
+          <div class="focus-mk-grid">
+            <section aria-labelledby="mk-es">
+              <h4 id="mk-es">España</h4>
+              <ul><li>Energía</li><li>Seguros</li><li>Telefonía</li><li>Tarjetas de crédito</li></ul>
+            </section>
+            <section aria-labelledby="mk-it">
+              <h4 id="mk-it">Italia</h4>
+              <ul><li>Energía</li><li>Seguros</li><li>Telefonía</li><li>Tarjetas de crédito</li><li>Outsourcing de personal</li></ul>
+            </section>
+          </div>
+          <p class="focus-mk-n">Con números locales fijos y móviles de cada país.</p>
+        </div>
         <a href="#contacto" class="hero-btn hero-btn-primary focus-cta">Quiero una campaña</a>
       </div>
     </article>
@@ -555,6 +564,6 @@
 </dialog>
 
 <script type="application/json" id="demo-data">{"total":30.74,"result":20.36,"maria":[{"t":1.2,"d":8.24,"words":[{"w":"Hola,","s":0.12},{"w":"buenas","s":0.4},{"w":"tardes,","s":0.69},{"w":"¿hablo","s":1.11},{"w":"con","s":1.43},{"w":"Carlos?","s":1.61},{"w":"Soy","s":2.21},{"w":"María,","s":2.47},{"w":"la","s":3},{"w":"asistente","s":3.1},{"w":"virtual","s":3.58},{"w":"de","s":3.94},{"w":"la","s":4.04},{"w":"clínica","s":4.15},{"w":"dental.","s":4.52},{"w":"Le","s":5.27},{"w":"llamo","s":5.45},{"w":"para","s":5.71},{"w":"recordarle","s":5.9},{"w":"su","s":6.51},{"w":"revisión","s":6.67},{"w":"de","s":7.11},{"w":"este","s":7.18},{"w":"jueves.","s":7.39}]},{"t":12.59,"d":4.48,"words":[{"w":"Claro","s":0.12},{"w":"que","s":0.47},{"w":"sí.","s":0.58},{"w":"Tengo","s":1.05},{"w":"hueco","s":1.37},{"w":"el","s":1.62},{"w":"viernes","s":1.71},{"w":"a","s":2.09},{"w":"las","s":2.15},{"w":"diez","s":2.31},{"w":"y","s":2.51},{"w":"media.","s":2.59},{"w":"¿Le","s":3.28},{"w":"viene","s":3.51},{"w":"bien?","s":3.72}]},{"t":18.97,"d":6.38,"words":[{"w":"Perfecto.","s":0.12},{"w":"Queda","s":1.14},{"w":"anotado:","s":1.39},{"w":"viernes,","s":2.19},{"w":"a","s":2.66},{"w":"las","s":2.76},{"w":"diez","s":2.89},{"w":"y","s":3.07},{"w":"media.","s":3.15},{"w":"Le","s":3.84},{"w":"llegará","s":4},{"w":"un","s":4.37},{"w":"mensaje","s":4.46},{"w":"de","s":4.97},{"w":"confirmación.","s":5.08}]},{"t":27.15,"d":3.09,"words":[{"w":"Gracias","s":0.12},{"w":"a","s":0.58},{"w":"usted,","s":0.63},{"w":"Carlos.","s":0.94},{"w":"¡Que","s":1.61},{"w":"tenga","s":1.85},{"w":"un","s":2.05},{"w":"buen","s":2.14},{"w":"día!","s":2.36}]}],"cliente":[{"t":9.84,"d":2.4,"text":"Ah, sí. Oye, ¿podría ser mejor el viernes?"},{"t":17.42,"d":1.2,"text":"Sí, me va bien."},{"t":25.7,"d":1.1,"text":"Genial, gracias."}]}</script>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v=20261001" defer></script>
 </body>
 </html>

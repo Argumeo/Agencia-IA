@@ -30,13 +30,26 @@
     }
     box.classList.toggle('needs-tap', show);
   }
+  /* El navegador no deja arrancar el vídeo solo (iPhone en ahorro de batería): se pone encima la misma escena como
+     imagen animada (media/escena-*-anim.webp), que sí se mueve sin tocar nada. Si esa imagen falla, queda el botón «Reproducir». */
+  function animFallback(v) {
+    const box = v.parentElement;
+    if (!box || box.querySelector('.vanim') || !v.poster) return;
+    const img = new Image();
+    img.className = 'vanim';
+    img.alt = '';
+    img.onerror = () => { img.remove(); tapToPlay(v, true); };
+    v.addEventListener('playing', () => img.remove(), { once: true });
+    img.src = v.poster.replace(/\.webp$/, '-anim.webp');
+    box.appendChild(img);
+  }
   const playVideo = (v) => {
     if (!v) return;
     v.dataset.want = '1';
     if (reduce() && v.dataset.manual !== '1') { tapToPlay(v, true); return; }   // movimiento reducido: no arranca solo, pero se puede ver con un toque
     const p = v.play();
-    if (p && p.catch) p.catch((err) => { if (err && err.name === 'NotAllowedError') tapToPlay(v, true); });
-    setTimeout(() => { if (v.dataset.want === '1' && v.paused) tapToPlay(v, true); }, 1000);   // algunos móviles no rechazan la promesa: simplemente no arrancan
+    if (p && p.catch) p.catch((err) => { if (err && err.name === 'NotAllowedError') animFallback(v); });
+    setTimeout(() => { if (v.dataset.want === '1' && v.paused) animFallback(v); }, 1000);   // algunos móviles no rechazan la promesa: simplemente no arrancan
   };
   const stopVideo = (v) => { if (!v) return; v.dataset.want = '0'; v.pause(); };
 
