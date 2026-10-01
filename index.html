@@ -95,6 +95,10 @@
         <a href="#servicios" class="hero-btn hero-btn-primary">Ver qué automatizamos</a>
         <a href="#contacto" class="hero-btn hero-btn-secondary">Hablar con nosotros</a>
       </div>
+      <div class="hero-num he he-7">
+        <span class="hero-num-ic" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span>
+        <p><b>Números locales de cada país, fijos y móviles.</b> Llamamos con numeración local de operadores internacionales: más gente contesta y más llamadas convierten.</p>
+      </div>
     </div>
 
     <!-- Demo: llamada de María (agente de voz) -->
@@ -115,10 +119,13 @@
       </div>
       <div class="lc-ctl">
         <button class="lc-btn" id="lc-play" type="button" aria-pressed="false" hidden>
-          <span class="lc-btn-ic"><svg id="lc-ic-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><svg id="lc-ic-stop" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="5" y="5" width="14" height="14" rx="2"/></svg></span>
-          <span id="lc-btn-t">Escuchar a María</span>
+          <span class="lc-btn-ic">
+            <svg class="lc-ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="lc-ring-bg" cx="22" cy="22" r="20"/><circle class="lc-ring-fg" id="lc-ring" cx="22" cy="22" r="20" pathLength="100"/></svg>
+            <svg id="lc-ic-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg><svg id="lc-ic-stop" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" hidden><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+          </span>
+          <span class="lc-btn-tx"><b id="lc-btn-t">Escuchar a María</b><small id="lc-btn-s">Llamada de demostración · 0:31</small></span>
+          <span class="lc-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
         </button>
-        <span class="lc-note">Llamada de demostración</span>
       </div>
       <audio id="lc-audio" preload="none" src="/media/maria-demo.mp3"></audio>
     </div>
@@ -132,30 +139,53 @@
     <div class="about-text">
       <span class="section-label">Sobre nosotros</span>
       <h2 class="serif grad reveal">Automatizamos tu negocio para que crezca sin ti</h2>
-      <p class="reveal">Somos una agencia de inteligencia artificial con sede en Lima, Perú, y operación de telefonía en España e Italia. Construimos sistemas que trabajan solos — agentes de WhatsApp, llamadas automatizadas, SEO y facturación — sobre infraestructura propia, con cada llamada registrada y auditable.</p>
+      <p class="reveal">Somos una agencia de inteligencia artificial con sede en Lima, Perú, servidores en Estados Unidos y operación de telefonía en España e Italia, todo conectado. Construimos sistemas que trabajan solos — agentes de WhatsApp, llamadas automatizadas, CRM, páginas web y SEO, y facturación — sobre infraestructura propia, con cada llamada registrada y auditable.</p>
     </div>
 
     <div class="net reveal">
-      <svg viewBox="0 0 560 360" role="img" aria-label="Esquema: sede en Lima, Perú, y operación de telefonía en España e Italia">
+      <svg viewBox="0 0 560 360" role="img" aria-label="Esquema: sede en Lima, Perú, servidores en Estados Unidos y operación de telefonía en España e Italia, todo conectado entre sí">
         <defs>
           <pattern id="net-dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" fill="rgba(245,242,236,.13)"/></pattern>
           <radialGradient id="net-glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#5E6AD2" stop-opacity=".32"/><stop offset="1" stop-color="#5E6AD2" stop-opacity="0"/></radialGradient>
-          <linearGradient id="net-arc" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#9aa3f2"/><stop offset="1" stop-color="#6f7be0"/></linearGradient>
+          <linearGradient id="net-arc" gradientUnits="userSpaceOnUse" x1="0" y1="360" x2="560" y2="0"><stop offset="0" stop-color="#9aa3f2"/><stop offset="1" stop-color="#6f7be0"/></linearGradient>
         </defs>
         <rect width="560" height="360" fill="url(#net-dots)"/>
         <ellipse cx="96" cy="292" rx="170" ry="115" fill="url(#net-glow)"/>
+        <ellipse cx="118" cy="112" rx="150" ry="95" fill="url(#net-glow)"/>
         <ellipse cx="400" cy="126" rx="190" ry="105" fill="url(#net-glow)"/>
 
-        <path id="net-a" d="M96 292 C 120 140, 230 62, 338 108" fill="none" stroke="rgba(154,163,242,.28)" stroke-width="1.5" stroke-dasharray="3 6"/>
-        <path id="net-b" d="M96 292 C 150 22, 400 14, 452 146" fill="none" stroke="rgba(154,163,242,.28)" stroke-width="1.5" stroke-dasharray="3 6"/>
-        <path class="net-flow" pathLength="100" d="M96 292 C 120 140, 230 62, 338 108" fill="none" stroke="url(#net-arc)" stroke-width="3" stroke-linecap="round"/>
-        <path class="net-flow d2" pathLength="100" d="M96 292 C 150 22, 400 14, 452 146" fill="none" stroke="url(#net-arc)" stroke-width="3" stroke-linecap="round"/>
-        <circle r="4.5" fill="#fff"><animateMotion dur="3.4s" repeatCount="indefinite"><mpath href="#net-a"/></animateMotion></circle>
-        <circle r="4.5" fill="#fff"><animateMotion dur="3.4s" begin="-1.7s" repeatCount="indefinite"><mpath href="#net-b"/></animateMotion></circle>
+        <g fill="none" stroke="rgba(154,163,242,.28)" stroke-width="1.5" stroke-dasharray="3 6">
+          <path id="net-lu" d="M96 292 C 66 230, 70 170, 118 112"/>
+          <path id="net-ue" d="M118 112 C 190 44, 280 44, 338 108"/>
+          <path id="net-ui" d="M118 112 C 210 -6, 410 -4, 452 146"/>
+          <path id="net-le" d="M96 292 C 150 150, 250 70, 338 108"/>
+          <path id="net-li" d="M96 292 C 210 340, 410 310, 452 146"/>
+          <path id="net-ei" d="M338 108 C 385 78, 438 100, 452 146"/>
+        </g>
+        <g fill="none" stroke="url(#net-arc)" stroke-width="3" stroke-linecap="round">
+          <path class="net-flow" pathLength="100" d="M96 292 C 66 230, 70 170, 118 112"/>
+          <path class="net-flow d2" pathLength="100" d="M118 112 C 190 44, 280 44, 338 108"/>
+          <path class="net-flow d3" pathLength="100" d="M118 112 C 210 -6, 410 -4, 452 146"/>
+          <path class="net-flow d2" pathLength="100" d="M96 292 C 150 150, 250 70, 338 108"/>
+          <path class="net-flow" pathLength="100" d="M96 292 C 210 340, 410 310, 452 146"/>
+          <path class="net-flow d3" pathLength="100" d="M338 108 C 385 78, 438 100, 452 146"/>
+        </g>
+        <g fill="#fff">
+          <circle r="4" ><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#net-lu"/></animateMotion></circle>
+          <circle r="4"><animateMotion dur="3.4s" begin="-1s" repeatCount="indefinite"><mpath href="#net-ue"/></animateMotion></circle>
+          <circle r="4"><animateMotion dur="4.2s" begin="-2s" repeatCount="indefinite"><mpath href="#net-ui"/></animateMotion></circle>
+          <circle r="4"><animateMotion dur="3.8s" begin="-1.5s" repeatCount="indefinite"><mpath href="#net-le"/></animateMotion></circle>
+          <circle r="4"><animateMotion dur="4.4s" begin="-3s" repeatCount="indefinite"><mpath href="#net-li"/></animateMotion></circle>
+          <circle r="4"><animateMotion dur="2.4s" begin="-.8s" repeatCount="indefinite"><mpath href="#net-ei"/></animateMotion></circle>
+        </g>
 
         <g transform="translate(96 292)"><circle class="net-ping" r="8" fill="none" stroke="#9aa3f2" stroke-width="2"/><circle class="net-ping d2" r="8" fill="none" stroke="#9aa3f2" stroke-width="2"/><circle r="9" fill="#5E6AD2"/><circle r="3.5" fill="#fff"/></g>
         <text x="116" y="290" fill="#f5f2ec" font-family="Inter,sans-serif" font-size="16" font-weight="600">Lima, Perú</text>
         <text x="116" y="307" fill="rgba(245,242,236,.55)" font-family="JetBrains Mono,monospace" font-size="10.5" letter-spacing="1.4">SEDE</text>
+
+        <g transform="translate(118 112)"><circle class="net-ping" r="8" fill="none" stroke="#9aa3f2" stroke-width="2"/><circle class="net-ping d2" r="8" fill="none" stroke="#9aa3f2" stroke-width="2"/><circle r="9" fill="#5E6AD2"/><circle r="3.5" fill="#fff"/></g>
+        <text x="136" y="140" fill="#f5f2ec" font-family="Inter,sans-serif" font-size="16" font-weight="600">Estados Unidos</text>
+        <text x="136" y="157" fill="rgba(245,242,236,.55)" font-family="JetBrains Mono,monospace" font-size="10.5" letter-spacing="1.4">SERVIDOR</text>
 
         <g transform="translate(338 108)"><circle class="net-ping d2" r="7" fill="none" stroke="#9aa3f2" stroke-width="2"/><circle r="8" fill="#5E6AD2"/><circle r="3" fill="#fff"/></g>
         <text x="338" y="140" text-anchor="middle" fill="#f5f2ec" font-family="Inter,sans-serif" font-size="16" font-weight="600">España</text>
@@ -167,11 +197,13 @@
       </svg>
       <ul class="net-clocks" aria-label="Hora actual en cada país">
         <li><span>Lima</span><b data-tz="America/Lima">--:--</b></li>
+        <li><span>EE. UU.</span><b data-tz="America/New_York">--:--</b></li>
         <li><span>España</span><b data-tz="Europe/Madrid">--:--</b></li>
         <li><span>Italia</span><b data-tz="Europe/Rome">--:--</b></li>
       </ul>
     </div>
   </div>
+
 </section>
 
 <!-- ═══════════ SERVICIOS ═══════════ -->
@@ -179,7 +211,7 @@
   <div class="svc-head center">
     <span class="section-label">Servicios</span>
     <h2 class="serif grad reveal">Lo que construimos para tu negocio</h2>
-    <p class="reveal">Cada servicio viene con web personalizada incluida — presencia digital desde el primer día.</p>
+    <p class="reveal">Del primer contacto a la factura: agentes, llamadas, CRM, web y facturación para tu negocio.</p>
   </div>
 
   <div class="svc-wrap" id="svc-wrap">
@@ -205,7 +237,18 @@
           <h3 id="svc-t1" style="--k:1">Llamadas Automatizadas</h3>
           <p style="--k:2">Un agente de voz con IA llama a tus prospectos, recuerda citas, hace seguimiento de cotizaciones y cobra deudas pendientes.</p>
           <ul class="svc-pts" style="--k:3"><li>Llama a tus prospectos</li><li>Recuerda citas</li><li>Sigue cotizaciones</li></ul>
-          <a href="#contacto" class="s2-btn" style="--k:4">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          <div class="svc-box" style="--k:4">
+            <span class="svc-box-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span>
+            <div>
+              <b>Números locales de cada país</b>
+              <span class="svc-box-d">Trabajamos con operadores internacionales que nos dan numeración local, para que más gente conteste y más llamadas convierten.</span>
+              <ul class="svc-box-l"><li>Números fijos</li><li>Números móviles</li></ul>
+            </div>
+          </div>
+          <div class="svc-actions" style="--k:5">
+            <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            <a href="#cumplimiento" class="s2-btn ghost"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.1 8.2-7.5 9.5-4.4-1.3-7.5-4.9-7.5-9.5V6z"/><path d="M8.8 12.2l2.3 2.3 4.2-4.6"/></svg> Infraestructura y cumplimiento</a>
+          </div>
         </div>
         <figure class="svc-media">
           <div class="svc-frame"><video muted loop playsinline preload="none" poster="/media/escena-voz.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-voz.mp4" type="video/mp4" /></video></div>
@@ -216,21 +259,38 @@
       <article class="svc" data-i="2" aria-labelledby="svc-t2">
         <div class="svc-text">
           <span class="svc-num" style="--k:0">3</span>
-          <h3 id="svc-t2" style="--k:1">Auditoría SEO</h3>
-          <p style="--k:2">Analizamos tu sitio web, encontramos exactamente qué impide que Google te muestre primero, y te entregamos un plan de acción concreto.</p>
-          <ul class="svc-pts" style="--k:3"><li>Análisis de tu web</li><li>Qué te frena en Google</li><li>Plan de acción</li></ul>
-          <a href="#contacto" class="s2-btn" style="--k:4">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          <h3 id="svc-t2" style="--k:1">CRM y Marcador Predictivo</h3>
+          <p style="--k:2">Tu propio CRM con acceso por usuario y contraseña: gestiona tus leads, lanza campañas con marcador predictivo o llama tú mismo desde el navegador. Cada llamada queda registrada.</p>
+          <ul class="svc-pts" style="--k:3"><li>Acceso con login</li><li>Llamadas manuales</li><li>Marcador predictivo</li></ul>
+          <div class="svc-actions" style="--k:4">
+            <a href="#contacto" class="s2-btn">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+            <a href="https://crm.ardesku.com" target="_blank" rel="noopener" class="s2-btn ghost">Acceso clientes <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+          </div>
         </div>
         <figure class="svc-media">
-          <div class="svc-frame"><video muted loop playsinline preload="none" poster="/media/escena-seo.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-seo.mp4" type="video/mp4" /></video></div>
-          <figcaption class="svc-cap">Ejemplo ilustrativo · de los problemas al plan</figcaption>
+          <div class="svc-frame"><video muted loop playsinline preload="none" poster="/media/escena-crm.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-crm.mp4" type="video/mp4" /></video></div>
+          <figcaption class="svc-cap">Ejemplo animado · datos ficticios</figcaption>
         </figure>
       </article>
 
       <article class="svc" data-i="3" aria-labelledby="svc-t3">
         <div class="svc-text">
           <span class="svc-num" style="--k:0">4</span>
-          <h3 id="svc-t3" style="--k:1">Dashboard de Facturas</h3>
+          <h3 id="svc-t3" style="--k:1">Página Web y SEO</h3>
+          <p style="--k:2">Diseñamos tu página web profesional, rápida y pensada para convertir visitas en clientes, con SEO desde el primer día para que Google te muestre primero.</p>
+          <ul class="svc-pts" style="--k:3"><li>Web profesional</li><li>SEO desde el día 1</li><li>Pensada para convertir</li></ul>
+          <a href="#contacto" class="s2-btn" style="--k:4">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
+        </div>
+        <figure class="svc-media">
+          <div class="svc-frame"><video muted loop playsinline preload="none" poster="/media/escena-web.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-web.mp4" type="video/mp4" /></video></div>
+          <figcaption class="svc-cap">Ejemplo ilustrativo · de la web a la primera posición</figcaption>
+        </figure>
+      </article>
+
+      <article class="svc" data-i="4" aria-labelledby="svc-t4">
+        <div class="svc-text">
+          <span class="svc-num" style="--k:0">5</span>
+          <h3 id="svc-t4" style="--k:1">Dashboard de Facturas</h3>
           <p style="--k:2">Tu facturación automatizada: genera, envía y da seguimiento a facturas sin intervención manual. Con dashboard en tiempo real para el dueño.</p>
           <ul class="svc-pts" style="--k:3"><li>Genera</li><li>Envía</li><li>Da seguimiento</li></ul>
           <a href="#contacto" class="s2-btn" style="--k:4">Lo quiero <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -244,7 +304,8 @@
       <div class="svc-dots" id="svc-dots" role="group" aria-label="Elegir servicio">
         <button class="svc-dot is-active" type="button" aria-label="Agente de WhatsApp"></button>
         <button class="svc-dot" type="button" aria-label="Llamadas Automatizadas"></button>
-        <button class="svc-dot" type="button" aria-label="Auditoría SEO"></button>
+        <button class="svc-dot" type="button" aria-label="CRM y Marcador Predictivo"></button>
+        <button class="svc-dot" type="button" aria-label="Página Web y SEO"></button>
         <button class="svc-dot" type="button" aria-label="Dashboard de Facturas"></button>
       </div>
     </div>
@@ -290,107 +351,7 @@
         </div>
         <div class="glass-card-body"><p class="glass-card-num">02 — CONTROL</p><h3 class="glass-card-title">Dashboard en tiempo real</h3><p class="glass-card-desc">Todo lo que pasa en tu negocio, desde el celular en segundos.</p></div>
       </div>
-
-      <div class="glass-card">
-        <div class="glass-card-vis">
-          <svg viewBox="0 0 320 200" aria-hidden="true">
-            <rect x="40" y="26" width="240" height="38" rx="19" fill="rgba(245,242,236,.07)" stroke="rgba(245,242,236,.18)"/>
-            <circle cx="62" cy="45" r="7" fill="none" stroke="#9aa3f2" stroke-width="2.2"/><path d="M67 50l6 6" stroke="#9aa3f2" stroke-width="2.2" stroke-linecap="round"/>
-            <rect x="86" y="41" width="92" height="8" rx="4" fill="rgba(245,242,236,.55)"/><rect class="bt-caret" x="184" y="37" width="2" height="16" fill="#9aa3f2"/>
-            <g class="bt-hit">
-              <rect x="40" y="80" width="240" height="44" rx="11" fill="rgba(94,106,210,.2)" stroke="rgba(154,163,242,.55)"/>
-              <path class="bt-star" d="M58 91l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.3 2.8 1-5.9-4.2-4.1 5.9-.8z" fill="#fbbf24"/>
-              <rect x="80" y="91" width="132" height="8" rx="4" fill="rgba(245,242,236,.78)"/><rect x="80" y="106" width="174" height="6" rx="3" fill="rgba(245,242,236,.28)"/>
-            </g>
-            <rect x="40" y="134" width="240" height="26" rx="9" fill="rgba(245,242,236,.04)"/><rect x="54" y="143" width="120" height="7" rx="3.5" fill="rgba(245,242,236,.22)"/>
-            <rect x="40" y="168" width="240" height="22" rx="8" fill="rgba(245,242,236,.025)"/><rect x="54" y="175" width="96" height="7" rx="3.5" fill="rgba(245,242,236,.14)"/>
-          </svg>
-        </div>
-        <div class="glass-card-body"><p class="glass-card-num">03 — PRESENCIA</p><h3 class="glass-card-title">Presencia en Google</h3><p class="glass-card-desc">Web profesional + SEO base incluidos en cada servicio.</p></div>
-      </div>
-
-      <div class="glass-card">
-        <div class="glass-card-vis">
-          <svg viewBox="0 0 320 200" aria-hidden="true">
-            <g fill="rgba(245,242,236,.3)">
-              <circle cx="58" cy="82" r="10"/><path d="M40 122c0-17 8-26 18-26s18 9 18 26z"/>
-              <circle cx="100" cy="82" r="10"/><path d="M82 122c0-17 8-26 18-26s18 9 18 26z"/>
-              <circle cx="142" cy="82" r="10"/><path d="M124 122c0-17 8-26 18-26s18 9 18 26z"/>
-            </g>
-            <path class="bt-flow" d="M172 104h38" stroke="#9aa3f2" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M208 96l10 8-10 8" fill="none" stroke="#9aa3f2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-            <rect class="bt-star" x="232" y="74" width="62" height="62" rx="17" fill="url(#gA)"/>
-            <text x="263" y="114" text-anchor="middle" font-family="Inter,sans-serif" font-size="24" font-weight="700" fill="#fff">IA</text>
-          </svg>
-        </div>
-        <div class="glass-card-body"><p class="glass-card-num">04 — EFICIENCIA</p><h3 class="glass-card-title">Sin contratar personal</h3><p class="glass-card-desc">Los agentes hacen el trabajo de 2–3 personas a fracción del costo.</p></div>
-      </div>
-
-      <div class="glass-card">
-        <div class="glass-card-vis">
-          <svg viewBox="0 0 320 200" aria-hidden="true">
-            <g>
-              <rect class="bt-day" style="--n:0" x="30"  y="64" width="32" height="46" rx="9"/><rect class="bt-day" style="--n:1" x="70"  y="64" width="32" height="46" rx="9"/>
-              <rect class="bt-day" style="--n:2" x="110" y="64" width="32" height="46" rx="9"/><rect class="bt-day" style="--n:3" x="150" y="64" width="32" height="46" rx="9"/>
-              <rect class="bt-day" style="--n:4" x="190" y="64" width="32" height="46" rx="9"/><rect class="bt-day" style="--n:5" x="230" y="64" width="32" height="46" rx="9"/>
-              <rect class="bt-day last" style="--n:6" x="270" y="64" width="32" height="46" rx="9"/>
-            </g>
-            <path d="M279 87l6 6 11-12" fill="none" stroke="#0f0f14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/>
-            <g fill="rgba(245,242,236,.45)" font-family="JetBrains Mono,monospace" font-size="11" text-anchor="middle"><text x="46" y="130">D1</text><text x="86" y="130">D2</text><text x="126" y="130">D3</text><text x="166" y="130">D4</text><text x="206" y="130">D5</text><text x="246" y="130">D6</text><text x="286" y="130">D7</text></g>
-            <text x="160" y="170" text-anchor="middle" fill="rgba(245,242,236,.6)" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="2">SETUP EN UNA SEMANA</text>
-          </svg>
-        </div>
-        <div class="glass-card-body"><p class="glass-card-num">05 — VELOCIDAD</p><h3 class="glass-card-title">Resultados en 7 días</h3><p class="glass-card-desc">Setup completo en una semana. Sin meses de espera ni contratos largos.</p></div>
-      </div>
-
-      <div class="glass-card glass-cta">
-        <p class="glass-card-num" style="margin-bottom:12px">¿LISTO?</p>
-        <h3 class="glass-card-title" style="font-size:22px;margin-bottom:10px">Empieza esta semana</h3>
-        <p class="glass-card-desc" style="margin-bottom:24px">Primera consulta sin costo. Te decimos qué automatizar primero.</p>
-        <a href="#contacto" class="hero-btn hero-btn-primary">Hablar ahora →</a>
-      </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══════════ INFRAESTRUCTURA Y CUMPLIMIENTO ═══════════ -->
-<section id="cumplimiento" class="sec">
-  <div class="wrap">
-    <div class="cmp-head center">
-      <span class="section-label">Infraestructura y cumplimiento</span>
-      <h2 class="serif grad reveal">Cómo llamamos, y por qué se puede auditar</h2>
-      <p class="reveal">Operamos telefonía saliente con infraestructura propia sobre operadores mayoristas licenciados en la Unión Europea. Estas son las reglas con las que trabajamos.</p>
-    </div>
-
-    <!-- Recorrido de una llamada: cada regla se enciende cuando la llamada pasa por ella -->
-    <div class="jr" id="journey">
-      <div class="jr-line" aria-hidden="true"><div class="jr-fill" id="jr-fill"></div></div>
-      <div class="jr-token" id="jr-token" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></div>
-
-      <div class="jr-pill edge">Contacto de la lista del cliente</div>
-
-      <div class="jr-pill phase">Antes de marcar</div>
-      <article class="jr-step"><span class="jr-n">01</span><h4>Base legal antes de marcar</h4><p>Solo contactamos cuando existe una base legal válida bajo el RGPD. El cliente acredita por escrito el origen de cada lista antes de la primera llamada.</p></article>
-      <article class="jr-step right"><span class="jr-n">02</span><h4>Horarios legales por país</h4><p>Marcamos solo dentro de las franjas horarias permitidas en el país de destino, respetando festivos. La configuración es por campaña, no manual.</p></article>
-      <article class="jr-step"><span class="jr-n">03</span><h4>Identificación de llamada propia</h4><p>Solo presentamos numeración asignada a nosotros o a nuestro cliente, con autorización por escrito. Nunca usamos el número de un tercero ni falseamos el identificador.</p></article>
-
-      <div class="jr-pill phase">Durante la llamada</div>
-      <article class="jr-step right"><span class="jr-n">04</span><h4>Grabaciones con aviso y caducidad</h4><p>Se avisa al inicio de la llamada. Se guardan cifradas un máximo de 2 meses y se suprimen antes a petición del interesado.</p></article>
-      <article class="jr-step"><span class="jr-n">05</span><h4>Baja inmediata y permanente</h4><p>Basta con pedirlo durante la llamada. El número entra al momento en nuestra lista de exclusión global y no lo vuelve a marcar ninguna campaña de ningún cliente.</p></article>
-
-      <div class="jr-pill phase">Después</div>
-      <article class="jr-step right"><span class="jr-n">06</span><h4>Trazabilidad de cada llamada</h4><p>Cada intento deja registro, resultado y grabación asociada, que el cliente consulta en su propio panel. Cualquier llamada es reconstruible.</p></article>
-
-      <div class="jr-end">
-        <div class="jr-pill edge">Registro en el panel del cliente</div>
-        <div class="jr-panel" id="jr-panel"><video muted loop playsinline preload="none" poster="/media/escena-panel.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-panel.mp4" type="video/mp4" /></video></div>
-        <p class="svc-cap" style="text-align:left">Ejemplo animado · datos ficticios</p>
-      </div>
-    </div>
-
-    <p class="cmp-foot reveal">
-      <a href="/uso-aceptable">Política de Uso Aceptable</a>
-      · Abusos: <a href="mailto:abuse@ardesku.com">abuse@ardesku.com</a>, respuesta en 24 h laborables.
-    </p>
   </div>
 </section>
 
@@ -400,10 +361,31 @@
     <div class="center" style="gap:12px">
       <span class="section-label">Casos de uso</span>
       <h2 class="serif grad reveal" style="font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:600">Lo que automatizamos</h2>
-      <p class="reveal" style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);max-width:520px;line-height:1.5">Automatizaciones específicas para negocios reales — desde restaurantes hasta clínicas.</p>
+      <p class="reveal" style="font-size:clamp(15px,1.3vw,18px);color:var(--muted);max-width:560px;line-height:1.5">El call center con IA es nuestro foco. Y automatizamos también negocios de todo tipo, desde restaurantes hasta clínicas.</p>
     </div>
 
-    <div class="casos-marquee-wrap reveal">
+    <!-- Nuestro foco: call center -->
+    <article class="focus reveal" aria-labelledby="focus-t">
+      <div class="focus-media">
+        <img src="/media/callcenter.jpg" width="1200" height="800" loading="lazy" decoding="async" alt="Agente de call center con auricular sonriendo a cámara, con otros agentes trabajando detrás" />
+        <span class="focus-badge">Nuestro foco</span>
+        <ul class="focus-tags" aria-label="Sectores en los que operamos"><li>Energía</li><li>Seguros</li><li>Telefonía</li><li>Tarjetas de crédito</li><li>y más sectores</li></ul>
+      </div>
+      <div class="focus-body">
+        <span class="section-label label-glow">Call center con IA</span>
+        <h3 id="focus-t" class="serif">Campañas de llamadas a gran escala</h3>
+        <p>Agentes de voz con IA que llaman, cualifican y agendan. Con tu CRM propio y cada llamada registrada y auditable.</p>
+        <dl class="focus-rows">
+          <div><dt>Mercados</dt><dd>España e Italia, con números locales fijos y móviles de cada país.</dd></div>
+          <div><dt>Italia</dt><dd>Outsourcing de personal: captación de empresas que quieren externalizar su gestión laboral.</dd></div>
+          <div><dt>Clientes</dt><dd><b class="focus-client">KINETICA</b> <span>Italia · outsourcing de personal</span></dd></div>
+        </dl>
+        <a href="#contacto" class="hero-btn hero-btn-primary focus-cta">Quiero una campaña</a>
+      </div>
+    </article>
+
+    <p class="casos-also center reveal">Y también automatizamos</p>
+    <div class="casos-marquee-wrap reveal" style="margin-top:-24px">
       <div class="casos-marquee-track">
         <div class="casos-card"><div class="bento-card"><div class="bento-card-img"><img loading="lazy" decoding="async" width="500" height="420" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=500&h=420&fit=crop" alt="Restaurantes" /></div><div class="bento-card-fog"></div><div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Restaurantes</p><p class="bento-desc">Reservas por WhatsApp, recordatorios automáticos y reseñas post-visita.</p></div></div></div>
         <div class="casos-card"><div class="bento-card"><div class="bento-card-img"><img loading="lazy" decoding="async" width="500" height="420" src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&h=420&fit=crop" alt="Clínicas" /></div><div class="bento-card-fog"></div><div class="bento-card-body"><div class="bento-inner-bg"></div><p class="bento-title">Clínicas &amp; Salud</p><p class="bento-desc">Citas automatizadas, recordatorios de medicamentos y seguimiento por WhatsApp.</p></div></div></div>
@@ -455,10 +437,10 @@
           </div>
           <div class="field"><label for="f-tel">Teléfono / WhatsApp</label><input id="f-tel" type="tel" name="telefono" placeholder="+51 999 999 999" autocomplete="tel" /></div>
           <div class="field"><label for="f-negocio">Tipo de negocio</label>
-            <select id="f-negocio" name="negocio"><option value="" disabled selected>Selecciona tu rubro</option><option>Restaurante / Cafetería</option><option>Clínica / Salud</option><option>Inmobiliaria</option><option>Tienda / Retail</option><option>Servicios profesionales</option><option>Otro</option></select>
+            <select id="f-negocio" name="negocio"><option value="" disabled selected>Selecciona tu rubro</option><option>Call center / Telemarketing</option><option>Restaurante / Cafetería</option><option>Clínica / Salud</option><option>Inmobiliaria</option><option>Tienda / Retail</option><option>Servicios profesionales</option><option>Otro</option></select>
           </div>
           <div class="field"><label for="f-servicio">Servicio de interés</label>
-            <select id="f-servicio" name="servicio"><option value="" disabled selected>¿Qué quieres automatizar?</option><option>Agente WhatsApp</option><option>Llamadas automatizadas</option><option>Auditoría SEO</option><option>Dashboard de facturas</option><option>Todo</option></select>
+            <select id="f-servicio" name="servicio"><option value="" disabled selected>¿Qué quieres automatizar?</option><option>Agente WhatsApp</option><option>Llamadas automatizadas</option><option>CRM y marcador predictivo</option><option>Página web y SEO</option><option>Dashboard de facturas</option><option>Todo</option></select>
           </div>
           <div class="field"><label for="f-mensaje">Cuéntanos más (opcional)</label><textarea id="f-mensaje" name="mensaje" rows="3" placeholder="¿Cuál es el mayor problema en tu operación diaria?"></textarea></div>
 
@@ -512,7 +494,6 @@
   <button class="np-item" type="button" data-target="nosotros"><span class="np-label">Nosotros</span><span class="np-dot"></span></button>
   <button class="np-item" type="button" data-target="servicios"><span class="np-label">Servicios</span><span class="np-dot"></span></button>
   <button class="np-item" type="button" data-target="beneficios"><span class="np-label">Beneficios</span><span class="np-dot"></span></button>
-  <button class="np-item" type="button" data-target="cumplimiento"><span class="np-label">Cumplimiento</span><span class="np-dot"></span></button>
   <button class="np-item" type="button" data-target="casos"><span class="np-label">Casos de uso</span><span class="np-dot"></span></button>
   <button class="np-item" type="button" data-target="contacto"><span class="np-label">Contactar →</span><span class="np-dot"></span></button>
 </nav>
@@ -524,6 +505,54 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L0 24l6.335-1.524A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.52-5.163-1.426l-.371-.22-3.762.905.946-3.668-.242-.384A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
   </a>
 </div>
+
+<!-- ══ Página adicional: Infraestructura y cumplimiento (se abre desde «Llamadas Automatizadas», no se muestra de primeras) ══ -->
+<dialog id="cumplimiento" class="cmp-page" aria-labelledby="cmp-title">
+  <div class="cmp-bar">
+    <button type="button" class="cmp-back" data-cmp-close><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg><span>Volver</span></button>
+    <span class="cmp-bar-t">Llamadas Automatizadas · Cumplimiento</span>
+    <button type="button" class="cmp-x" data-cmp-close aria-label="Cerrar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="wrap cmp-body">
+    <div class="cmp-head center">
+      <span class="section-label">Infraestructura y cumplimiento</span>
+      <h2 id="cmp-title" class="serif grad reveal">Cómo llamamos, y por qué se puede auditar</h2>
+      <p class="reveal">Operamos telefonía saliente con infraestructura propia sobre operadores mayoristas licenciados en la Unión Europea. Estas son las reglas con las que trabajamos.</p>
+    </div>
+
+    <!-- Recorrido de una llamada: cada regla se enciende cuando la llamada pasa por ella -->
+    <div class="jr" id="journey">
+      <div class="jr-line" aria-hidden="true"><div class="jr-fill" id="jr-fill"></div></div>
+      <div class="jr-token" id="jr-token" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></div>
+
+      <div class="jr-pill edge">Contacto de la lista del cliente</div>
+
+      <div class="jr-pill phase">Antes de marcar</div>
+      <article class="jr-step"><span class="jr-n">01</span><h4>Base legal antes de marcar</h4><p>Solo contactamos cuando existe una base legal válida bajo el RGPD. El cliente acredita por escrito el origen de cada lista antes de la primera llamada.</p></article>
+      <article class="jr-step right"><span class="jr-n">02</span><h4>Horarios legales por país</h4><p>Marcamos solo dentro de las franjas horarias permitidas en el país de destino, respetando festivos. La configuración es por campaña, no manual.</p></article>
+      <article class="jr-step"><span class="jr-n">03</span><h4>Numeración local y propia</h4><p>Llamamos con numeración local de cada país, fija o móvil, de operadores internacionales y asignada a nosotros o a nuestro cliente, con autorización por escrito. Nunca usamos el número de un tercero ni falseamos el identificador.</p></article>
+
+      <div class="jr-pill phase">Durante la llamada</div>
+      <article class="jr-step right"><span class="jr-n">04</span><h4>Grabaciones con aviso y caducidad</h4><p>Se avisa al inicio de la llamada. Se guardan cifradas un máximo de 2 meses y se suprimen antes a petición del interesado.</p></article>
+      <article class="jr-step"><span class="jr-n">05</span><h4>Baja inmediata y permanente</h4><p>Basta con pedirlo durante la llamada. El número entra al momento en nuestra lista de exclusión global y no lo vuelve a marcar ninguna campaña de ningún cliente.</p></article>
+
+      <div class="jr-pill phase">Después</div>
+      <article class="jr-step right"><span class="jr-n">06</span><h4>Trazabilidad de cada llamada</h4><p>Cada intento deja registro, resultado y grabación asociada, que el cliente consulta en su propio panel. Cualquier llamada es reconstruible.</p></article>
+
+      <div class="jr-end">
+        <div class="jr-pill edge">Registro en el panel del cliente</div>
+        <div class="jr-panel" id="jr-panel"><video muted loop playsinline preload="none" poster="/media/escena-panel.webp" aria-hidden="true" tabindex="-1"><source src="/media/escena-panel.mp4" type="video/mp4" /></video></div>
+        <p class="svc-cap" style="text-align:left">Ejemplo animado · datos ficticios</p>
+      </div>
+    </div>
+
+    <p class="cmp-foot reveal">
+      <a href="/uso-aceptable">Política de Uso Aceptable</a>
+      · Abusos: <a href="mailto:abuse@ardesku.com">abuse@ardesku.com</a>, respuesta en 24 h laborables.
+    </p>
+    <div class="cmp-back-row"><button type="button" class="s2-btn" data-cmp-close>Volver a Llamadas Automatizadas</button></div>
+  </div>
+</dialog>
 
 <script type="application/json" id="demo-data">{"total":30.74,"result":20.36,"maria":[{"t":1.2,"d":8.24,"words":[{"w":"Hola,","s":0.12},{"w":"buenas","s":0.4},{"w":"tardes,","s":0.69},{"w":"¿hablo","s":1.11},{"w":"con","s":1.43},{"w":"Carlos?","s":1.61},{"w":"Soy","s":2.21},{"w":"María,","s":2.47},{"w":"la","s":3},{"w":"asistente","s":3.1},{"w":"virtual","s":3.58},{"w":"de","s":3.94},{"w":"la","s":4.04},{"w":"clínica","s":4.15},{"w":"dental.","s":4.52},{"w":"Le","s":5.27},{"w":"llamo","s":5.45},{"w":"para","s":5.71},{"w":"recordarle","s":5.9},{"w":"su","s":6.51},{"w":"revisión","s":6.67},{"w":"de","s":7.11},{"w":"este","s":7.18},{"w":"jueves.","s":7.39}]},{"t":12.59,"d":4.48,"words":[{"w":"Claro","s":0.12},{"w":"que","s":0.47},{"w":"sí.","s":0.58},{"w":"Tengo","s":1.05},{"w":"hueco","s":1.37},{"w":"el","s":1.62},{"w":"viernes","s":1.71},{"w":"a","s":2.09},{"w":"las","s":2.15},{"w":"diez","s":2.31},{"w":"y","s":2.51},{"w":"media.","s":2.59},{"w":"¿Le","s":3.28},{"w":"viene","s":3.51},{"w":"bien?","s":3.72}]},{"t":18.97,"d":6.38,"words":[{"w":"Perfecto.","s":0.12},{"w":"Queda","s":1.14},{"w":"anotado:","s":1.39},{"w":"viernes,","s":2.19},{"w":"a","s":2.66},{"w":"las","s":2.76},{"w":"diez","s":2.89},{"w":"y","s":3.07},{"w":"media.","s":3.15},{"w":"Le","s":3.84},{"w":"llegará","s":4},{"w":"un","s":4.37},{"w":"mensaje","s":4.46},{"w":"de","s":4.97},{"w":"confirmación.","s":5.08}]},{"t":27.15,"d":3.09,"words":[{"w":"Gracias","s":0.12},{"w":"a","s":0.58},{"w":"usted,","s":0.63},{"w":"Carlos.","s":0.94},{"w":"¡Que","s":1.61},{"w":"tenga","s":1.85},{"w":"un","s":2.05},{"w":"buen","s":2.14},{"w":"día!","s":2.36}]}],"cliente":[{"t":9.84,"d":2.4,"text":"Ah, sí. Oye, ¿podría ser mejor el viernes?"},{"t":17.42,"d":1.2,"text":"Sí, me va bien."},{"t":25.7,"d":1.1,"text":"Genial, gracias."}]}</script>
 <script src="/assets/site.js" defer></script>

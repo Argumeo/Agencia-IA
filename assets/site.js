@@ -12,7 +12,33 @@
   const deskMQ = matchMedia('(min-width: 900px)');
   const reduce = () => reduceMQ.matches;
   const safe = (name, fn) => { try { return fn(); } catch (err) { console.error('[ardesku] ' + name, err); } };
-  const playVideo = (v) => { if (!v || reduce()) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  /* Vídeos: arrancan solos al verse. Si el navegador no lo permite (ahorro de batería, movimiento reducido…)
+     se muestra un botón «Reproducir» sobre el vídeo, para que nunca quede una imagen muerta. */
+  const PLAY_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>';
+  function tapToPlay(v, show) {
+    const box = v.parentElement;
+    if (!box) return;
+    if (!box.querySelector('.vplay')) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'vplay';
+      b.setAttribute('aria-label', 'Reproducir la animación');
+      b.innerHTML = '<span>' + PLAY_ICON + 'Reproducir</span>';
+      b.addEventListener('click', () => { v.dataset.manual = '1'; v.dataset.want = '1'; const p = v.play(); if (p && p.catch) p.catch(() => {}); });
+      v.addEventListener('playing', () => box.classList.remove('needs-tap'));
+      box.appendChild(b);
+    }
+    box.classList.toggle('needs-tap', show);
+  }
+  const playVideo = (v) => {
+    if (!v) return;
+    v.dataset.want = '1';
+    if (reduce() && v.dataset.manual !== '1') { tapToPlay(v, true); return; }   // movimiento reducido: no arranca solo, pero se puede ver con un toque
+    const p = v.play();
+    if (p && p.catch) p.catch((err) => { if (err && err.name === 'NotAllowedError') tapToPlay(v, true); });
+    setTimeout(() => { if (v.dataset.want === '1' && v.paused) tapToPlay(v, true); }, 1000);   // algunos móviles no rechazan la promesa: simplemente no arrancan
+  };
+  const stopVideo = (v) => { if (!v) return; v.dataset.want = '0'; v.pause(); };
 
   /* ── Menú a pantalla completa ── */
   const overlay = $('#nav-fullscreen');
@@ -40,7 +66,7 @@
   /* ── Elementos de scroll ── */
   const navbar = $('#navbar');
   const hero = $('#hero');
-  const navSections = [['hero', true, true], ['nosotros', false], ['servicios', false], ['beneficios', true], ['cumplimiento', false], ['casos', false], ['contacto', true]]
+  const navSections = [['hero', true, true], ['nosotros', false], ['servicios', false], ['beneficios', true], ['casos', false], ['contacto', true]]
     .map(([id, dark, isHero]) => ({ el: document.getElementById(id), dark, isHero: !!isHero })).filter((s) => s.el);
 
   function updateNav() {
@@ -84,7 +110,7 @@
     svcActive = i;
     svcs.forEach((s, k) => s.classList.toggle('is-active', k === i));
     dots.forEach((d, k) => d.classList.toggle('is-active', k === i));
-    svcVideos.forEach((v, k) => { if (!v) return; if (k === i && svcVisible) playVideo(v); else v.pause(); });
+    svcVideos.forEach((v, k) => { if (!v) return; if (k === i && svcVisible) playVideo(v); else stopVideo(v); });
   }
   function updateSvc() {
     if (!deskMQ.matches) return;
@@ -95,14 +121,14 @@
   safe('servicios', () => {
     new IntersectionObserver((es) => es.forEach((e) => {
       svcVisible = e.isIntersecting;
-      if (deskMQ.matches) svcVideos.forEach((v, k) => { if (!v) return; if (svcVisible && k === svcActive) playVideo(v); else v.pause(); });
+      if (deskMQ.matches) svcVideos.forEach((v, k) => { if (!v) return; if (svcVisible && k === svcActive) playVideo(v); else stopVideo(v); });
     })).observe(svcWrap);
 
     // móvil: cada vídeo se reproduce solo mientras se ve
     const mobileIO = new IntersectionObserver((es) => es.forEach((e) => {
       if (deskMQ.matches) return;
       const v = $('video', e.target);
-      if (e.isIntersecting) playVideo(v); else v.pause();
+      if (e.isIntersecting) playVideo(v); else stopVideo(v);
     }), { threshold: 0.35 });
     $$('.svc-frame').forEach((f) => mobileIO.observe(f));
 
@@ -111,10 +137,12 @@
       const top = svcWrap.getBoundingClientRect().top + scrollY + ((i + 0.5) / svcs.length) * total;
       scrollTo({ top, behavior: reduce() ? 'auto' : 'smooth' });
     }));
-    deskMQ.addEventListener('change', () => { svcActive = -1; svcVideos.forEach((v) => v && v.pause()); updateSvc(); });
+    deskMQ.addEventListener('change', () => { svcActive = -1; svcVideos.forEach((v) => stopVideo(v)); updateSvc(); });
   });
 
-  /* ── Cumplimiento: el recorrido de una llamada ── */
+  /* ── Cumplimiento: el recorrido de una llamada (vive en la página adicional «Infraestructura y cumplimiento») ── */
+  const cmp = $('#cumplimiento');
+  const cmpIsOpen = () => !!(cmp && cmp.open);
   const jr = $('#journey');
   const jrFill = $('#jr-fill');
   const jrToken = $('#jr-token');
@@ -125,6 +153,7 @@
   const jrEndPill = $('.jr-pill', jrEnd);
   const jrPanel = $('#jr-panel');
   function updateJourney() {
+    if (!cmpIsOpen()) return;
     const r = jr.getBoundingClientRect();
     const maxY = jrEnd.offsetTop + jrEndPill.offsetTop + jrEndPill.offsetHeight / 2;   // la línea acaba en "Registro en el panel"
     jrLine.style.bottom = 'auto';
@@ -139,7 +168,7 @@
   }
   safe('panel-video', () => {
     const v = $('video', jrPanel);
-    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playVideo(v); else v.pause(); }), { threshold: 0.3 }).observe(jrPanel);
+    new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) playVideo(v); else stopVideo(v); }), { threshold: 0.3 }).observe(jrPanel);
   });
 
   /* ── Un único manejador de scroll (con rAF) ── */
@@ -155,6 +184,39 @@
   addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll);
   onScroll();
+
+  /* ── Infraestructura y cumplimiento: página adicional que solo se abre al pulsar el botón de «Llamadas Automatizadas» ── */
+  function cmpOpen(fromHistory) {
+    if (!cmp || cmpIsOpen()) return;
+    if (typeof cmp.showModal === 'function') cmp.showModal(); else cmp.setAttribute('open', '');
+    document.body.classList.add('cmp-open');
+    cmp.scrollTop = 0;
+    if (!fromHistory) history.pushState({ cmp: 1 }, '', '#cumplimiento');
+    requestAnimationFrame(() => safe('journey', updateJourney));
+  }
+  function cmpHide() {
+    if (!cmpIsOpen()) return;
+    if (typeof cmp.close === 'function') cmp.close(); else cmp.removeAttribute('open');
+    document.body.classList.remove('cmp-open');
+    if (location.hash === '#cumplimiento') history.replaceState(null, '', location.pathname + location.search);
+  }
+  function cmpClose() {
+    if (!cmpIsOpen()) return;
+    if (history.state && history.state.cmp) history.back(); else cmpHide();   // si la abrimos nosotros, «atrás» la cierra (popstate)
+  }
+  safe('cumplimiento', () => {
+    if (!cmp) return;
+    $$('a[href="#cumplimiento"]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); cmpOpen(); }));
+    $$('[data-cmp-close]', cmp).forEach((b) => b.addEventListener('click', cmpClose));
+    cmp.addEventListener('cancel', (e) => { e.preventDefault(); cmpClose(); });          // tecla Escape
+    cmp.addEventListener('close', () => document.body.classList.remove('cmp-open'));
+    cmp.addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('popstate', () => {
+      const want = !!(history.state && history.state.cmp) || location.hash === '#cumplimiento';
+      if (want && !cmpIsOpen()) cmpOpen(true); else if (!want && cmpIsOpen()) cmpHide();
+    });
+    if (location.hash === '#cumplimiento') cmpOpen(true);
+  });
 
   /* ── Relojes de cada país (horario legal por país) ── */
   safe('relojes', () => {
@@ -193,7 +255,7 @@
     const lc = $('#lc');
     const data = JSON.parse($('#demo-data').textContent);
     const chat = $('#lc-chat'), wave = $('#lc-wave'), pill = $('#lc-pill'), pillT = $('#lc-pill-t'), res = $('#lc-res');
-    const btn = $('#lc-play'), btnT = $('#lc-btn-t'), icPlay = $('#lc-ic-play'), icStop = $('#lc-ic-stop'), audio = $('#lc-audio');
+    const btn = $('#lc-play'), btnT = $('#lc-btn-t'), btnS = $('#lc-btn-s'), ring = $('#lc-ring'), icPlay = $('#lc-ic-play'), icStop = $('#lc-ic-stop'), audio = $('#lc-audio');
 
     const N = 36;
     const bars = [];
@@ -284,6 +346,11 @@
       raf = 0;
       if (mode === 'silent' && clock() >= LOOP_END) { reset(); base = performance.now(); }
       const t = clock();
+      if (mode === 'audio') {      // anillo de progreso y tiempo en el botón
+        const dur = audio.duration > 0 ? audio.duration : data.total;
+        ring.style.strokeDashoffset = String(100 - 100 * Math.min(1, t / dur));
+        setSub('Reproduciendo · ' + fmt(t) + ' / ' + fmt(dur));
+      }
       let speaker = null;
       for (const e of ev) {
         if (t >= e.t - 0.04 && !e.el) mkMsg(e);
@@ -312,7 +379,16 @@
     const stopLoop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
 
     // Botón de audio: solo existe si el navegador puede reproducir el mp3
-    const setBtn = (on) => { btn.setAttribute('aria-pressed', String(on)); btnT.textContent = on ? 'Detener' : 'Escuchar a María'; icPlay.hidden = on; icStop.hidden = !on; };
+    const SUB = 'Llamada de demostración · 0:31';
+    const fmt = (s) => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    let shownSub = '';
+    const setSub = (txt) => { if (txt !== shownSub) { shownSub = txt; btnS.textContent = txt; } };
+    const setBtn = (on) => {
+      btn.setAttribute('aria-pressed', String(on));
+      btnT.textContent = on ? 'Detener' : 'Escuchar a María';
+      icPlay.toggleAttribute('hidden', on); icStop.toggleAttribute('hidden', !on);   // son SVG: no tienen la propiedad .hidden
+      if (!on) { setSub(SUB); ring.style.strokeDashoffset = '100'; }
+    };
     function stopAudio() { audio.pause(); audio.currentTime = 0; mode = 'silent'; setBtn(false); reset(); base = performance.now(); if (reduce()) staticFinal(); }
     if (audio.canPlayType && audio.canPlayType('audio/mpeg')) btn.hidden = false;
     // Empieza a descargar el audio (300 KB) solo cuando el usuario se acerca al botón: el clic responde al instante
