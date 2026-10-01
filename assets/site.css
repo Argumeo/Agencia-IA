@@ -131,6 +131,8 @@ body {
 .hero-wordmark { font-family: 'Playfair Display', serif; font-weight: 500; font-size: clamp(15px, 1.6vw, 20px); color: rgba(245,242,236,.7); letter-spacing: .12em; text-transform: uppercase; }
 .hero-tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; font-weight: 500; color: #8f98f0; letter-spacing: .1em; text-transform: uppercase; }
 .hero-tag::before { content: ''; width: 24px; height: 1px; background: currentColor; }
+/* Textos con versión corta para móvil: .t-l = largo (escritorio), .t-s = corto (móvil) */
+.t-s { display: none; }
 .hero-headline { font-family: 'Playfair Display', serif; font-weight: 600; color: var(--on-dark); font-size: clamp(38px, 5vw, 68px); line-height: 1.06; letter-spacing: -.012em; }
 .hero-headline .w { display: inline-block; opacity: 0; transform: translateY(.45em); filter: blur(8px); animation: word-in 1s var(--ease) forwards; animation-delay: calc(.35s + var(--i) * .1s); }
 .hero-headline .gi { font-style: italic; background: linear-gradient(100deg, #c9cdfb, #8f98f0 55%, #6f7be0); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .04em; }
@@ -151,14 +153,25 @@ body {
 html:not(.js) .lc-wrap { display: none; }
 .lc-wrap { width: 100%; max-width: 480px; margin-inline: auto; }
 /* Selector de agente: solo se ve una demo a la vez */
-.lc-sw { position: relative; display: grid; grid-template-columns: 1fr 1fr; padding: 4px; margin-bottom: 10px; border-radius: 999px; background: rgba(245,242,236,.07); border: 1px solid rgba(245,242,236,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-.lc-sw::before { content: ''; position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: var(--bg); box-shadow: 0 6px 18px rgba(0,0,0,.35); transition: transform .45s var(--ease); }
+.lc-card { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; padding: 14px; border-radius: 26px; background: rgba(245,242,236,.06); border: 1px solid rgba(245,242,236,.13); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.lc-card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.lc-card-l { padding-left: 4px; font: 500 10.5px var(--mono); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; color: rgba(245,242,236,.6); }
+.lc-sw { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 3px; margin-left: auto; border-radius: 999px; background: rgba(245,242,236,.07); border: 1px solid rgba(245,242,236,.14); }
+.lc-sw::before { content: ''; position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px); border-radius: 999px; background: var(--bg); box-shadow: 0 6px 18px rgba(0,0,0,.35); transition: transform .45s var(--ease); }
 .lc-sw[data-on="anna"]::before { transform: translateX(100%); }
-.lc-sw-b { position: relative; z-index: 1; display: block; height: 40px; padding: 0 10px; border-radius: 999px; line-height: 40px; text-align: center; white-space: nowrap; color: rgba(245,242,236,.72); transition: color .3s; -webkit-tap-highlight-color: transparent; }
-.lc-sw-b b { font-size: 14.5px; font-weight: 600; }
-.lc-sw-b span { margin-left: 7px; font-size: 12px; opacity: .75; }
+.lc-sw-b { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 7px; height: 34px; padding: 0 15px 0 9px; border-radius: 999px; white-space: nowrap; color: rgba(245,242,236,.72); transition: color .3s; -webkit-tap-highlight-color: transparent; }
+.lc-sw-b b { font-size: 14px; font-weight: 600; }
 .lc-sw-b[aria-pressed="true"] { color: var(--fg); }
 .lc-sw-b:not([aria-pressed="true"]):hover { color: var(--on-dark); }
+/* Banderas dibujadas: se ven igual en cualquier móvil (no dependen del emoji del sistema) */
+.fl { flex: none; width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(128,128,140,.45); }
+.fl-es { background: linear-gradient(#c8102e 0 27%, #f6c60d 27% 73%, #c8102e 73%); }
+.fl-it { background: linear-gradient(90deg, #128a45 0 33.4%, #f7f5ef 33.4% 66.6%, #cf2b37 66.6%); }
+.lc-prog { display: flex; align-items: center; gap: 10px; padding: 0 6px 2px; font: 500 10.5px var(--mono); font-variant-numeric: tabular-nums; color: rgba(245,242,236,.6); }
+.lc-prog[hidden] { display: none; }
+.lc-prog-w { flex: 1; min-width: 0; height: 18px; display: flex; align-items: center; gap: 2px; }
+.lc-prog-w i { flex: 1; height: 100%; border-radius: 2px; background: rgba(154,163,242,.38); transform: scaleY(var(--h, .5)); transition: background .25s; }
+.lc-prog-w i.on { background: #fff; }
 .lc {
   position: relative; border-radius: 28px; padding: 20px; background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.03));
   border: 1px solid rgba(245,242,236,.12); box-shadow: 0 40px 90px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.09); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
@@ -205,8 +218,7 @@ html:not(.js) .lc-wrap { display: none; }
 .lc-res-ic { flex: none; width: 34px; height: 34px; border-radius: 10px; background: var(--ok); display: grid; place-items: center; color: #0f0f14; }
 .lc-res b { display: block; font-size: 14.5px; }
 .lc-res span { font-size: 12.5px; color: var(--on-dark-muted); }
-.lc-ctl { margin-bottom: 14px; }
-.lc-ctl:has(.lc-btn[hidden]) { margin-bottom: 4px; }
+.lc-ctl:has(.lc-btn[hidden]) { display: none; }
 .lc-btn[hidden] { display: none; }
 .lc-btn {
   position: relative; display: flex; align-items: center; gap: 14px; width: 100%; min-height: 72px; padding: 12px 20px 12px 12px; border-radius: 999px; text-align: left; isolation: isolate;
@@ -215,6 +227,7 @@ html:not(.js) .lc-wrap { display: none; }
   transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .3s;
   -webkit-tap-highlight-color: transparent;
 }
+.lc-card .lc-btn { min-height: 66px; box-shadow: 0 12px 30px rgba(94,106,210,.42), inset 0 1px 0 rgba(255,255,255,.3); }
 /* El brillo se mueve con background-position (no con transform): así no hace falta recortar el botón y el halo del icono no sale cortado */
 .lc-btn::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.26) 50%, transparent 60%) no-repeat; background-size: 250% 100%; background-position: 170% 0; animation: lc-shine 4.5s ease-in-out infinite; }
 @keyframes lc-shine { 0%, 55% { background-position: 170% 0; } 100% { background-position: -70% 0; } }
@@ -565,6 +578,9 @@ form.cform { display: flex; flex-direction: column; gap: 24px; }
   .btn-clientes, .btn-book { display: none; }
   .hero-wrap { padding-top: 96px; padding-bottom: 56px; gap: 26px; }
   .hero-inner { gap: 18px; }
+  /* en móvil «Ardesku» ya está en el menú: no se repite encima del titular, y la etiqueta y el texto van en su versión corta */
+  .hero-wordmark, .t-l { display: none; } .t-s { display: inline; }
+  .hero-tag { white-space: nowrap; }
   .hero-btn { width: 100%; justify-content: center; height: 46px; }
   /* los dos botones del inicio: en una fila y más pequeños (si no caben, pasan a dos filas) */
   .hero-btns { gap: 8px; }
@@ -575,6 +591,7 @@ form.cform { display: flex; flex-direction: column; gap: 24px; }
   .casos-card { width: clamp(240px, 78vw, 300px); }
   .nav-link-item a { padding: 16px 28px; }
   .lc { padding: 16px; border-radius: 24px; } .lc-chat { height: 244px; }
+  .lc-card { padding: 12px; border-radius: 24px; } .lc-eq { display: none; }   /* el progreso de la tarjeta ya hace de onda */
   .lc-pill { font-size: 10px; padding: 5px 9px; gap: 6px; } .lc-who span { font-size: 12px; }
   .focus { border-radius: 22px; } .focus-cta { width: 100%; }
   .cmp-body { padding-top: 40px; padding-bottom: 64px; }
@@ -587,7 +604,7 @@ form.cform { display: flex; flex-direction: column; gap: 24px; }
 }
 @media (max-width: 340px) {
   .hero-btns .hero-btn { padding: 0 8px; font-size: 11.5px; }
-  .lc-eq { display: none; } .lc-sw-b span { margin-left: 5px; font-size: 11px; }
+  .lc-eq, .lc-card-l { display: none; }
 }
 /* Portátiles con poca altura: la demo se compacta para que el inicio quepa en la primera pantalla */
 @media (min-width: 980px) and (max-height: 800px) {

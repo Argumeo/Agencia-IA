@@ -48,7 +48,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:ital,opsz,wght@0,14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" /></noscript>
   <!-- ?v= : subirlo al cambiar site.css o site.js; sin él, el móvil mezcla el HTML nuevo con los estilos viejos que tiene en caché -->
-  <link rel="stylesheet" href="/assets/site.css?v=20261002" />
+  <link rel="stylesheet" href="/assets/site.css?v=20261003" />
   <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -85,12 +85,12 @@
   <div class="hero-wrap">
     <div class="hero-inner">
       <p class="hero-wordmark he he-1">Ardes<em>ku</em></p>
-      <p class="hero-tag he he-2">Agencia de Inteligencia Artificial · Lima, Perú</p>
+      <p class="hero-tag he he-2">Agencia de <span class="t-l">Inteligencia Artificial</span><span class="t-s">IA</span> · Lima, Perú</p>
       <h1 class="hero-headline"><span class="w" style="--i:0">Tu</span> <span class="w" style="--i:1">negocio</span> <span class="w" style="--i:2">en</span><br /><span class="w gi" style="--i:3">piloto</span> <span class="w gi" style="--i:4">automático.</span></h1>
       <p class="hero-sub he he-4">
         Diseñamos agentes de IA que atienden clientes, generan ventas y
-        optimizan cada operación — para que tu equipo se enfoque en lo que
-        realmente mueve tu negocio hacia adelante.
+        optimizan cada operación<span class="t-l"> — para que tu equipo se enfoque en lo que
+        realmente mueve tu negocio hacia adelante.</span><span class="t-s"> de tu negocio.</span>
       </p>
       <div class="hero-btns he he-5">
         <a href="#servicios" class="hero-btn hero-btn-primary">Ver qué automatizamos</a>
@@ -101,9 +101,14 @@
     <!-- Demo: una llamada de María (español) o de Anna (italiano). Solo se ve una: el selector cambia entre ellas -->
     <div class="lc-wrap he he-6">
       <p class="sr-only">Demostración animada de dos agentes de voz con IA. María, en español, llama a un cliente para recordarle una cita: el cliente pide cambiarla al viernes, María la reprograma a las 10:30 y queda registrada en el panel. Anna, en italiano, llama a una empresa para ofrecer la externalización de la gestión de personal y deja agendada la llamada de un consultor para un análisis gratuito.</p>
-      <div class="lc-sw" id="lc-sw" role="group" aria-label="Elegir qué agente escuchar" data-on="maria">
-        <button type="button" class="lc-sw-b" data-agent="maria" aria-pressed="true"><b>María</b><span>Español</span></button>
-        <button type="button" class="lc-sw-b" data-agent="anna" aria-pressed="false"><b>Anna</b><span>Italiano</span></button>
+      <!-- Reproductor: selector (bandera + nombre), botón y progreso en una sola tarjeta -->
+      <div class="lc-card">
+      <div class="lc-card-top">
+        <span class="lc-card-l" aria-hidden="true">Demo de voz</span>
+        <div class="lc-sw" id="lc-sw" role="group" aria-label="Elegir qué agente escuchar" data-on="maria">
+          <button type="button" class="lc-sw-b" data-agent="maria" aria-pressed="true"><i class="fl fl-es" aria-hidden="true"></i><b>María</b><span class="sr-only"> (español)</span></button>
+          <button type="button" class="lc-sw-b" data-agent="anna" aria-pressed="false"><i class="fl fl-it" aria-hidden="true"></i><b>Anna</b><span class="sr-only"> (italiano)</span></button>
+        </div>
       </div>
       <div class="lc-ctl">
         <button class="lc-btn" id="lc-play" type="button" aria-pressed="false" hidden>
@@ -114,6 +119,8 @@
           <span class="lc-btn-tx"><b id="lc-btn-t">Escuchar a María</b><small id="lc-btn-s">Llamada de demostración · 0:31</small></span>
           <span class="lc-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
         </button>
+      </div>
+      <div class="lc-prog" id="lc-prog" aria-hidden="true" hidden><span id="lc-prog-t">0:00</span><span class="lc-prog-w" id="lc-prog-w"></span><span id="lc-prog-d">0:31</span></div>
       </div>
       <div class="lc is-dialing" id="lc" data-agent="maria" aria-hidden="true">
         <div class="lc-top">
@@ -569,6 +576,6 @@
 </dialog>
 
 <script type="application/json" id="demo-data">{"agents":[{"id":"maria","name":"María","ini":"M","role":"Agente de voz IA","audio":"/media/maria-demo.mp3","sub":"Llamada de demostración · 0:31","resT":"Cita reprogramada","resS":"Viernes 10:30 · registrada en el panel","total":30.74,"result":20.36,"lines":[{"t":1.2,"d":8.24,"words":[{"w":"Hola,","s":0.12},{"w":"buenas","s":0.4},{"w":"tardes,","s":0.69},{"w":"¿hablo","s":1.11},{"w":"con","s":1.43},{"w":"Carlos?","s":1.61},{"w":"Soy","s":2.21},{"w":"María,","s":2.47},{"w":"la","s":3},{"w":"asistente","s":3.1},{"w":"virtual","s":3.58},{"w":"de","s":3.94},{"w":"la","s":4.04},{"w":"clínica","s":4.15},{"w":"dental.","s":4.52},{"w":"Le","s":5.27},{"w":"llamo","s":5.45},{"w":"para","s":5.71},{"w":"recordarle","s":5.9},{"w":"su","s":6.51},{"w":"revisión","s":6.67},{"w":"de","s":7.11},{"w":"este","s":7.18},{"w":"jueves.","s":7.39}]},{"t":12.59,"d":4.48,"words":[{"w":"Claro","s":0.12},{"w":"que","s":0.47},{"w":"sí.","s":0.58},{"w":"Tengo","s":1.05},{"w":"hueco","s":1.37},{"w":"el","s":1.62},{"w":"viernes","s":1.71},{"w":"a","s":2.09},{"w":"las","s":2.15},{"w":"diez","s":2.31},{"w":"y","s":2.51},{"w":"media.","s":2.59},{"w":"¿Le","s":3.28},{"w":"viene","s":3.51},{"w":"bien?","s":3.72}]},{"t":18.97,"d":6.38,"words":[{"w":"Perfecto.","s":0.12},{"w":"Queda","s":1.14},{"w":"anotado:","s":1.39},{"w":"viernes,","s":2.19},{"w":"a","s":2.66},{"w":"las","s":2.76},{"w":"diez","s":2.89},{"w":"y","s":3.07},{"w":"media.","s":3.15},{"w":"Le","s":3.84},{"w":"llegará","s":4},{"w":"un","s":4.37},{"w":"mensaje","s":4.46},{"w":"de","s":4.97},{"w":"confirmación.","s":5.08}]},{"t":27.15,"d":3.09,"words":[{"w":"Gracias","s":0.12},{"w":"a","s":0.58},{"w":"usted,","s":0.63},{"w":"Carlos.","s":0.94},{"w":"¡Que","s":1.61},{"w":"tenga","s":1.85},{"w":"un","s":2.05},{"w":"buen","s":2.14},{"w":"día!","s":2.36}]}],"cliente":[{"t":9.84,"d":2.4,"text":"Ah, sí. Oye, ¿podría ser mejor el viernes?"},{"t":17.42,"d":1.2,"text":"Sí, me va bien."},{"t":25.7,"d":1.1,"text":"Genial, gracias."}]},{"id":"anna","name":"Anna","ini":"A","role":"Agente de voz IA · italiano","audio":"/media/anna-demo.mp3","sub":"Demostración en italiano · 0:32","resT":"Análisis gratuito agendado","resS":"Mañana, 10:00–12:00 · registrado en el panel","total":31.83,"result":23.2,"lines":[{"t":1.2,"d":8.15,"words":[{"w":"Buongiorno","s":0.12},{"w":"Marco,","s":0.6},{"w":"sono","s":1.12},{"w":"Anna,","s":1.56},{"w":"l'assistente","s":2},{"w":"virtuale","s":2.51},{"w":"di","s":3.07},{"w":"una","s":3.15},{"w":"rete","s":3.31},{"w":"d'imprese","s":3.52},{"w":"che","s":4.3},{"w":"si","s":4.5},{"w":"occupa","s":4.61},{"w":"della","s":4.96},{"w":"gestione","s":5.18},{"w":"del","s":5.61},{"w":"personale.","s":5.76},{"w":"Le","s":6.67},{"w":"rubo","s":6.84},{"w":"solo","s":7.06},{"w":"un","s":7.25},{"w":"minuto?","s":7.34}]},{"t":11.2,"d":8.2,"words":[{"w":"Buste","s":0.12},{"w":"paga,","s":0.47},{"w":"contributi","s":0.72},{"w":"e","s":1.2},{"w":"scadenze","s":1.25},{"w":"passano","s":1.64},{"w":"a","s":1.97},{"w":"noi.","s":2.04},{"w":"I","s":2.54},{"w":"suoi","s":2.66},{"w":"dipendenti","s":2.79},{"w":"restano","s":3.26},{"w":"i","s":3.59},{"w":"suoi,","s":3.67},{"w":"e","s":4.16},{"w":"Lei","s":4.28},{"w":"riceve","s":4.54},{"w":"una","s":4.88},{"w":"fattura","s":5.04},{"w":"unica.","s":5.46},{"w":"Le","s":5.97},{"w":"va","s":6.11},{"w":"un'analisi","s":6.22},{"w":"gratuita,","s":6.66},{"w":"senza","s":7.06},{"w":"impegno?","s":7.3}]},{"t":22.09,"d":4.76,"words":[{"w":"Perfetto.","s":0.12},{"w":"È","s":0.96},{"w":"fissato:","s":1.11},{"w":"domani","s":1.57},{"w":"mattina,","s":1.83},{"w":"tra","s":2.19},{"w":"le","s":2.34},{"w":"dieci","s":2.43},{"w":"e","s":2.66},{"w":"le","s":2.74},{"w":"dodici,","s":2.85},{"w":"la","s":3.23},{"w":"richiama","s":3.34},{"w":"un","s":3.67},{"w":"consulente.","s":3.77}]},{"t":28.75,"d":2.58,"words":[{"w":"Grazie","s":0.12},{"w":"a","s":0.63},{"w":"Lei,","s":0.75},{"w":"Marco.","s":0.96},{"w":"Buona","s":1.47},{"w":"giornata!","s":1.75}]}],"cliente":[{"t":9.75,"d":1.1,"text":"Sì, mi dica."},{"t":19.74,"d":2,"text":"Va bene. Meglio domani mattina."},{"t":27.2,"d":1.2,"text":"Benissimo, grazie."}]}]}</script>
-<script src="/assets/site.js?v=20261002" defer></script>
+<script src="/assets/site.js?v=20261003" defer></script>
 </body>
 </html>

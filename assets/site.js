@@ -116,8 +116,13 @@
   }
 
   const wa = $('#wa-float');
-  function updateWA() { if (hero.getBoundingClientRect().bottom < innerHeight * 0.6) wa.classList.add('visible'); }
-  setTimeout(() => wa.classList.add('visible'), 3000);
+  // En móvil el botón taparía el reproductor del inicio: solo se ve al pasar el hero y se esconde al volver arriba. En escritorio no tapa nada: sale a los 3 s
+  const waMovil = matchMedia('(max-width: 767px)');
+  function updateWA() {
+    const past = hero.getBoundingClientRect().bottom < innerHeight * 0.6;
+    if (waMovil.matches) wa.classList.toggle('visible', past); else if (past) wa.classList.add('visible');
+  }
+  setTimeout(() => { if (!waMovil.matches) wa.classList.add('visible'); }, 3000);
 
   /* ── Servicios: escenas en scroll fijo (escritorio) o apiladas (móvil) ── */
   const svcWrap = $('#svc-wrap');
@@ -393,7 +398,8 @@
       if (mode === 'audio') {      // anillo de progreso y tiempo en el botón
         const dur = audio.duration > 0 ? audio.duration : A.total;
         ring.style.strokeDashoffset = String(100 - 100 * Math.min(1, t / dur));
-        setSub('Reproduciendo · ' + fmt(t) + ' / ' + fmt(dur));
+        setSub('Reproduciendo…');   // el tiempo va en la barra de progreso de la tarjeta
+        setProg(t, dur);
       }
       let speaker = null;
       for (const e of A.ev) {
@@ -427,11 +433,23 @@
     const fmt = (sec) => Math.floor(sec / 60) + ':' + String(Math.floor(sec % 60)).padStart(2, '0');
     let shownSub = '';
     const setSub = (txt) => { if (txt !== shownSub) { shownSub = txt; btnS.textContent = txt; } };
+    // Barra de progreso de la tarjeta: las barritas se van encendiendo y el tiempo avanza a la izquierda
+    const prog = $('#lc-prog'), progT = $('#lc-prog-t'), progD = $('#lc-prog-d'), progW = $('#lc-prog-w');
+    const PN = 44, pbars = [];
+    for (let i = 0; i < PN; i++) { const b = document.createElement('i'); b.style.setProperty('--h', (0.28 + 0.72 * Math.abs(Math.sin(i * 1.7) * Math.sin(i * 0.53 + 1))).toFixed(2)); progW.appendChild(b); pbars.push(b); }
+    let shownK = 0, shownT = '0:00';
+    function setProg(t, dur) {
+      const k = Math.round(PN * Math.min(1, t / dur));
+      if (k !== shownK) { shownK = k; pbars.forEach((b, i) => b.classList.toggle('on', i < k)); }
+      const txt = fmt(t);
+      if (txt !== shownT) { shownT = txt; progT.textContent = txt; }
+    }
+    const showCtl = (on) => { btn.hidden = !on; prog.hidden = !on; };
     const setBtn = (on) => {
       btn.setAttribute('aria-pressed', String(on));
       btnT.textContent = on ? 'Detener' : 'Escuchar a ' + A.name;
       icPlay.toggleAttribute('hidden', on); icStop.toggleAttribute('hidden', !on);   // son SVG: no tienen la propiedad .hidden
-      if (!on) { setSub(A.sub); ring.style.strokeDashoffset = '100'; }
+      if (!on) { setSub(A.sub); ring.style.strokeDashoffset = '100'; setProg(0, 1); }
     };
     const rewind = () => { try { audio.currentTime = 0; } catch (err) { /* Safari antiguo: aún no hay metadatos, ya está en 0 */ } };
     function stopAudio() { audio.pause(); rewind(); mode = 'silent'; setBtn(false); reset(); base = performance.now(); if (reduce()) staticFinal(); }
@@ -439,11 +457,11 @@
       reset();
       mode = 'audio';
       rewind();
-      try { await audio.play(); } catch (err) { mode = 'silent'; base = performance.now(); if (audio.error) btn.hidden = true; if (reduce()) staticFinal(); return; }
+      try { await audio.play(); } catch (err) { mode = 'silent'; base = performance.now(); if (audio.error) showCtl(false); if (reduce()) staticFinal(); return; }
       setBtn(true);
       startLoop();
     }
-    if (canPlay) btn.hidden = false;
+    if (canPlay) showCtl(true);
     // Empieza a descargar el audio (300 KB) solo cuando el usuario se acerca al botón: el clic responde al instante
     const warm = () => { if (audio.preload !== 'auto') { audio.preload = 'auto'; audio.load(); } };
     btn.addEventListener('pointerenter', warm, { once: true });
@@ -471,7 +489,8 @@
       $('#lc-ini').textContent = A.ini; $('#lc-name').textContent = A.name; $('#lc-role').textContent = A.role;
       $('#lc-res-t').textContent = A.resT; $('#lc-res-s').textContent = A.resS;
       audio.src = A.audio;
-      if (canPlay) btn.hidden = false;
+      if (canPlay) showCtl(true);
+      progD.textContent = (A.sub.match(/\d+:\d\d/) || [fmt(A.total)])[0];
       setBtn(false);
       reset();
       base = performance.now();
