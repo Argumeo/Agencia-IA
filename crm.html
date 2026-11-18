@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM Ardesku — Panel para call center con agente de IA</title>
+  <meta name="description" content="CRM Ardesku: campañas, agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada. Todo en un panel con acceso por usuario." />
+  <meta name="theme-color" content="#101015" />
+  <link rel="canonical" href="https://ardesku.com/crm" />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ardesku" />
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:title" content="CRM Ardesku — tu call center y tu agente de IA en un solo panel" />
+  <meta property="og:description" content="Campañas, agente de voz con IA, marcador en el navegador, grabaciones con transcripción y supervisor en vivo." />
+  <meta property="og:url" content="https://ardesku.com/crm" />
+  <meta property="og:image" content="https://ardesku.com/media/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://ardesku.com/media/og.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231a1a18'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23f5f2ec' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CRM Ardesku",
+    "url": "https://ardesku.com/crm",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "CRM para call center con agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada.",
+    "inLanguage": ["es", "it", "ca"],
+    "provider": { "@type": "Organization", "name": "Ardesku", "url": "https://ardesku.com" }
+  }
+  </script>
+  <style>
+    :root{
+      --fg:#1a1a18; --bg:#f5f2ec; --ink:#101015; --muted:rgba(26,26,24,.6); --border:rgba(26,26,24,.1); --card:rgba(26,26,24,.04);
+      --mono:'JetBrains Mono',ui-monospace,monospace; --ease:cubic-bezier(.16,1,.3,1);
+      /* colores del propio CRM */
+      --navy:#141d33; --navy2:#1f2a44; --or:#f0592a; --or-soft:#fdeee8; --ok:#16a34a; --ok-soft:#e7f6ec; --am:#d97706; --am-soft:#fdf3e2;
+      --ui:#ffffff; --ui-bg:#f4f6f9; --ui-fg:#18213a; --ui-mut:#6b7486; --ui-bd:#e3e7ee;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:120px;-webkit-text-size-adjust:100%}
+    body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    ul{list-style:none}
+    h1,h2,h3{text-wrap:balance;font-weight:inherit}
+    .serif{font-family:'Playfair Display',serif}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 5%}
+    .label{display:inline-block;padding:4px 12px;border-radius:6px;font-size:13px;background:var(--card);border:1px solid var(--border);margin-bottom:12px}
+    .grad{background:linear-gradient(135deg,var(--fg) 0%,#6b6b55 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    :focus-visible{outline:2px solid var(--or);outline-offset:3px;border-radius:6px}
+    .js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+    .js .reveal.visible{opacity:1;transform:none}
+
+    /* barra superior */
+    header.top{position:sticky;top:0;z-index:60;background:rgba(245,242,236,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(26,26,24,.07)}
+    header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+    .logo{font-size:18px;font-weight:500}
+    .logo small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);margin-left:8px;text-transform:uppercase}
+    .top-nav{display:flex;align-items:center;gap:22px;font-size:14px}
+    .top-nav a.l{color:var(--muted)} .top-nav a.l:hover{color:var(--fg)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--fg);color:var(--bg)}
+    .btn-ghost{border:1px solid rgba(26,26,24,.2)}
+    .btn-or{background:var(--or);color:#fff;box-shadow:0 0 0 0 rgba(240,89,42,.4)}
+    .btn-or:hover{box-shadow:0 10px 30px rgba(240,89,42,.35)}
+    @media (max-width:760px){.top-nav a.l{display:none}.top-nav{gap:8px}.top-nav .btn{padding:9px 14px;font-size:13px}.logo small{display:none}}
+    @media (max-width:400px){.top-nav .btn-ghost{display:none}}
+
+    /* barra de módulos fija */
+    .modbar{position:fixed;top:64px;left:0;right:0;z-index:55;background:rgba(245,242,236,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(26,26,24,.07);transform:translateY(-110%);opacity:0;transition:transform .5s var(--ease),opacity .4s;pointer-events:none}
+    .modbar.show{transform:none;opacity:1;pointer-events:auto}
+    .modbar nav{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:9px 5%;max-width:1200px;margin:0 auto}
+    .modbar nav::-webkit-scrollbar{display:none}
+    .modbar a{flex:none;font-size:13px;padding:6px 13px;border-radius:999px;color:var(--muted);transition:background .3s,color .3s}
+    .modbar a:hover{color:var(--fg)}
+    .modbar a.on{background:var(--fg);color:var(--bg)}
+
+    /* hero */
+    .hero{position:relative;padding:72px 0 40px;text-align:center}
+    .blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(10px);animation:blob 12s ease-in-out infinite alternate;z-index:0}
+    @keyframes blob{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,-30px) scale(1.1)}}
+    .hero>*{position:relative;z-index:1}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,6.4vw,78px);line-height:1.06;font-weight:600;margin:6px auto 18px;max-width:980px;color:var(--fg)}
+    .hero h1 .w{display:inline-block;opacity:0;transform:translateY(.45em);filter:blur(8px);animation:word .9s var(--ease) forwards;animation-delay:calc(.2s + var(--i)*.08s)}
+    .hero h1 .o{font-style:italic;color:var(--or)}
+    @keyframes word{to{opacity:1;transform:none;filter:blur(0)}}
+    .he{opacity:0;animation:hin .9s var(--ease) forwards}
+    .he1{animation-delay:.9s}.he2{animation-delay:1.05s}.he3{animation-delay:1.2s}
+    @keyframes hin{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .hero p.sub{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:700px;margin:0 auto 28px}
+    .hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .hero-shot{margin-top:56px;perspective:1600px}
+    .hero-shot .app{transform:rotateX(var(--rx,9deg)) scale(var(--sc,.96));transform-origin:50% 0;transition:transform .15s linear}
+    .note{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:14px;text-align:center}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:48px auto 0;max-width:960px}
+    .chips a{font-size:14px;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.5);transition:background .3s,border-color .3s,transform .3s var(--ease)}
+    .chips a:hover{background:#fff;border-color:rgba(26,26,24,.25);transform:translateY(-2px)}
+
+    /* cómo funciona */
+    .flow{padding:96px 0;border-top:1px solid var(--border)}
+    .flow h2,.who h2,.faq h2{font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:600}
+    .steps{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px}
+    .steps::before{content:"";position:absolute;left:12%;right:12%;top:27px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,89,42,.55) 0 8px,transparent 8px 16px);background-size:32px 2px;animation:dash 1.2s linear infinite}
+    @keyframes dash{to{background-position:32px 0}}
+    .steps .runner{position:absolute;top:22px;left:12%;width:12px;height:12px;border-radius:50%;background:var(--or);box-shadow:0 0 0 6px rgba(240,89,42,.18);animation:run 6s var(--ease) infinite}
+    @keyframes run{0%{left:12%;opacity:0}6%{opacity:1}30%{left:37%}55%{left:62.5%}85%{left:87%;opacity:1}100%{left:87%;opacity:0}}
+    .step{text-align:center;padding:0 6px}
+    .step .n{position:relative;width:56px;height:56px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;background:var(--bg);border:2px solid var(--or);color:var(--or);font-weight:700;font-family:var(--mono)}
+    .step .n::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--or);opacity:0;animation:ring 6s ease-out infinite;animation-delay:var(--d)}
+    @keyframes ring{0%,2%{opacity:.8;transform:scale(1)}18%{opacity:0;transform:scale(1.7)}100%{opacity:0}}
+    .step h3{font-size:18px;font-weight:600;margin-bottom:6px}
+    .step p{font-size:14.5px;color:var(--muted)}
+    @media (max-width:820px){
+      .steps{grid-template-columns:1fr;gap:26px;max-width:460px;margin-left:auto;margin-right:auto}
+      .steps::before{left:27px;right:auto;top:28px;bottom:28px;width:2px;height:auto;background:repeating-linear-gradient(180deg,rgba(240,89,42,.55) 0 8px,transparent 8px 16px);background-size:2px 32px;animation:dashv 1.2s linear infinite}
+      @keyframes dashv{to{background-position:0 32px}}
+      .steps .runner{display:none}
+      .step{display:grid;grid-template-columns:56px 1fr;gap:16px;text-align:left;align-items:start}
+      .step .n{margin:0}
+    }
+
+    /* filas de módulos */
+    section.mod{padding:96px 0;border-top:1px solid var(--border)}
+    .row{display:grid;grid-template-columns:1fr 1.25fr;gap:64px;align-items:center}
+    .row>*{min-width:0}
+    .row.flip .txt{order:2}
+    .num{font-family:var(--mono);font-size:12px;color:var(--or);letter-spacing:.1em}
+    .txt h2{font-size:clamp(30px,3.6vw,46px);line-height:1.08;font-weight:600;margin:10px 0 16px}
+    .txt p{color:var(--muted);font-size:16.5px;margin-bottom:20px}
+    .pts li{position:relative;padding:9px 0 9px 30px;border-bottom:1px solid var(--border);font-size:15px}
+    .pts li:last-child{border-bottom:0}
+    .pts li::before{content:"";position:absolute;left:4px;top:15px;width:12px;height:7px;border-left:2px solid var(--or);border-bottom:2px solid var(--or);transform:rotate(-45deg)}
+    .js .reveal .pts li{opacity:0;transform:translateX(-10px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+    .js .reveal.visible .pts li{opacity:1;transform:none}
+    .js .reveal.visible .pts li:nth-child(2){transition-delay:.08s}.js .reveal.visible .pts li:nth-child(3){transition-delay:.16s}.js .reveal.visible .pts li:nth-child(4){transition-delay:.24s}
+    @media (max-width:900px){.row{grid-template-columns:1fr;gap:36px}.row.flip .txt{order:0}section.mod{padding:72px 0}}
+
+    /* ── maqueta del CRM ── */
+    .app{background:var(--ui);border-radius:16px;box-shadow:0 40px 80px -30px rgba(16,16,21,.35),0 0 0 1px rgba(16,16,21,.08);overflow:hidden;font-size:13px;color:var(--ui-fg);text-align:left}
+    .mod .app{transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+    .mod .app:hover{transform:translateY(-6px);box-shadow:0 50px 90px -30px rgba(16,16,21,.42),0 0 0 1px rgba(16,16,21,.08)}
+    .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#eceef2;border-bottom:1px solid var(--ui-bd)}
+    .bar i{width:10px;height:10px;border-radius:50%;background:#d4d7de;display:block}
+    .bar span{margin-left:10px;flex:1;max-width:320px;background:#fff;border-radius:6px;padding:4px 10px;font-family:var(--mono);font-size:11px;color:var(--ui-mut);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .shell{display:grid;grid-template-columns:190px 1fr}
+    .side{background:var(--navy);color:#c8cfdc;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
+    .side .brand{display:flex;align-items:center;gap:8px;color:#fff;font-weight:600;padding:4px 8px 14px}
+    .side .brand b{width:24px;height:24px;border-radius:7px;background:var(--or);display:grid;place-items:center;font-size:12px}
+    .side a{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:7px;font-size:12.5px}
+    .side a.on{background:var(--navy2);color:#fff}
+    .side a s{width:14px;height:14px;border-radius:4px;border:1.6px solid currentColor;opacity:.7;text-decoration:none;flex:none}
+    .main{background:var(--ui-bg);padding:18px;min-width:0}
+    .main h4{font-size:16px;font-weight:700;margin-bottom:2px}
+    .main .muted{color:var(--ui-mut);font-size:12px}
+    .hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;white-space:nowrap;transition:background .4s,color .4s}
+    .p-ok{background:var(--ok-soft);color:var(--ok)} .p-or{background:var(--or-soft);color:var(--or)} .p-am{background:var(--am-soft);color:var(--am)} .p-gr{background:#eef0f4;color:var(--ui-mut)}
+    .dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block;animation:blink 1.6s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+    .card{background:#fff;border:1px solid var(--ui-bd);border-radius:10px;padding:14px}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+    .kpi .k{font-size:11px;color:var(--ui-mut)} .kpi .v{font-size:21px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums} .kpi .d{font-size:10.5px;color:var(--ok)}
+    .kpi .v.bump{animation:bump .6s var(--ease)}
+    @keyframes bump{30%{color:var(--or);transform:scale(1.08)}}
+    .two{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+    .chart{display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:10px}
+    .chart div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;align-items:stretch;height:100%}
+    .chart u{display:block;background:#d9def0;border-radius:3px 3px 0 0;text-decoration:none;height:0;transition:height 1s var(--ease)}
+    .chart u.o{background:var(--or);border-radius:0}
+    .chart div:nth-child(2) u{transition-delay:.06s}.chart div:nth-child(3) u{transition-delay:.12s}.chart div:nth-child(4) u{transition-delay:.18s}.chart div:nth-child(5) u{transition-delay:.24s}.chart div:nth-child(6) u{transition-delay:.3s}.chart div:nth-child(7) u{transition-delay:.36s}.chart div:nth-child(8) u{transition-delay:.42s}
+    .play .chart u{height:var(--h)}
+    .chart em{font-style:normal;font-size:10px;color:var(--ui-mut);text-align:center;margin-top:4px}
+    .feed{overflow:hidden}
+    .feed li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--ui-bd)}
+    .feed li:last-child{border:0}
+    .feed li.in{animation:feedin .7s var(--ease)}
+    @keyframes feedin{from{opacity:0;transform:translateY(-14px);background:var(--or-soft)}to{opacity:1;transform:none;background:transparent}}
+    .feed b{font-size:12.5px;display:block} .feed small{color:var(--ui-mut);font-size:11px}
+    table.t{width:100%;border-collapse:collapse;font-size:12px}
+    table.t th{text-align:left;font-weight:600;color:var(--ui-mut);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;border-bottom:1px solid var(--ui-bd)}
+    table.t td{padding:9px 10px;border-bottom:1px solid var(--ui-bd);white-space:nowrap;font-variant-numeric:tabular-nums}
+    table.t tr:last-child td{border:0}
+    .scroll{overflow-x:auto}
+    .bar-p{height:9px;background:#eef0f4;border-radius:99px;overflow:hidden;display:flex}
+    .bar-p i{display:block;height:100%;width:0;transition:width 1.4s var(--ease)}
+    .play .bar-p i{width:var(--w)}
+    .leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--ui-mut);margin-top:8px}
+    .leg span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--c)}
+    .tog{width:38px;height:22px;border-radius:99px;background:var(--ok);position:relative;flex:none;transition:background .4s}
+    .tog::after{content:"";position:absolute;left:19px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .4s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .tog.off{background:#cfd4dd}.tog.off::after{left:3px}
+    .wave{display:flex;align-items:center;gap:2px;height:28px;flex:1}
+    .wave i{flex:1;background:#cfd5e3;border-radius:2px;display:block;transition:background .2s}
+    .wave i.p{background:var(--or)}
+    .tr p{padding:7px 10px;border-radius:10px;margin-bottom:6px;max-width:86%;font-size:12px;line-height:1.45;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+    .tr .a{background:#eef0f6} .tr .c{background:var(--or-soft);margin-left:auto}
+    .tr p.h{opacity:0;transform:translateY(8px)}
+    .dial{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    .dial span{background:#f1f3f7;border-radius:8px;text-align:center;padding:7px 0;font-weight:600}
+    .orb{width:96px;height:96px;border-radius:50%;margin:6px auto 10px;background:radial-gradient(circle at 35% 35%,#ff9a6e,var(--or) 60%,#b83c14);display:grid;place-items:center;color:#fff;font-weight:700;font-size:11px;letter-spacing:.08em;position:relative;animation:breathe 2.4s ease-in-out infinite}
+    .orb::before,.orb::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(240,89,42,.5);animation:halo 2.4s ease-out infinite}
+    .orb::after{animation-delay:1.2s}
+    @keyframes breathe{50%{transform:scale(1.04)}}
+    @keyframes halo{from{transform:scale(1);opacity:.8}to{transform:scale(1.6);opacity:0}}
+    .eq{display:flex;align-items:flex-end;justify-content:center;gap:3px;height:22px;margin:4px 0 6px}
+    .eq i{width:4px;border-radius:2px;background:#ff8a5c;display:block;height:100%;transform-origin:bottom;animation:eq .9s ease-in-out infinite alternate}
+    .eq i:nth-child(2){animation-delay:-.2s}.eq i:nth-child(3){animation-delay:-.5s}.eq i:nth-child(4){animation-delay:-.1s}.eq i:nth-child(5){animation-delay:-.7s}.eq i:nth-child(6){animation-delay:-.35s}.eq i:nth-child(7){animation-delay:-.6s}
+    @keyframes eq{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
+    .swap{display:inline-block;transition:opacity .35s,transform .35s var(--ease)}
+    .swap.out{opacity:0;transform:translateY(6px)}
+    .drop{border:2px dashed #cdd3df;border-radius:10px;padding:18px;text-align:center;background:#fafbfc}
+    .prog{height:6px;background:#eef0f4;border-radius:99px;margin-top:10px;overflow:hidden}
+    .prog i{display:block;height:100%;width:0;background:var(--or);border-radius:99px}
+    .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;background:#eef0f6;border-radius:5px;padding:2px 7px;margin:2px;transition:opacity .4s,transform .4s var(--ease)}
+    .tag.ok{background:var(--ok-soft);color:var(--ok)}
+    .tag.h,.trh{opacity:0;transform:scale(.9)}
+    table.t tr{transition:opacity .4s}
+    .bell{position:relative;width:30px;height:30px;border-radius:8px;background:#fff;border:1px solid var(--ui-bd);display:grid;place-items:center}
+    .bell b{position:absolute;top:-5px;right:-5px;background:var(--or);color:#fff;font-size:9.5px;border-radius:99px;padding:1px 5px}
+    .bell.ring{animation:ring2 .7s}
+    @keyframes ring2{20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(4deg)}}
+    @media (max-width:720px){
+      .shell{grid-template-columns:1fr}.side{display:none}
+      .kpis{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}
+      .main{padding:12px}
+    }
+
+    /* automático */
+    .auto{padding:104px 0;background:var(--ink);color:#f5f2ec;position:relative;overflow:hidden}
+    .auto .label{background:rgba(245,242,236,.06);border-color:rgba(245,242,236,.14);color:rgba(245,242,236,.75)}
+    .auto h2{font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:600;margin-bottom:14px}
+    .auto p.lead{color:rgba(245,242,236,.6);max-width:640px;font-size:17px}
+    .auto .wrap{position:relative;z-index:1}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+    .gi{border:1px solid rgba(245,242,236,.1);border-radius:16px;padding:22px;background:rgba(245,242,236,.03);transition:border-color .3s,background .3s,transform .4s var(--ease)}
+    .gi:hover{border-color:rgba(240,89,42,.5);background:rgba(240,89,42,.05);transform:translateY(-4px)}
+    .gi .ic{position:relative;width:36px;height:36px;border-radius:10px;background:rgba(240,89,42,.14);color:#ff8a5c;display:grid;place-items:center;margin-bottom:14px}
+    .gi .ic::after{content:"";position:absolute;inset:0;border-radius:10px;border:1.5px solid rgba(240,89,42,.5);opacity:0}
+    .gi:hover .ic::after,.gi.pulse .ic::after{animation:icp 1.4s ease-out}
+    @keyframes icp{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.6)}}
+    .gi h3{font-size:16.5px;font-weight:600;margin-bottom:6px}
+    .gi p{font-size:14px;color:rgba(245,242,236,.58)}
+    .js .grid .gi.reveal{transition-delay:calc(var(--k,0)*.06s)}
+    @media (max-width:900px){.grid{grid-template-columns:1fr 1fr}}
+    @media (max-width:560px){.grid{grid-template-columns:1fr}}
+
+    /* para quién */
+    .who{padding:104px 0}
+    .who-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+    .who-c{border:1px solid var(--border);border-radius:18px;padding:26px;background:rgba(255,255,255,.45);transition:transform .4s var(--ease),background .3s}
+    .who-c:hover{transform:translateY(-4px);background:#fff}
+    .who-c h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;margin-bottom:8px}
+    .who-c p{color:var(--muted);font-size:15px}
+    @media (max-width:900px){.who-g{grid-template-columns:1fr}}
+
+    /* preguntas */
+    .faq{padding:0 0 104px}
+    .faq-l{max-width:820px;margin:40px auto 0}
+    .faq details{border-bottom:1px solid var(--border)}
+    .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 4px;font-size:17px;font-weight:500}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary::after{content:"+";font-size:24px;font-weight:300;color:var(--or);transition:transform .35s var(--ease);flex:none}
+    .faq details[open] summary::after{transform:rotate(45deg)}
+    .faq details p{padding:0 4px 20px;color:var(--muted);font-size:15.5px;max-width:720px}
+    .faq details p a{color:var(--fg);text-decoration:underline;text-underline-offset:3px}
+
+    /* cta + pie */
+    .cta{margin:0 auto 96px;max-width:1100px;border-radius:28px;background:var(--fg);color:var(--bg);padding:64px 6%;text-align:center;position:relative;overflow:hidden}
+    .cta::before{content:"";position:absolute;width:520px;height:520px;right:-160px;top:-220px;border-radius:50%;background:radial-gradient(circle,rgba(240,89,42,.35),transparent 65%);animation:blob 10s ease-in-out infinite alternate}
+    .cta h2{font-size:clamp(30px,4.2vw,52px);line-height:1.1;font-weight:600;margin-bottom:14px;position:relative}
+    .cta p{color:rgba(245,242,236,.65);margin-bottom:26px;position:relative}
+    .cta .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+    .cta .btn-ghost{border-color:rgba(245,242,236,.3)}
+    @media (max-width:560px){.cta{border-radius:0}}
+    footer.pie{border-top:1px solid var(--border);padding:28px 0 56px;font-size:13px;color:var(--muted)}
+    footer.pie .wrap{display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
+    footer.pie nav{display:flex;gap:8px 18px;flex-wrap:wrap}
+
+    /* whatsapp */
+    #wa{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));right:max(16px,env(safe-area-inset-right));z-index:70;width:54px;height:54px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 4px 20px rgba(37,211,102,.38);opacity:0;transform:translateY(16px) scale(.9);transition:opacity .5s var(--ease),transform .5s var(--ease);pointer-events:none}
+    #wa.show{opacity:1;transform:none;pointer-events:auto}
+    #wa:hover{transform:scale(1.08)}
+    #wa svg{width:26px;height:26px;fill:#fff}
+    #wa::before,#wa::after{content:"";position:absolute;border-radius:50%;border:2px solid rgba(37,211,102,.5);animation:wap 2.2s ease-out infinite}
+    #wa::before{inset:-4px}#wa::after{inset:-8px;border-width:1.5px;animation-delay:.5s}
+    @keyframes wap{from{transform:scale(1);opacity:1}to{transform:scale(1.7);opacity:0}}
+
+    /* sin JavaScript: las gráficas se ven igual */
+    html:not(.js) .chart u{height:var(--h)} html:not(.js) .bar-p i{width:var(--w)}
+    html:not(.js) .hero h1 .w,html:not(.js) .he{opacity:1;transform:none;filter:none;animation:none}
+
+    /* sin movimiento: todo quieto y en su estado final */
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+      .hero h1 .w,.he{opacity:1;transform:none;filter:none}
+      .js .reveal,.js .reveal .pts li{opacity:1;transform:none}
+      .hero-shot .app{transform:none}
+      .chart u{height:var(--h)}.bar-p i{width:var(--w)}
+      .tr p.h,.tag.h,.trh{opacity:1;transform:none}
+      .steps .runner{display:none}
+    }
+  </style>
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="/" class="logo">Ardesku<small>CRM</small></a>
+    <nav class="top-nav" aria-label="Principal">
+      <a class="l" href="/">Inicio</a>
+      <a class="l" href="#como">Cómo funciona</a>
+      <a class="l" href="#supervisor">Módulos</a>
+      <a class="l" href="#preguntas">Preguntas</a>
+      <a class="btn btn-ghost" href="https://crm.ardesku.com" target="_blank" rel="noopener">Acceso clientes</a>
+      <a class="btn btn-dark" href="/#contacto">Pedir demo</a>
+    </nav>
+  </div>
+</header>
+
+<div class="modbar" id="modbar" aria-hidden="true">
+  <nav aria-label="Módulos del CRM">
+    <a href="#supervisor">Supervisor</a><a href="#agente-ia">Agente IA</a><a href="#llamadas">Llamadas</a><a href="#marcador">Marcador</a><a href="#importar">Importar</a><a href="#campanas">Campañas</a><a href="#equipo">Equipo</a><a href="#facturacion">Facturación</a><a href="#automatico">Automático</a><a href="#preguntas">Preguntas</a>
+  </nav>
+</div>
+
+<main>
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero wrap" id="inicio">
+  <i class="blob" aria-hidden="true" style="width:520px;height:520px;left:-180px;top:-60px;background:radial-gradient(circle,rgba(240,89,42,.16),transparent 70%)"></i>
+  <i class="blob" aria-hidden="true" style="width:600px;height:600px;right:-220px;top:120px;background:radial-gradient(circle,rgba(94,106,210,.14),transparent 70%);animation-duration:15s"></i>
+  <span class="label he" style="animation-delay:.05s">CRM Ardesku</span>
+  <h1 aria-label="Tu call center y tu agente de IA, en un solo panel"><span aria-hidden="true"><span class="w" style="--i:0">Tu</span> <span class="w" style="--i:1">call</span> <span class="w" style="--i:2">center</span> <span class="w" style="--i:3">y</span> <span class="w" style="--i:4">tu</span> <span class="w" style="--i:5">agente</span> <span class="w" style="--i:6">de</span> <span class="w" style="--i:7">IA,</span> <span class="w o" style="--i:8">en</span> <span class="w o" style="--i:9">un</span> <span class="w o" style="--i:10">solo</span> <span class="w o" style="--i:11">panel</span></span></h1>
+  <p class="sub he he1">Lanza campañas, deja que el agente de voz llame por ti o llama tú desde el navegador. Cada llamada queda grabada, transcrita y con su resultado. Tú solo miras quién está interesado.</p>
+  <div class="ctas he he2">
+    <a class="btn btn-or" href="/#contacto">Quiero verlo funcionando</a>
+    <a class="btn btn-ghost" href="#como">Cómo funciona</a>
+  </div>
+
+  <div class="hero-shot he he3">
+    <div class="app" id="hero-app" data-anim="inicio" role="img" aria-label="Maqueta del panel de inicio del CRM con métricas, actividad semanal e interesados que van entrando en tiempo real">
+      <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/dashboard</span></div>
+      <div class="shell">
+        <aside class="side">
+          <div class="brand"><b>A</b>Ardesku</div>
+          <a class="on"><s></s>Inicio</a><a><s></s>Supervisor</a><a><s></s>Campañas</a><a><s></s>Agente IA</a><a><s></s>Llamadas</a><a><s></s>Agentes</a><a><s></s>Importar</a><a><s></s>Facturación</a><a><s></s>Ajustes</a>
+        </aside>
+        <div class="main">
+          <div class="hd"><div><h4>Buenos días, Laura</h4><div class="muted">Resumen de tu cuenta · hoy</div></div><div style="display:flex;gap:8px;align-items:center"><span class="pill p-ok"><span class="dot"></span>Agente IA llamando</span><div class="bell" data-bell>🔔<b data-bell-n>3</b></div></div></div>
+          <div class="kpis">
+            <div class="card kpi"><div class="k">Leads totales</div><div class="v" data-count="4284">4.284</div><div class="d">+312 esta semana</div></div>
+            <div class="card kpi"><div class="k">Llamadas hoy</div><div class="v" data-count="297" data-tick="calls">297</div><div class="d">ritmo normal</div></div>
+            <div class="card kpi"><div class="k">Interesados</div><div class="v" data-count="18" data-tick="int">18</div><div class="d">+5 hoy</div></div>
+            <div class="card kpi"><div class="k">Duración media</div><div class="v">1:42</div><div class="d">contestadas</div></div>
+          </div>
+          <div class="two">
+            <div class="card"><b>Actividad de la última semana</b><div class="muted">Llamadas e interesados por día</div>
+              <div class="chart">
+                <div><u style="--h:62px"></u><u class="o" style="--h:7px"></u><em>L</em></div>
+                <div><u style="--h:84px"></u><u class="o" style="--h:10px"></u><em>M</em></div>
+                <div><u style="--h:78px"></u><u class="o" style="--h:6px"></u><em>X</em></div>
+                <div><u style="--h:91px"></u><u class="o" style="--h:12px"></u><em>J</em></div>
+                <div><u style="--h:70px"></u><u class="o" style="--h:8px"></u><em>V</em></div>
+                <div><u style="--h:4px"></u><u class="o" style="--h:0"></u><em>S</em></div>
+                <div><u style="--h:4px"></u><u class="o" style="--h:0"></u><em>D</em></div>
+              </div>
+            </div>
+            <div class="card"><b>Interesados en tiempo real</b>
+              <ul class="feed" data-feed>
+                <li><div><b>Talleres Ruiz S.L.</b><small>Acepta demo · jue 10:00</small></div><span class="pill p-or">Nuevo</span></li>
+                <li><div><b>Marta Giménez</b><small>Pide que la llamen mañana</small></div><span class="pill p-am">Rellamar</span></li>
+                <li><div><b>Clínica Dental Sol</b><small>Quiere la propuesta por correo</small></div><span class="pill p-ok">Interesado</span></li>
+                <li><div><b>Panadería Olmo</b><small>Acepta demo · vie 12:30</small></div><span class="pill p-ok">Interesado</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Maqueta del panel real · datos ficticios</p>
+  </div>
+
+  <nav class="chips" aria-label="Módulos">
+    <a href="#supervisor">Supervisor en vivo</a><a href="#agente-ia">Agente de voz con IA</a><a href="#llamadas">Grabación y transcripción</a><a href="#marcador">Marcador en el navegador</a><a href="#importar">Importar Excel</a><a href="#campanas">Campañas</a><a href="#equipo">Equipo y accesos</a><a href="#facturacion">Facturación</a>
+  </nav>
+</section>
+
+<!-- ═══════════ CÓMO FUNCIONA ═══════════ -->
+<section class="flow" id="como">
+  <div class="wrap">
+    <div style="text-align:center">
+      <span class="label">Cómo funciona</span>
+      <h2 class="serif grad reveal">De tu Excel a la cita, en cuatro pasos</h2>
+    </div>
+    <div class="steps reveal">
+      <span class="runner" aria-hidden="true"></span>
+      <div class="step"><div class="n" style="--d:0s">1</div><div><h3>Subes tu lista</h3><p>Un Excel o CSV con tus contactos. El CRM entiende las columnas solo.</p></div></div>
+      <div class="step"><div class="n" style="--d:1.5s">2</div><div><h3>El agente de IA llama</h3><p>A su ritmo y en horario permitido, con voz natural y en el idioma de cada cliente.</p></div></div>
+      <div class="step"><div class="n" style="--d:3s">3</div><div><h3>Detecta interesados</h3><p>Cada llamada se graba, se transcribe y se resume. Los interesados te avisan al momento.</p></div></div>
+      <div class="step"><div class="n" style="--d:4.6s">4</div><div><h3>Tu equipo cierra</h3><p>La IA ya dejó la cita o la rellamada pactada. Tu equipo solo habla con quien quiere hablar.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SUPERVISOR ═══════════ -->
+<section class="mod" id="supervisor">
+  <div class="wrap row">
+    <div class="txt reveal">
+      <span class="num">01 · SUPERVISOR</span>
+      <h2 class="serif">Mira tu campaña avanzar en directo</h2>
+      <p>Una pantalla para el responsable: cuántos leads quedan, cuántos contestaron, quién dijo que no y quién vuelve a la cola. Sin pedir informes a nadie.</p>
+      <ul class="pts">
+        <li>Progreso total de cada campaña, hoy y en los últimos 7 días</li>
+        <li>Distribución de leads: pendientes, contestados, no interesados y a reciclar</li>
+        <li>Marcado automático: lo enciendes o lo apagas con un interruptor</li>
+        <li>Ves en qué está cada agente de tu equipo</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="supervisor" role="img" aria-label="Maqueta de la pantalla Supervisor con el progreso de una campaña en directo">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/supervisor</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Supervisor</h4><div class="muted">Hoy · actualizado hace <span data-ago>4</span> s</div></div><span class="pill p-ok"><span class="dot"></span>En vivo</span></div>
+          <div class="card" style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><b>Campaña · Reformas Madrid</b><span class="muted"><span data-sv-total>1.316</span> / 2.000</span></div>
+            <div class="bar-p"><i style="--w:22%;background:var(--ok)"></i><i style="--w:31%;background:#9aa6c4"></i><i style="--w:13%;background:var(--am)"></i></div>
+            <div class="leg"><span style="--c:var(--ok)">Contestadas <span data-sv-c>440</span></span><span style="--c:#9aa6c4">Sin respuesta 620</span><span style="--c:var(--am)">A reciclar 256</span><span style="--c:#eef0f4">Pendientes <span data-sv-p>684</span></span></div>
+          </div>
+          <div class="card" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <div><b>Marcado automático</b><div class="muted">Marcado automático activado · 3 líneas</div></div><div class="tog"></div>
+          </div>
+          <div class="card scroll">
+            <table class="t">
+              <tr><th>Agente</th><th>Estado</th><th>Llamadas</th><th>Interesados</th></tr>
+              <tr><td>🤖 Agente IA</td><td><span class="pill p-ok"><span class="dot"></span>En llamada</span></td><td data-sv-ia>214</td><td>11</td></tr>
+              <tr><td>Carlos García</td><td><span class="pill p-or" data-sv-st>Escribiendo notas</span></td><td>48</td><td>4</td></tr>
+              <tr><td>Lucía Moreno</td><td><span class="pill p-gr">En pausa</span></td><td>35</td><td>3</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ AGENTE IA ═══════════ -->
+<section class="mod" id="agente-ia">
+  <div class="wrap row flip">
+    <div class="txt reveal">
+      <span class="num">02 · AGENTE IA</span>
+      <h2 class="serif">Tu agente de voz llama, cualifica y agenda</h2>
+      <p>Creas una <b>misión</b> (a quién llamar y con qué objetivo) y la activas con un toque. El agente habla con voz natural en español, italiano, catalán u otros idiomas, y deja apuntado quién está interesado y para cuándo.</p>
+      <ul class="pts">
+        <li>Activar y pausar con un solo toque, cuando tú quieras</li>
+        <li>Cada misión con su nombre de agente, su número y su ritmo de llamadas por hora</li>
+        <li>Agenda citas y rellamadas pactadas con la persona</li>
+        <li>Dice que es un asistente virtual en cuanto se lo preguntan</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="ia" role="img" aria-label="Maqueta de la pantalla Agente IA con una misión activa hablando con un cliente">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/agente-ia</span></div>
+        <div class="main" style="background:linear-gradient(180deg,#141d33,#1b2540);color:#e6eaf3">
+          <div class="hd"><div><h4 style="color:#fff">Agente IA</h4><div class="muted" style="color:#9aa6c4">Sistema operativo · procesando leads</div></div><span class="pill p-ok"><span class="dot"></span>Activo</span></div>
+          <div class="orb">ACTIVO</div>
+          <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p style="text-align:center;font-size:12px;color:#c8cfdc;margin-bottom:14px">Hablando con <b class="swap" data-ia-who style="color:#fff">Clínica Dental Sol</b></p>
+          <div class="card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:#e6eaf3;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>Misión · Clínicas dentales Valencia</b><span class="pill p-or">60 llamadas/h</span></div>
+            <div class="muted" style="color:#9aa6c4;margin-top:4px">Agente «Sofía» · número local de Valencia · objetivo: agendar demo</div>
+          </div>
+          <div class="card" style="background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:#e6eaf3">
+            <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>Misión · Rellamadas pactadas</b><span class="pill p-gr">En espera</span></div>
+            <div class="muted" style="color:#9aa6c4;margin-top:4px">Llama a quien pidió «llámame mañana», a la hora acordada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ LLAMADAS ═══════════ -->
+<section class="mod" id="llamadas">
+  <div class="wrap row">
+    <div class="txt reveal">
+      <span class="num">03 · LLAMADAS</span>
+      <h2 class="serif">Cada llamada, grabada, transcrita y resumida</h2>
+      <p>El historial completo de tu equipo y de tu agente de IA. Escuchas la grabación, lees la conversación y ves el resumen sin tener que oírla entera.</p>
+      <ul class="pts">
+        <li>Busca por nombre o teléfono y filtra por campaña, estado o resultado</li>
+        <li>Grabación para escuchar o descargar y transcripción completa</li>
+        <li>Resumen de cada llamada y datos extra recogidos (correo, cita, motivo)</li>
+        <li>Exporta los interesados a CSV con un clic</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="llamadas" role="img" aria-label="Maqueta del detalle de una llamada: grabación reproduciéndose y transcripción">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/llamadas</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Talleres Ruiz S.L.</h4><div class="muted">Hoy 10:42 · 2:18 · Agente IA</div></div><span class="pill p-ok">Interesado</span></div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="width:30px;height:30px;border-radius:50%;background:var(--or);color:#fff;display:grid;place-items:center;flex:none;font-size:11px" data-pl>▶</span>
+            <div class="wave" data-wave aria-hidden="true"></div>
+            <span class="muted" style="font-variant-numeric:tabular-nums"><span data-t>0:00</span> / 2:18</span><span class="tag">⬇ mp3</span>
+          </div>
+          <div class="card" style="margin-bottom:10px"><b style="font-size:12px">Resumen</b><div class="muted" style="margin-top:3px;color:var(--ui-fg)">Le interesa reducir llamadas perdidas en el taller. Acepta una demo de 15 min el jueves a las 10:00. Pide la info a su correo.</div>
+            <div style="margin-top:8px"><span class="tag ok">cita: jue 10:00</span><span class="tag">correo: info@talleres…</span><span class="tag">decisor: sí</span></div></div>
+          <div class="card tr" data-tr>
+            <p class="a"><b>Agente:</b> ¿Le pasa que llaman clientes y nadie puede cogerlo mientras están con un coche?</p>
+            <p class="c"><b>Cliente:</b> Constantemente, sobre todo por la mañana.</p>
+            <p class="a"><b>Agente:</b> Pues justo eso le resolvemos. ¿Le va bien verlo el jueves a las diez?</p>
+            <p class="c"><b>Cliente:</b> Sí, el jueves a las diez me va bien.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MARCADOR ═══════════ -->
+<section class="mod" id="marcador">
+  <div class="wrap row flip">
+    <div class="txt reveal">
+      <span class="num">04 · MARCADOR</span>
+      <h2 class="serif">Tu equipo llama desde el navegador</h2>
+      <p>Sin centralita ni teléfonos: tus agentes humanos entran con su usuario y el marcador les va pasando el siguiente lead de la cola. Llaman, anotan y siguen.</p>
+      <ul class="pts">
+        <li>Teléfono integrado en el navegador (Chrome y Safari)</li>
+        <li>Cola automática con el siguiente lead pendiente de sus campañas</li>
+        <li>Notas, notas anteriores y resultado en cada llamada</li>
+        <li>«Volver a llamar» deja el lead programado para otro momento</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="marcador" role="img" aria-label="Maqueta del marcador con una llamada en curso">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/marcador</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Marcador</h4><div class="muted">126 leads pendientes en cola</div></div><span class="pill p-ok"><span class="dot"></span>Llamada en curso · <span data-clock style="font-variant-numeric:tabular-nums">0:37</span></span></div>
+          <div class="two">
+            <div class="card">
+              <b>Clínica Dental Sol</b><div class="muted">+34 6•• ••• 214 · Valencia · Campaña Clínicas</div>
+              <div class="muted" style="margin:10px 0 4px">Notas anteriores</div>
+              <div style="background:#f6f7fa;border-radius:8px;padding:8px;font-size:12px">Pidió que llamáramos después de las 16:00. Habla con la gerente, Ana.</div>
+              <div class="muted" style="margin:10px 0 6px">¿Cuál fue el resultado?</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="pill p-ok">Interesado</span><span class="pill p-am">Volver a llamar</span><span class="pill p-gr">No le interesa</span></div>
+            </div>
+            <div class="card">
+              <div class="dial"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>*</span><span>0</span><span>#</span></div>
+              <div style="margin-top:10px;background:#dc2626;color:#fff;text-align:center;border-radius:8px;padding:8px;font-weight:600">Colgar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ IMPORTAR ═══════════ -->
+<section class="mod" id="importar">
+  <div class="wrap row">
+    <div class="txt reveal">
+      <span class="num">05 · IMPORTAR</span>
+      <h2 class="serif">Sube tu Excel y empieza a llamar</h2>
+      <p>Arrastras tu lista en CSV o Excel y el CRM detecta solo qué columna es el teléfono, el nombre o la empresa. Ves una vista previa, eliges la campaña y listo.</p>
+      <ul class="pts">
+        <li>CSV, XLS y XLSX</li>
+        <li>Detección automática de columnas, también con cabeceras en otros idiomas</li>
+        <li>Vista previa antes de importar</li>
+        <li>Teléfonos normalizados y duplicados fuera</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="importar" role="img" aria-label="Maqueta de la importación de un Excel paso a paso">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/importar</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Importar leads</h4><div class="muted">Campaña destino: Reformas Madrid</div></div><span class="pill p-ok" data-imp-done>¡Importación completada!</span></div>
+          <div class="drop" style="margin-bottom:10px"><b>leads_reformas_madrid.xlsx</b><div class="muted">2.000 filas · CSV, XLS o XLSX</div><div class="prog"><i data-imp-bar></i></div></div>
+          <div class="card" style="margin-bottom:10px"><b style="font-size:12px">Columnas detectadas</b><div style="margin-top:6px" data-imp-tags><span class="tag ok">Teléfono ← «Móvil»</span><span class="tag ok">Nombre ← «Contacto»</span><span class="tag ok">Empresa ← «Razón social»</span><span class="tag">Ciudad</span></div></div>
+          <div class="card scroll"><b style="font-size:12px">Vista previa (primeras 5)</b>
+            <table class="t" data-imp-rows><tr><th>Nombre</th><th>Empresa</th><th>Teléfono</th></tr>
+              <tr><td>Javier López</td><td>Reformas JL</td><td>+34 6•• ••• 118</td></tr>
+              <tr><td>Elena Castro</td><td>Obras Castro</td><td>+34 6•• ••• 402</td></tr>
+              <tr><td>Pablo Sanz</td><td>Interiores Sanz</td><td>+34 9•• ••• 733</td></tr>
+            </table></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CAMPAÑAS ═══════════ -->
+<section class="mod" id="campanas">
+  <div class="wrap row flip">
+    <div class="txt reveal">
+      <span class="num">06 · CAMPAÑAS</span>
+      <h2 class="serif">Campañas con su ritmo y su horario</h2>
+      <p>Cada campaña tiene su lista, su ritmo de llamadas por hora y su equipo. Las pausas y las reactivas cuando quieras, y decides si la lleva el agente de IA, tu equipo o los dos.</p>
+      <ul class="pts">
+        <li>Crear, pausar y eliminar campañas</li>
+        <li>Llamadas por hora configurables</li>
+        <li>Asignación de campañas a agentes humanos</li>
+        <li>Horario de inicio y máximo de intentos por lead</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="campanas" role="img" aria-label="Maqueta de la lista de campañas con interruptores de activar y pausar">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/campanas</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Campañas</h4><div class="muted">3 campañas · <span data-cp-n>2</span> activas</div></div><span class="pill p-or">+ Nueva campaña</span></div>
+          <div class="card scroll">
+            <table class="t">
+              <tr><th>Campaña</th><th>Leads</th><th>Ritmo</th><th>Estado</th><th></th></tr>
+              <tr><td><b>Reformas Madrid</b></td><td>2.000</td><td>70/h</td><td><span class="pill p-ok">Activa</span></td><td><div class="tog"></div></td></tr>
+              <tr><td><b>Clínicas Valencia</b></td><td>860</td><td>60/h</td><td><span class="pill p-ok">Activa</span></td><td><div class="tog"></div></td></tr>
+              <tr><td><b>Recuperar clientes</b></td><td>1.424</td><td>40/h</td><td><span class="pill p-gr" data-cp-pill>Pausada</span></td><td><div class="tog off" data-cp-tog></div></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EQUIPO ═══════════ -->
+<section class="mod" id="equipo">
+  <div class="wrap row">
+    <div class="txt reveal">
+      <span class="num">07 · EQUIPO Y ACCESOS</span>
+      <h2 class="serif">Cada persona, su usuario</h2>
+      <p>Das de alta a tu equipo con correo y contraseña. Los agentes ven solo lo suyo; el supervisor lo ve todo. Y los datos de tu empresa no se mezclan con los de nadie más.</p>
+      <ul class="pts">
+        <li>Roles de agente y supervisor</li>
+        <li>Alta, edición y baja de usuarios en segundos</li>
+        <li>Tus datos aislados de los de otros clientes</li>
+        <li>Modo noche para quien trabaja muchas horas delante</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="equipo" role="img" aria-label="Maqueta de la gestión de agentes con un usuario nuevo dándose de alta">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/agentes</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Agentes</h4><div class="muted"><span data-eq-n>4</span> usuarios con acceso</div></div><span class="pill p-or">+ Nuevo agente</span></div>
+          <div class="card scroll">
+            <table class="t">
+              <tr><th>Nombre</th><th>Email de acceso</th><th>Rol</th></tr>
+              <tr><td><b>Laura Pérez</b></td><td>laura@tuempresa.es</td><td><span class="pill p-or">Supervisor</span></td></tr>
+              <tr><td>Carlos García</td><td>carlos@tuempresa.es</td><td><span class="pill p-gr">Agente</span></td></tr>
+              <tr><td>Lucía Moreno</td><td>lucia@tuempresa.es</td><td><span class="pill p-gr">Agente</span></td></tr>
+              <tr><td>Diego Ramos</td><td>diego@tuempresa.es</td><td><span class="pill p-gr">Agente</span></td></tr>
+              <tr data-eq-new><td>Sara Vidal</td><td>sara@tuempresa.es</td><td><span class="pill p-ok">Nuevo · Agente</span></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FACTURACIÓN ═══════════ -->
+<section class="mod" id="facturacion">
+  <div class="wrap row flip">
+    <div class="txt reveal">
+      <span class="num">08 · FACTURACIÓN</span>
+      <h2 class="serif">Sabes lo que consumes, al minuto</h2>
+      <p>Llamadas, minutos y consumo por periodo, con tu saldo siempre a la vista. Si el saldo se acerca al final, el panel te avisa antes de que se corte nada.</p>
+      <ul class="pts">
+        <li>Consumo de los últimos 30 días, 8 semanas o 12 meses</li>
+        <li>Saldo disponible y aviso de saldo bajo</li>
+        <li>Detalle por llamada: lo que ves es lo que pagas</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="app" data-anim="facturacion" role="img" aria-label="Maqueta de la pantalla de facturación con consumo semanal">
+        <div class="bar"><i></i><i></i><i></i><span>crm.ardesku.com/billing</span></div>
+        <div class="main">
+          <div class="hd"><div><h4>Facturación</h4><div class="muted">Últimos 30 días</div></div><span class="pill p-ok">Saldo: 1.240 €</span></div>
+          <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+            <div class="card kpi"><div class="k">Llamadas</div><div class="v" data-count="6112">6.112</div></div>
+            <div class="card kpi"><div class="k">Minutos</div><div class="v" data-count="3284">3.284</div></div>
+            <div class="card kpi"><div class="k">Consumo</div><div class="v"><span data-count="642">642</span> €</div></div>
+          </div>
+          <div class="card"><b>Consumo por semana</b>
+            <div class="chart" style="height:96px">
+              <div><u style="--h:40px"></u><em>S1</em></div><div><u style="--h:55px"></u><em>S2</em></div><div><u style="--h:62px"></u><em>S3</em></div><div><u style="--h:58px"></u><em>S4</em></div><div><u class="o" style="--h:70px;border-radius:3px 3px 0 0"></u><em>S5</em></div><div><u style="--h:66px"></u><em>S6</em></div><div><u style="--h:72px"></u><em>S7</em></div><div><u style="--h:68px"></u><em>S8</em></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ AUTOMÁTICO ═══════════ -->
+<section class="auto" id="automatico">
+  <i class="blob" aria-hidden="true" style="width:640px;height:640px;right:-200px;top:-200px;background:radial-gradient(circle,rgba(240,89,42,.14),transparent 70%)"></i>
+  <div class="wrap">
+    <span class="label">Por debajo</span>
+    <h2 class="serif reveal">Lo que hace solo, sin que lo toques</h2>
+    <p class="lead reveal">La parte que no se ve en las capturas, y la que más tiempo te ahorra.</p>
+    <div class="grid" data-grid>
+      <div class="gi reveal" style="--k:0"><div class="ic">↻</div><h3>Rellamadas automáticas</h3><p>Si no contestan, el lead vuelve a la cola otro día y a otra hora. Si la persona pidió «llámame mañana a las 11», se la llama a las 11.</p></div>
+      <div class="gi reveal" style="--k:1"><div class="ic">◷</div><h3>Horario legal por país y región</h3><p>Solo llama en la franja permitida y con la hora local de quien recibe la llamada. Nunca fuera de horario.</p></div>
+      <div class="gi reveal" style="--k:2"><div class="ic">✦</div><h3>Festivos regionales</h3><p>Se salta los leads de la comunidad o la ciudad que ese día está de fiesta.</p></div>
+      <div class="gi reveal" style="--k:3"><div class="ic">⊘</div><h3>Lista de bajas</h3><p>Si alguien pide que no le llamen más, queda excluido para siempre y en todas las campañas.</p></div>
+      <div class="gi reveal" style="--k:4"><div class="ic">≡</div><h3>Sin duplicados</h3><p>Un mismo número no se llama dos veces a la vez, aunque esté en dos listas.</p></div>
+      <div class="gi reveal" style="--k:5"><div class="ic">🔔</div><h3>Aviso de interesados</h3><p>Cada interesado nuevo aparece al momento en la campanita del panel y en el feed del inicio.</p></div>
+      <div class="gi reveal" style="--k:6"><div class="ic">☎</div><h3>Por qué se cortó cada llamada</h3><p>Quién colgó y el motivo técnico, para separar un «no» de un problema de línea.</p></div>
+      <div class="gi reveal" style="--k:7"><div class="ic">✉</div><h3>Seguimiento por WhatsApp y correo</h3><p>Los interesados reciben la presentación por WhatsApp o correo, según lo que pidieron en la llamada.</p></div>
+      <div class="gi reveal" style="--k:8"><div class="ic">?</div><h3>Soporte dentro del panel</h3><p>Un asistente responde tus dudas al momento y, si hace falta, pasa la conversación a una persona.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PARA QUIÉN ═══════════ -->
+<section class="who wrap">
+  <div style="text-align:center">
+    <span class="label">Para quién</span>
+    <h2 class="serif grad reveal">Hecho para equipos que viven del teléfono</h2>
+  </div>
+  <div class="who-g">
+    <div class="who-c reveal"><h3>Call centers</h3><p>Pon el agente de IA a filtrar la lista y que tu equipo hable solo con los interesados. Más contactos al día con la misma plantilla.</p></div>
+    <div class="who-c reveal"><h3>Equipos comerciales</h3><p>Prospección, seguimiento de presupuestos y recuperación de clientes antiguos, con todo apuntado sin escribir un informe.</p></div>
+    <div class="who-c reveal"><h3>Negocios con cita</h3><p>Clínicas, talleres, asesorías: confirma citas, recuerda revisiones y no pierdas a quien llamó y no pudiste atender.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ PREGUNTAS ═══════════ -->
+<section class="faq wrap" id="preguntas">
+  <div style="text-align:center">
+    <span class="label">Preguntas frecuentes</span>
+    <h2 class="serif grad reveal">Lo que nos preguntan antes de empezar</h2>
+  </div>
+  <div class="faq-l reveal">
+    <details><summary>¿Tengo que instalar algo?</summary><p>No. El CRM funciona en el navegador (Chrome o Safari). Tu equipo entra en crm.ardesku.com con su usuario y llama desde ahí, sin centralita ni teléfonos.</p></details>
+    <details><summary>¿Puedo usar el CRM sin el agente de IA?</summary><p>Sí. Puedes trabajar solo con tu equipo y el marcador, y activar el agente de IA cuando quieras para que filtre la lista por ti.</p></details>
+    <details><summary>¿En qué idiomas habla el agente?</summary><p>Español, italiano y catalán ya están funcionando en campañas y demos. Otros idiomas se preparan bajo petición, con la voz y el acento que encajen con tus clientes.</p></details>
+    <details><summary>¿Es legal llamar así?</summary><p>El sistema solo llama en el horario permitido de cada país y región, respeta los festivos, guarda para siempre las peticiones de baja y el agente dice que es un asistente virtual si se lo preguntan. Lo contamos con detalle en <a href="/#cumplimiento">cumplimiento</a> y en la <a href="/uso-aceptable">política de uso aceptable</a>.</p></details>
+    <details><summary>¿Mis datos están seguros?</summary><p>Cada cliente tiene sus datos aislados: ni otros clientes ni sus agentes pueden verlos. El acceso es con usuario y contraseña, y puedes dar de baja a cualquiera al momento. Más detalles en la <a href="/privacidad">política de privacidad</a>.</p></details>
+    <details><summary>¿Cuánto cuesta?</summary><p>Depende de cuántas líneas quieras a la vez, del país al que llames y de si incluyes el agente de IA. <a href="/#contacto">Cuéntanos tu caso</a> y te preparamos un presupuesto cerrado.</p></details>
+  </div>
+</section>
+
+<section class="cta reveal">
+  <h2 class="serif">¿Lo vemos con tus datos?</h2>
+  <p>Te enseñamos el CRM en una videollamada de 15 minutos y te dejamos una campaña de prueba montada.</p>
+  <div class="ctas">
+    <a class="btn btn-or" href="/#contacto">Pedir demo</a>
+    <a class="btn btn-ghost" href="https://crm.ardesku.com" target="_blank" rel="noopener">Ya soy cliente · Entrar</a>
+  </div>
+</section>
+</main>
+
+<footer class="pie">
+  <div class="wrap">
+    <span>© 2026 Ardesku · RUC 10728046380 · Lima, Perú</span>
+    <nav aria-label="Pie"><a href="/">Inicio</a><a href="/crm">CRM Ardesku</a><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a><a href="/uso-aceptable">Uso aceptable</a></nav>
+  </div>
+</footer>
+
+<a id="wa" href="https://wa.me/51924545648?text=Hola%2C%20quiero%20ver%20el%20CRM%20de%20Ardesku" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 0 1-1.44-5.01c0-5.19 4.23-9.42 9.43-9.42 2.52 0 4.88.98 6.66 2.76a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.23 9.42-9.42 9.42zm8.02-17.44A11.27 11.27 0 0 0 12.05.75C5.8.75.72 5.83.72 12.08c0 2 .52 3.95 1.52 5.66L.62 23.25l5.64-1.48a11.3 11.3 0 0 0 5.78 1.47h.01c6.25 0 11.33-5.08 11.33-11.33 0-3.03-1.18-5.87-3.31-8z"/></svg></a>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var fmt = function(n){ return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); };
+  var mmss = function(s){ s = Math.floor(s); return Math.floor(s/60) + ':' + ('0' + s%60).slice(-2); };
+
+  /* ── aparecer al hacer scroll ── */
+  var els = $$('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(function(e){ e.classList.add('visible'); }); }
+  else {
+    var io = new IntersectionObserver(function(en){ en.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function(e){ io.observe(e); });
+  }
+
+  /* ── cifras que cuentan desde cero ── */
+  function countUp(el){
+    var to = +el.dataset.count;
+    if (reduce) { el.textContent = fmt(to); return; }
+    var t0 = performance.now(), d = 1300;
+    (function f(t){ var p = Math.min(1, (t - t0)/d); el.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(f); })(t0);
+  }
+  function bump(el, n){ el.dataset.count = n; el.textContent = fmt(n); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+  /* ── animación de cada maqueta: arranca al verse y se para al salir de pantalla ── */
+  var A = {
+    inicio: function(app){
+      var feed = $('[data-feed]', app), bell = $('[data-bell]', app), bn = $('[data-bell-n]', app);
+      var vInt = $('[data-tick="int"]', app), vCalls = $('[data-tick="calls"]', app);
+      var pool = [
+        ['Reformas Hidalgo', 'Acepta demo · lun 9:30', 'p-or', 'Nuevo'],
+        ['Asesoría Prieto', 'Pide la propuesta por correo', 'p-ok', 'Interesado'],
+        ['Óptica Mar', 'Que la llamen el martes', 'p-am', 'Rellamar'],
+        ['Gimnasio Atlas', 'Acepta demo · mié 17:00', 'p-or', 'Nuevo'],
+        ['Fontanería Gil', 'Quiere hablar con un comercial', 'p-ok', 'Interesado'],
+        ['Clínica Vet Nova', 'Acepta demo · jue 16:00', 'p-or', 'Nuevo']
+      ], k = 0;
+      var a = setInterval(function(){ bump(vCalls, +vCalls.dataset.count + 1 + Math.floor(Math.random()*2)); }, 1600);
+      var b = setInterval(function(){
+        var p = pool[k++ % pool.length], li = document.createElement('li');
+        li.className = 'in';
+        li.innerHTML = '<div><b></b><small></small></div><span class="pill ' + p[2] + '"></span>';
+        li.querySelector('b').textContent = p[0]; li.querySelector('small').textContent = p[1]; li.querySelector('.pill').textContent = p[3];
+        feed.insertBefore(li, feed.firstChild);
+        if (feed.children.length > 4) feed.removeChild(feed.lastElementChild);
+        bump(vInt, +vInt.dataset.count + 1);
+        bn.textContent = +bn.textContent + 1;
+        bell.classList.remove('ring'); void bell.offsetWidth; bell.classList.add('ring');
+      }, 3800);
+      return function(){ clearInterval(a); clearInterval(b); };
+    },
+    supervisor: function(app){
+      var tot = $('[data-sv-total]', app), c = $('[data-sv-c]', app), p = $('[data-sv-p]', app), ia = $('[data-sv-ia]', app), st = $('[data-sv-st]', app), ago = $('[data-ago]', app);
+      var n = 1316, nc = 440, np = 684, nia = 214, s = 0, sec = 4;
+      var states = [['Escribiendo notas','p-or'],['En llamada','p-ok'],['Disponible','p-gr']];
+      var a = setInterval(function(){
+        n++; np--; nia++; if (Math.random() < .4) nc++;
+        tot.textContent = fmt(n); p.textContent = fmt(np); c.textContent = fmt(nc); ia.textContent = nia; sec = 0;
+      }, 2200);
+      var b = setInterval(function(){ sec++; ago.textContent = sec; }, 1000);
+      var d = setInterval(function(){ s = (s + 1) % states.length; st.textContent = states[s][0]; st.className = 'pill ' + states[s][1]; }, 3300);
+      return function(){ clearInterval(a); clearInterval(b); clearInterval(d); };
+    },
+    ia: function(app){
+      var who = $('[data-ia-who]', app), list = ['Clínica Dental Sol', 'Óptica Mar', 'Talleres Ruiz S.L.', 'Asesoría Prieto', 'Gimnasio Atlas'], i = 0;
+      var a = setInterval(function(){
+        who.classList.add('out');
+        setTimeout(function(){ i = (i + 1) % list.length; who.textContent = list[i]; who.classList.remove('out'); }, 350);
+      }, 3200);
+      return function(){ clearInterval(a); };
+    },
+    llamadas: function(app){
+      var bars = $$('[data-wave] i', app), t = $('[data-t]', app), msgs = $$('[data-tr] p', app), pl = $('[data-pl]', app);
+      var dur = 138, pos = 0;
+      pl.textContent = '❚❚';
+      msgs.forEach(function(m){ m.classList.add('h'); });
+      var a = setInterval(function(){
+        pos += 2.3; if (pos > dur) { pos = 0; msgs.forEach(function(m){ m.classList.add('h'); }); }
+        var on = Math.round(pos / dur * bars.length);
+        bars.forEach(function(b, j){ b.classList.toggle('p', j < on); });
+        t.textContent = mmss(pos);
+        msgs.forEach(function(m, j){ if (pos > 6 + j * 26) m.classList.remove('h'); });
+      }, 250);
+      return function(){ clearInterval(a); pl.textContent = '▶'; };
+    },
+    marcador: function(app){
+      var c = $('[data-clock]', app), s = 37;
+      var a = setInterval(function(){ s++; if (s > 220) s = 0; c.textContent = mmss(s); }, 1000);
+      return function(){ clearInterval(a); };
+    },
+    importar: function(app){
+      var bar = $('[data-imp-bar]', app), tags = $$('[data-imp-tags] .tag', app), rows = $$('[data-imp-rows] tr', app).slice(1), done = $('[data-imp-done]', app), timers = [];
+      function cycle(){
+        bar.style.transition = 'none'; bar.style.width = '0';
+        tags.forEach(function(x){ x.classList.add('h'); }); rows.forEach(function(r){ r.style.opacity = 0; }); done.style.opacity = 0;
+        void bar.offsetWidth;
+        bar.style.transition = 'width 1.8s cubic-bezier(.16,1,.3,1)'; bar.style.width = '100%';
+        tags.forEach(function(x, j){ timers.push(setTimeout(function(){ x.classList.remove('h'); }, 1700 + j * 350)); });
+        rows.forEach(function(r, j){ timers.push(setTimeout(function(){ r.style.opacity = 1; }, 3200 + j * 300)); });
+        timers.push(setTimeout(function(){ done.style.opacity = 1; }, 4400));
+        timers.push(setTimeout(cycle, 9000));
+      }
+      cycle();
+      return function(){ timers.forEach(clearTimeout); timers = []; bar.style.width = '100%'; tags.forEach(function(x){ x.classList.remove('h'); }); rows.forEach(function(r){ r.style.opacity = 1; }); done.style.opacity = 1; };
+    },
+    campanas: function(app){
+      var tog = $('[data-cp-tog]', app), pill = $('[data-cp-pill]', app), n = $('[data-cp-n]', app), on = false;
+      var a = setInterval(function(){
+        on = !on; tog.classList.toggle('off', !on);
+        pill.textContent = on ? 'Activa' : 'Pausada'; pill.className = 'pill ' + (on ? 'p-ok' : 'p-gr');
+        n.textContent = on ? 3 : 2;
+      }, 2800);
+      return function(){ clearInterval(a); };
+    },
+    equipo: function(app){
+      var r = $('[data-eq-new]', app), n = $('[data-eq-n]', app), on = false;
+      r.style.opacity = 0; n.textContent = 4;
+      var a = setInterval(function(){ on = !on; r.style.opacity = on ? 1 : 0; n.textContent = on ? 5 : 4; }, 3000);
+      return function(){ clearInterval(a); r.style.opacity = 1; n.textContent = 5; };
+    },
+    facturacion: function(){ return function(){}; }
+  };
+
+  // las ondas de la grabación se dibujan una vez
+  $$('[data-wave]').forEach(function(w){
+    var h = [30,70,45,90,55,35,80,60,40,75,50,25,65,85,45,30,60,40,70,35,55,80,45,65];
+    h.forEach(function(v){ var i = document.createElement('i'); i.style.height = v + '%'; w.appendChild(i); });
+  });
+
+  var apps = $$('.app[data-anim]');
+  if (reduce || !('IntersectionObserver' in window)) {
+    apps.forEach(function(app){ app.classList.add('play'); });
+    $$('[data-eq-new]').forEach(function(r){ r.style.opacity = 1; });
+  } else {
+    var stops = new Map(), counted = new WeakSet();
+    var io2 = new IntersectionObserver(function(en){
+      en.forEach(function(e){
+        var app = e.target;
+        if (e.isIntersecting) {
+          app.classList.add('play');
+          if (!counted.has(app)) { counted.add(app); $$('[data-count]', app).forEach(countUp); }
+          if (!stops.has(app)) stops.set(app, A[app.dataset.anim](app));
+        } else if (stops.has(app)) { stops.get(app)(); stops.delete(app); }
+      });
+    }, { threshold: .25 });
+    apps.forEach(function(app){ io2.observe(app); });
+    // el panel de la portada empieza un poco inclinado y se endereza al bajar
+    var hero = $('#hero-app');
+    var tilt = function(){ var y = Math.min(1, window.scrollY / 420); hero.style.setProperty('--rx', (9 * (1 - y)).toFixed(2) + 'deg'); hero.style.setProperty('--sc', (.96 + .04 * y).toFixed(3)); };
+    window.addEventListener('scroll', tilt, { passive: true }); tilt();
+    // un pulso de vez en cuando en los iconos de «Lo que hace solo»
+    var gis = $$('[data-grid] .gi'), gk = 0;
+    setInterval(function(){ var g = gis[gk++ % gis.length]; g.classList.remove('pulse'); void g.offsetWidth; g.classList.add('pulse'); }, 1400);
+  }
+
+  /* ── barra de módulos: aparece tras la portada y marca dónde estás ── */
+  var modbar = $('#modbar'), links = $$('#modbar a'), wa = $('#wa'), chips = $('.chips');
+  var secs = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); });
+  var lastOn = null;
+  function onScroll(){
+    var past = chips.getBoundingClientRect().bottom < 64;
+    modbar.classList.toggle('show', past); modbar.setAttribute('aria-hidden', past ? 'false' : 'true');
+    var cur = null;
+    secs.forEach(function(s, i){ if (s && s.getBoundingClientRect().top < 160) cur = i; });
+    if (cur !== lastOn) {
+      links.forEach(function(a, i){ a.classList.toggle('on', i === cur); });
+      if (cur !== null && links[cur].scrollIntoView && past) { var nav = links[cur].parentNode; nav.scrollTo({ left: links[cur].offsetLeft - 40, behavior: reduce ? 'auto' : 'smooth' }); }
+      lastOn = cur;
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  setTimeout(function(){ wa.classList.add('show'); }, 2500);
+})();
+</script>
+</body>
+</html>
