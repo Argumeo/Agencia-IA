@@ -45,5 +45,12 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/arm",
+      "destination": "/crm",
+      "permanent": false
+    }
   ]
 }

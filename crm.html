@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CRM Ardesku — Panel para call center con agente de IA</title>
-  <meta name="description" content="CRM Ardesku: campañas, agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada. Todo en un panel con acceso por usuario." />
+  <title>Ardesku ARM — AI Relationship Management, el CRM que trabaja por ti</title>
+  <meta name="description" content="Ardesku ARM (AI Relationship Management): el CRM con IA que llama, cualifica y agenda por ti. Campañas, agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada. Todo en un panel con acceso por usuario." />
   <meta name="theme-color" content="#101015" />
   <link rel="canonical" href="https://ardesku.com/crm" />
   <meta name="robots" content="index,follow" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ardesku" />
   <meta property="og:locale" content="es_ES" />
-  <meta property="og:title" content="CRM Ardesku — tu call center y tu agente de IA en un solo panel" />
+  <meta property="og:title" content="Ardesku ARM — el CRM que trabaja por ti" />
   <meta property="og:description" content="Campañas, agente de voz con IA, marcador en el navegador, grabaciones con transcripción y supervisor en vivo." />
   <meta property="og:url" content="https://ardesku.com/crm" />
   <meta property="og:image" content="https://ardesku.com/media/og.jpg" />
@@ -25,11 +25,12 @@
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "CRM Ardesku",
+    "name": "Ardesku ARM",
+    "alternateName": ["AI Relationship Management", "CRM Ardesku"],
     "url": "https://ardesku.com/crm",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
-    "description": "CRM para call center con agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada.",
+    "description": "AI Relationship Management: CRM para call center con agente de voz con IA, marcador en el navegador, grabaciones con transcripción, supervisor en vivo y facturación por llamada.",
     "inLanguage": ["es", "it", "ca"],
     "provider": { "@type": "Organization", "name": "Ardesku", "url": "https://ardesku.com" }
   }
@@ -101,6 +102,24 @@
     .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:48px auto 0;max-width:960px}
     .chips a{font-size:14px;padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.5);transition:background .3s,border-color .3s,transform .3s var(--ease)}
     .chips a:hover{background:#fff;border-color:rgba(26,26,24,.25);transform:translateY(-2px)}
+
+
+    /* qué es un ARM */
+    .vs{padding:96px 0;border-top:1px solid var(--border)}
+    .vs h2{font-size:clamp(32px,4.4vw,56px);line-height:1.08;font-weight:600}
+    .vs .lead{color:var(--muted);font-size:17px;max-width:680px;margin:14px auto 0}
+    .vs-g{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:980px;margin:48px auto 0}
+    .vs-c{border-radius:20px;padding:28px}
+    .vs-c h3{font-size:13px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+    .vs-c li{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:15.5px}
+    .vs-c li:last-child{border:0}
+    .vs-c li b{flex:none;width:20px;text-align:center}
+    .vs-old{background:rgba(26,26,24,.03);border:1px solid var(--border);color:var(--muted)}
+    .vs-new{background:var(--ink);color:#f5f2ec;position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgba(16,16,21,.5)}
+    .vs-new::before{content:"";position:absolute;width:360px;height:360px;right:-120px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(240,89,42,.35),transparent 65%);animation:blob 9s ease-in-out infinite alternate}
+    .vs-new h3{color:#ff8a5c;position:relative}.vs-new ul{position:relative}
+    .vs-new li{border-color:rgba(245,242,236,.1)}.vs-new li b{color:#ff8a5c}
+    @media (max-width:760px){.vs-g{grid-template-columns:1fr}}
 
     /* cómo funciona */
     .flow{padding:96px 0;border-top:1px solid var(--border)}
@@ -312,9 +331,10 @@
 
 <header class="top">
   <div class="wrap">
-    <a href="/" class="logo">Ardesku<small>CRM</small></a>
+    <a href="/" class="logo">Ardesku<small>ARM</small></a>
     <nav class="top-nav" aria-label="Principal">
       <a class="l" href="/">Inicio</a>
+      <a class="l" href="#que-es">¿Qué es un ARM?</a>
       <a class="l" href="#como">Cómo funciona</a>
       <a class="l" href="#supervisor">Módulos</a>
       <a class="l" href="#preguntas">Preguntas</a>
@@ -325,7 +345,7 @@
 </header>
 
 <div class="modbar" id="modbar" aria-hidden="true">
-  <nav aria-label="Módulos del CRM">
+  <nav aria-label="Módulos de Ardesku ARM">
     <a href="#supervisor">Supervisor</a><a href="#agente-ia">Agente IA</a><a href="#llamadas">Llamadas</a><a href="#marcador">Marcador</a><a href="#importar">Importar</a><a href="#campanas">Campañas</a><a href="#equipo">Equipo</a><a href="#facturacion">Facturación</a><a href="#automatico">Automático</a><a href="#preguntas">Preguntas</a>
   </nav>
 </div>
@@ -335,7 +355,7 @@
 <section class="hero wrap" id="inicio">
   <i class="blob" aria-hidden="true" style="width:520px;height:520px;left:-180px;top:-60px;background:radial-gradient(circle,rgba(240,89,42,.16),transparent 70%)"></i>
   <i class="blob" aria-hidden="true" style="width:600px;height:600px;right:-220px;top:120px;background:radial-gradient(circle,rgba(94,106,210,.14),transparent 70%);animation-duration:15s"></i>
-  <span class="label he" style="animation-delay:.05s">CRM Ardesku</span>
+  <span class="label he" style="animation-delay:.05s">Ardesku ARM · AI Relationship Management</span>
   <h1 aria-label="Tu call center y tu agente de IA, en un solo panel"><span aria-hidden="true"><span class="w" style="--i:0">Tu</span> <span class="w" style="--i:1">call</span> <span class="w" style="--i:2">center</span> <span class="w" style="--i:3">y</span> <span class="w" style="--i:4">tu</span> <span class="w" style="--i:5">agente</span> <span class="w" style="--i:6">de</span> <span class="w" style="--i:7">IA,</span> <span class="w o" style="--i:8">en</span> <span class="w o" style="--i:9">un</span> <span class="w o" style="--i:10">solo</span> <span class="w o" style="--i:11">panel</span></span></h1>
   <p class="sub he he1">Lanza campañas, deja que el agente de voz llame por ti o llama tú desde el navegador. Cada llamada queda grabada, transcrita y con su resultado. Tú solo miras quién está interesado.</p>
   <div class="ctas he he2">
@@ -391,6 +411,31 @@
   </nav>
 </section>
 
+<!-- ═══════════ QUÉ ES UN ARM ═══════════ -->
+<section class="vs" id="que-es">
+  <div class="wrap" style="text-align:center">
+    <span class="label">¿Qué es un ARM?</span>
+    <h2 class="serif grad reveal">Un CRM guarda lo que pasó. Un ARM hace que pase.</h2>
+    <p class="lead reveal"><b>AI Relationship Management</b>: la evolución del CRM. En lugar de que tu equipo apunte cada llamada, la inteligencia artificial llama, conversa, apunta y agenda. Tu equipo entra solo cuando hay alguien interesado.</p>
+  </div>
+  <div class="wrap">
+    <div class="vs-g">
+      <div class="vs-c vs-old reveal"><h3>CRM clásico</h3><ul>
+        <li><b>✕</b>Tu equipo mete los datos a mano</li>
+        <li><b>✕</b>Para saber qué se habló, hay que escuchar la llamada</li>
+        <li><b>✕</b>El seguimiento depende de que alguien se acuerde</li>
+        <li><b>✕</b>Cada contacto lo hace una persona, uno a uno</li>
+      </ul></div>
+      <div class="vs-c vs-new reveal"><h3>Ardesku ARM</h3><ul>
+        <li><b>✓</b>La IA llama y deja todo apuntado sola</li>
+        <li><b>✓</b>Grabación, transcripción y resumen al colgar</li>
+        <li><b>✓</b>Rellamadas a la hora pactada, sin acordarse de nada</li>
+        <li><b>✓</b>Tu equipo habla solo con quien ya está interesado</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ CÓMO FUNCIONA ═══════════ -->
 <section class="flow" id="como">
   <div class="wrap">
@@ -400,7 +445,7 @@
     </div>
     <div class="steps reveal">
       <span class="runner" aria-hidden="true"></span>
-      <div class="step"><div class="n" style="--d:0s">1</div><div><h3>Subes tu lista</h3><p>Un Excel o CSV con tus contactos. El CRM entiende las columnas solo.</p></div></div>
+      <div class="step"><div class="n" style="--d:0s">1</div><div><h3>Subes tu lista</h3><p>Un Excel o CSV con tus contactos. El sistema entiende las columnas solo.</p></div></div>
       <div class="step"><div class="n" style="--d:1.5s">2</div><div><h3>El agente de IA llama</h3><p>A su ritmo y en horario permitido, con voz natural y en el idioma de cada cliente.</p></div></div>
       <div class="step"><div class="n" style="--d:3s">3</div><div><h3>Detecta interesados</h3><p>Cada llamada se graba, se transcribe y se resume. Los interesados te avisan al momento.</p></div></div>
       <div class="step"><div class="n" style="--d:4.6s">4</div><div><h3>Tu equipo cierra</h3><p>La IA ya dejó la cita o la rellamada pactada. Tu equipo solo habla con quien quiere hablar.</p></div></div>
@@ -567,7 +612,7 @@
     <div class="txt reveal">
       <span class="num">05 · IMPORTAR</span>
       <h2 class="serif">Sube tu Excel y empieza a llamar</h2>
-      <p>Arrastras tu lista en CSV o Excel y el CRM detecta solo qué columna es el teléfono, el nombre o la empresa. Ves una vista previa, eliges la campaña y listo.</p>
+      <p>Arrastras tu lista en CSV o Excel y el sistema detecta solo qué columna es el teléfono, el nombre o la empresa. Ves una vista previa, eliges la campaña y listo.</p>
       <ul class="pts">
         <li>CSV, XLS y XLSX</li>
         <li>Detección automática de columnas, también con cabeceras en otros idiomas</li>
@@ -737,8 +782,9 @@
     <h2 class="serif grad reveal">Lo que nos preguntan antes de empezar</h2>
   </div>
   <div class="faq-l reveal">
-    <details><summary>¿Tengo que instalar algo?</summary><p>No. El CRM funciona en el navegador (Chrome o Safari). Tu equipo entra en crm.ardesku.com con su usuario y llama desde ahí, sin centralita ni teléfonos.</p></details>
-    <details><summary>¿Puedo usar el CRM sin el agente de IA?</summary><p>Sí. Puedes trabajar solo con tu equipo y el marcador, y activar el agente de IA cuando quieras para que filtre la lista por ti.</p></details>
+    <details><summary>¿Qué diferencia hay entre un ARM y un CRM?</summary><p>Un CRM es una base de datos donde tu equipo apunta lo que hace. Ardesku ARM tiene todo lo de un CRM (leads, campañas, historial, usuarios), pero además trabaja solo: el agente de IA llama, cualifica, apunta el resultado y agenda la cita. Tú decides cuánto hace la IA y cuánto tu equipo.</p></details>
+    <details><summary>¿Tengo que instalar algo?</summary><p>No. Ardesku ARM funciona en el navegador (Chrome o Safari). Tu equipo entra en crm.ardesku.com con su usuario y llama desde ahí, sin centralita ni teléfonos.</p></details>
+    <details><summary>¿Puedo usarlo sin el agente de IA?</summary><p>Sí. Puedes trabajar solo con tu equipo y el marcador, y activar el agente de IA cuando quieras para que filtre la lista por ti.</p></details>
     <details><summary>¿En qué idiomas habla el agente?</summary><p>Español, italiano y catalán ya están funcionando en campañas y demos. Otros idiomas se preparan bajo petición, con la voz y el acento que encajen con tus clientes.</p></details>
     <details><summary>¿Es legal llamar así?</summary><p>El sistema solo llama en el horario permitido de cada país y región, respeta los festivos, guarda para siempre las peticiones de baja y el agente dice que es un asistente virtual si se lo preguntan. Lo contamos con detalle en <a href="/#cumplimiento">cumplimiento</a> y en la <a href="/uso-aceptable">política de uso aceptable</a>.</p></details>
     <details><summary>¿Mis datos están seguros?</summary><p>Cada cliente tiene sus datos aislados: ni otros clientes ni sus agentes pueden verlos. El acceso es con usuario y contraseña, y puedes dar de baja a cualquiera al momento. Más detalles en la <a href="/privacidad">política de privacidad</a>.</p></details>
@@ -748,7 +794,7 @@
 
 <section class="cta reveal">
   <h2 class="serif">¿Lo vemos con tus datos?</h2>
-  <p>Te enseñamos el CRM en una videollamada de 15 minutos y te dejamos una campaña de prueba montada.</p>
+  <p>Te enseñamos Ardesku ARM en una videollamada de 15 minutos y te dejamos una campaña de prueba montada.</p>
   <div class="ctas">
     <a class="btn btn-or" href="/#contacto">Pedir demo</a>
     <a class="btn btn-ghost" href="https://crm.ardesku.com" target="_blank" rel="noopener">Ya soy cliente · Entrar</a>
@@ -759,11 +805,11 @@
 <footer class="pie">
   <div class="wrap">
     <span>© 2026 Ardesku · RUC 10728046380 · Lima, Perú</span>
-    <nav aria-label="Pie"><a href="/">Inicio</a><a href="/crm">CRM Ardesku</a><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a><a href="/uso-aceptable">Uso aceptable</a></nav>
+    <nav aria-label="Pie"><a href="/">Inicio</a><a href="/crm">Ardesku ARM</a><a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a><a href="/uso-aceptable">Uso aceptable</a></nav>
   </div>
 </footer>
 
-<a id="wa" href="https://wa.me/51924545648?text=Hola%2C%20quiero%20ver%20el%20CRM%20de%20Ardesku" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 0 1-1.44-5.01c0-5.19 4.23-9.42 9.43-9.42 2.52 0 4.88.98 6.66 2.76a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.23 9.42-9.42 9.42zm8.02-17.44A11.27 11.27 0 0 0 12.05.75C5.8.75.72 5.83.72 12.08c0 2 .52 3.95 1.52 5.66L.62 23.25l5.64-1.48a11.3 11.3 0 0 0 5.78 1.47h.01c6.25 0 11.33-5.08 11.33-11.33 0-3.03-1.18-5.87-3.31-8z"/></svg></a>
+<a id="wa" href="https://wa.me/51924545648?text=Hola%2C%20quiero%20ver%20Ardesku%20ARM" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.31l-.34-.2-3.57.94.95-3.48-.22-.36a9.38 9.38 0 0 1-1.44-5.01c0-5.19 4.23-9.42 9.43-9.42 2.52 0 4.88.98 6.66 2.76a9.36 9.36 0 0 1 2.76 6.67c0 5.2-4.23 9.42-9.42 9.42zm8.02-17.44A11.27 11.27 0 0 0 12.05.75C5.8.75.72 5.83.72 12.08c0 2 .52 3.95 1.52 5.66L.62 23.25l5.64-1.48a11.3 11.3 0 0 0 5.78 1.47h.01c6.25 0 11.33-5.08 11.33-11.33 0-3.03-1.18-5.87-3.31-8z"/></svg></a>
 
 <script>
 (function(){
