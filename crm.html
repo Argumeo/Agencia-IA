@@ -63,7 +63,8 @@
     .logo{font-size:18px;font-weight:500}
     .logo small{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);margin-left:8px;text-transform:uppercase}
     .top-nav{display:flex;align-items:center;gap:22px;font-size:14px}
-    .top-nav a.l{color:var(--muted)} .top-nav a.l:hover{color:var(--fg)}
+    .top-nav a.l{color:var(--muted);white-space:nowrap} .top-nav a.l:hover{color:var(--fg)}
+    @media (max-width:1120px){.top-nav a.l[href="/"],.top-nav a.l[href="#supervisor"]{display:none}}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
     .btn:hover{transform:translateY(-2px)}
     .btn-dark{background:var(--fg);color:var(--bg)}
